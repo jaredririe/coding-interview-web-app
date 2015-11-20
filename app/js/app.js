@@ -60,6 +60,14 @@ var Home = React.createClass({
   }
 });
 
+var Question = React.createClass({
+  render: function() {
+    return (
+      <h1>Question {this.props.params.index}</h1>
+    );
+  }
+});
+
 ////////////////////////////////////
 
 var Badge = React.createClass({
@@ -73,17 +81,26 @@ var Badge = React.createClass({
 });
 
 var Thumbnail = React.createClass({
+  
   render: function() {
     return (
-      <div className="col-sm-6 col-md-4">
+      <div className="col-xs-12">
         <div className="thumbnail">
           <div className="caption">
             <h3>{this.props.header}</h3>
             <p>{this.props.description}</p>
-            <p>
-              <Badge title={this.props.title} number={this.props.number} />
+            <div className = "row">
+              <div className = "col-md-4">
+                <p>
+                  <Link to="question/2">
+                    <Badge title={this.props.title} number={this.props.number} />
+                  </Link>
+                </p>
+              </div>
+              <div className = "col-md-8">
               {this.props.timestamp}-{this.props.username}
-            </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -107,6 +124,7 @@ var ThumbnailList = React.createClass({
 
 var options = {
   thumbnailData:  [{
+    index: 0,
     title: 'Answer Question',
     header: 'Question Title 1',
     description: 'Question Body',
@@ -114,8 +132,9 @@ var options = {
     username: 'username',
     // imageUrl: 'https://raw.githubusercontent.com/wiki/facebook/react/react-logo-1000-transparent.png'
   },{
+    index: 0,
     title: 'Answer Question',
-    header: 'Question Title 1',
+    header: 'Question Title 2',
     description: 'Question Body',
     timestamp: 'time',
     username: 'username',
@@ -133,6 +152,7 @@ var routes = (
         <Route name="app" path="/" component={App}>
           <IndexRoute component={Home}/>
           <Route name="page" path="/page" component={Page} />
+          <Route name="question" path="/question/:index" component={Question} />
         </Route>
       </Router>
 );
