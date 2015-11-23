@@ -24,7 +24,7 @@ var App = React.createClass({
               </div>
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
-                  <li><Link to="page">Page</Link></li>
+                  <li><Link to="page">Profile</Link></li>
                 </ul>
               </div>
             </div>
@@ -37,12 +37,12 @@ var App = React.createClass({
   }
 });
 
-var Page = React.createClass({
+var Profile = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>Page</h1>
-        <p>Demo another page here</p>
+        <h1>Profile</h1>
+        <p>User Profile</p>
       </div>
     );
   }
@@ -54,7 +54,7 @@ var Home = React.createClass({
       <div>
         <h1>Home</h1>
         <p>Put your home page here</p>
-        {element}
+        {questionList}
       </div>
     );
   }
@@ -67,6 +67,70 @@ var Question = React.createClass({
     );
   }
 });
+
+var Answer = React.createClass({
+  render: function() {
+        return (
+      <div className="col-xs-12">
+        <div className="thumbnail">
+          <div className="caption">
+            <h3>{this.props.user}</h3>
+            <p>{this.props.body}</p>
+            <div className = "col-md-12">
+              {this.props.timestamp}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
+var AnswerList = React.createClass({
+  render: function() {
+    var list = this.props.answerData.map(function(answerProps){
+      return (<Thumbnail {...answerProps} />);
+    });
+
+    return (
+      <div>
+        {list}
+      </div>
+    );
+  }
+});
+
+var tempAnswers1 = {
+  answerData:  [{
+    index: 0,
+    user: 'Link',
+    body: 'Throw a bomb at it',
+    timestamp: 'time',
+    votes : 9
+  },{
+    index: 1,
+    user: 'Peppy',
+    body: 'Do a barrel roll!',
+    timestamp: 'time',
+    votes: 70
+  }]
+};
+
+var tempAnswers2 = {
+  answerData:  [{
+    index: 0,
+    user: 'Bob',
+    body: 'a boring answer',
+    timestamp: 'time',
+    votes : -3
+  },{
+    index: 1,
+    user: 'Joe',
+    body: 'An ever so slightly less boring answer',
+    timestamp: 'time',
+    votes: 15
+  }]
+};
 
 ////////////////////////////////////
 
@@ -81,7 +145,6 @@ var Badge = React.createClass({
 });
 
 var Thumbnail = React.createClass({
-  
   render: function() {
     return (
       <div className="col-xs-12">
@@ -92,13 +155,13 @@ var Thumbnail = React.createClass({
             <div className = "row">
               <div className = "col-md-4">
                 <p>
-                  <Link to="question/2">
-                    <Badge title={this.props.title} number={this.props.number} />
+                  <Link to={`/question/${this.props.index}`}>
+                    <Badge title="Answer Question"/>
                   </Link>
                 </p>
               </div>
               <div className = "col-md-8">
-              {this.props.timestamp}-{this.props.username}
+              {this.props.username} - {this.props.timestamp}
               </div>
             </div>
           </div>
@@ -124,25 +187,21 @@ var ThumbnailList = React.createClass({
 
 var options = {
   thumbnailData:  [{
-    index: 0,
-    title: 'Answer Question',
-    header: 'Question Title 1',
-    description: 'Question Body',
-    timestamp: 'time',
-    username: 'username',
-    // imageUrl: 'https://raw.githubusercontent.com/wiki/facebook/react/react-logo-1000-transparent.png'
+    index: 1,
+    header: "I see a crack in this wall...",
+    description: 'What should I do?',
+    timestamp: '1:57 PM, 11/19/15',
+    username: 'Scrub57',
   },{
-    index: 0,
-    title: 'Answer Question',
-    header: 'Question Title 2',
+    index: 2,
+    header: 'A boring question',
     description: 'Question Body',
     timestamp: 'time',
     username: 'username',
-    // imageUrl: 'http://brunch.io/images/others/gulp.png'
   }]
 };
 
-var element = React.createElement(ThumbnailList, options);
+var questionList = React.createElement(ThumbnailList, options);
 
 //////////////////////////
 
@@ -151,7 +210,7 @@ var routes = (
       <Router>
         <Route name="app" path="/" component={App}>
           <IndexRoute component={Home}/>
-          <Route name="page" path="/page" component={Page} />
+          <Route name="page" path="/page" component={Profile} />
           <Route name="question" path="/question/:index" component={Question} />
         </Route>
       </Router>
