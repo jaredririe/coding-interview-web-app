@@ -63,7 +63,13 @@ var Home = React.createClass({
 var Question = React.createClass({
   render: function() {
     return (
-      <h1>Question {this.props.params.index}</h1>
+      <div>
+        <div>
+        <h1>{options.thumbnailData[this.props.params.index].header}</h1>
+        <p>{options.thumbnailData[this.props.params.index].description}</p>
+        </div>
+        {answerList[this.props.params.index]}
+      </div>
     );
   }
 });
@@ -71,13 +77,18 @@ var Question = React.createClass({
 var Answer = React.createClass({
   render: function() {
         return (
-      <div className="col-xs-12">
-        <div className="thumbnail">
-          <div className="caption">
-            <h3>{this.props.user}</h3>
-            <p>{this.props.body}</p>
-            <div className = "col-md-12">
-              {this.props.timestamp}
+      <div className = "row">
+        <div className="col-xs-2">
+          <h1>{this.props.votes}</h1>
+        </div>
+        <div className="col-xs-10">
+          <div className="thumbnail">
+            <div className="caption">
+              <h3>{this.props.user}</h3>
+              <p>{this.props.body}</p>
+              <div>
+                {this.props.timestamp}
+              </div>
             </div>
           </div>
         </div>
@@ -89,7 +100,7 @@ var Answer = React.createClass({
 var AnswerList = React.createClass({
   render: function() {
     var list = this.props.answerData.map(function(answerProps){
-      return (<Thumbnail {...answerProps} />);
+      return (<Answer {...answerProps} />);
     });
 
     return (
@@ -100,37 +111,42 @@ var AnswerList = React.createClass({
   }
 });
 
-var tempAnswers1 = {
-  answerData:  [{
+
+var answerData0 = {
+  answerData: [{
     index: 0,
     user: 'Link',
     body: 'Throw a bomb at it',
     timestamp: 'time',
-    votes : 9
+    votes : 70
   },{
     index: 1,
     user: 'Peppy',
     body: 'Do a barrel roll!',
     timestamp: 'time',
-    votes: 70
+    votes: 9
   }]
 };
-
-var tempAnswers2 = {
-  answerData:  [{
-    index: 0,
-    user: 'Bob',
-    body: 'a boring answer',
-    timestamp: 'time',
-    votes : -3
-  },{
+  
+var answerData1 = {
+  answerData: [{
     index: 1,
     user: 'Joe',
     body: 'An ever so slightly less boring answer',
     timestamp: 'time',
     votes: 15
+  },{
+    index: 0,
+    user: 'Bob',
+    body: 'a boring answer',
+    timestamp: 'time',
+    votes : -3
   }]
 };
+
+var answerList = [];
+answerList[0] = React.createElement(AnswerList, answerData0);
+answerList[1] = React.createElement(AnswerList, answerData1);
 
 ////////////////////////////////////
 
@@ -187,13 +203,13 @@ var ThumbnailList = React.createClass({
 
 var options = {
   thumbnailData:  [{
-    index: 1,
+    index: 0,
     header: "I see a crack in this wall...",
     description: 'What should I do?',
     timestamp: '1:57 PM, 11/19/15',
     username: 'Scrub57',
   },{
-    index: 2,
+    index: 1,
     header: 'A boring question',
     description: 'Question Body',
     timestamp: 'time',
