@@ -20,7 +20,7 @@ var App = React.createClass({
                    <span className="icon-bar"></span>
                    <span className="icon-bar"></span>
                 </button>
-                <Link className="navbar-brand" to="/">Beginning</Link>
+                <Link className="navbar-brand" to="/">Home</Link>
               </div>
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
@@ -65,7 +65,7 @@ var Question = React.createClass({
     return (
       <div>
         <div>
-        <h1>{options.thumbnailData[this.props.params.index].header}</h1>
+        <h2>{options.thumbnailData[this.props.params.index].header}</h2>
         <p>{options.thumbnailData[this.props.params.index].description}</p>
         </div>
         {answerList[this.props.params.index]}
@@ -77,18 +77,26 @@ var Question = React.createClass({
 var Answer = React.createClass({
   render: function() {
         return (
-      <div className = "row">
-        <div className="col-xs-2">
-          <h1>{this.props.votes}</h1>
-        </div>
-        <div className="col-xs-10">
-          <div className="thumbnail">
-            <div className="caption">
-              <h3>{this.props.user}</h3>
-              <p>{this.props.body}</p>
-              <div>
-                {this.props.timestamp}
+      <div>
+        <div className="thumbnail">
+          <div className="caption">
+            <div className = "row">
+              <div className = "col-xs-6">
+                <h4>{this.props.user}</h4>
               </div>
+              <div className = "col-xs-2">
+                <Badge title="-"/>
+              </div>
+              <div className="col-xs-2">
+                {this.props.votes}
+              </div>
+              <div className = "col-xs-2">
+                <Badge title="+"/>
+              </div>
+            </div>
+            <p>{this.props.body}</p>
+            <div>
+              {this.props.timestamp}
             </div>
           </div>
         </div>
