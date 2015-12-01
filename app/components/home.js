@@ -1,12 +1,16 @@
-// var Home = React.createClass({
-//   render: function() {
-//     return (
-//       <div>
-//         <h1>Home</h1>
-//         <p>Put your home page here</p>
-//       </div>
-//     );
-//   }
-// });
+var React = require("react");
+var Question = require("./question.js");
+var questionList = require("./questionList.js")
 
-// module.exports = Home;
+var Home = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <h1>Home</h1>
+        {questionList}
+      </div>
+    );
+  }
+});
+
+module.exports = Home;
