@@ -321,10 +321,10 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Link = __webpack_require__(159).Link;
+	var Answer = __webpack_require__(213);
 
 	var AnswerList = React.createClass({
-	  displayName: 'AnswerList',
+	  displayName: "AnswerList",
 
 	  render: function () {
 	    var list = this.props.answerData.map(function (answerProps) {
@@ -332,7 +332,7 @@ webpackJsonp([1],{
 	    });
 
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
 	      list
 	    );
@@ -375,7 +375,7 @@ webpackJsonp([1],{
 	answerList[0] = React.createElement(AnswerList, answerData0);
 	answerList[1] = React.createElement(AnswerList, answerData1);
 
-	module.exports = AnswerList;
+	module.exports = answerList;
 
 /***/ },
 
@@ -384,6 +384,24 @@ webpackJsonp([1],{
 
 	var React = __webpack_require__(1);
 	var Link = __webpack_require__(159).Link;
+
+	var Badge = React.createClass({
+	  displayName: "Badge",
+
+	  render: function () {
+	    return React.createElement(
+	      "button",
+	      { className: "btn btn-primary", type: "button" },
+	      this.props.title,
+	      " ",
+	      React.createElement(
+	        "span",
+	        { className: "badge" },
+	        this.props.number
+	      )
+	    );
+	  }
+	});
 
 	var Answer = React.createClass({
 	  displayName: "Answer",

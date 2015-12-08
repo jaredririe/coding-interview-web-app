@@ -1,5 +1,6 @@
 var React = require("react");
-var Link = require('react-router').Link
+var Answer = require("./answer.js");
+
 
 var AnswerList = React.createClass({
   render: function() {
@@ -51,4 +52,4 @@ var answerList = [];
 answerList[0] = React.createElement(AnswerList, answerData0);
 answerList[1] = React.createElement(AnswerList, answerData1);
 
-module.exports = AnswerList;
+module.exports = answerList;

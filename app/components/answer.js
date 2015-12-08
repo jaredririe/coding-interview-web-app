@@ -1,6 +1,16 @@
 var React = require("react");
 var Link = require('react-router').Link
 
+var Badge = React.createClass({
+  render: function() {
+    return (
+      <button className="btn btn-primary" type="button">
+        {this.props.title} <span className="badge">{this.props.number}</span>
+      </button>
+    );
+  }
+});
+
 var Answer = React.createClass({
   render: function() {
         return (
