@@ -3,18 +3,18 @@ var app = require('./models/express.js');
 
 // setup mongoose
 var mongoose = require('mongoose');
-//var db = mongoose.connect('mongodb://localhost/list');
+var db = mongoose.connect('mongodb://localhost/interviewdb');
 
 // models
-//var api = require('./models/api.js');
-//var User = require('./models/user.js');
-//var Item = require('./models/item.js');
+var api = require('./models/api.js');
+var User = require('./models/user.js');
+var Question = require('./models/question.js');
 
 // start the server
-var server = app.listen(process.env.PORT, function() {
-  console.log("Started on port " + process.env.PORT);
+var server = app.listen(3000, function() {
+  console.log("Started on port " + 3000);
   //var host = server.address().address;
   //var port = server.address().port;
-  var host = process.env.IP;
-  var port = process.env.PORT;
+  var host = server.address().address;
+  var port = 3000;
 });

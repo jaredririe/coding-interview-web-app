@@ -12,7 +12,8 @@ var App = require("./app.js");
 var Question = require("./question.js");
 var Answer = require("./answer.js");
 var Home = require("./home.js");
-var Profile = require("./profile.js");
+var Login = require("./login.js");
+var Register = require("./register.js");
 
 require("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
 require("../css/app.css");
@@ -22,7 +23,8 @@ var routes = (
     <Router>
     <Route name="app" path="/" component={App}>
         <IndexRoute component={Home} />
-        <Route name="profile" path="/profile" component={Profile} />
+        <Route name="login" path="/login" component={Login} />
+        <Route name="register" path="/register" component={Register} />
         <Route name="question" path="/question/:index" component={Question} />
     </Route>
     </Router>

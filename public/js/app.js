@@ -1,30 +1,28 @@
 webpackJsonp([1],{
 
 /***/ 0:
-/*!****************************!*\
-  !*** ./components/main.js ***!
-  \****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 1);
-	var ReactDOM = __webpack_require__(/*! react-dom */ 158);
-	var ReactRouter = __webpack_require__(/*! react-router */ 159);
-	
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var ReactRouter = __webpack_require__(159);
+
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
 	var IndexRoute = ReactRouter.IndexRoute;
-	
-	var $ = __webpack_require__(/*! jquery */ 226);
-	
-	var App = __webpack_require__(/*! ./app.js */ 210);
-	var Question = __webpack_require__(/*! ./question.js */ 213);
-	var Answer = __webpack_require__(/*! ./answer.js */ 214);
-	var Home = __webpack_require__(/*! ./home.js */ 211);
-	var Profile = __webpack_require__(/*! ./profile.js */ 212);
-	
-	__webpack_require__(/*! ../../~/bootstrap/dist/css/bootstrap.min.css */ 215);
-	__webpack_require__(/*! ../css/app.css */ 224);
-	
+
+	var $ = __webpack_require__(208);
+
+	var App = __webpack_require__(209);
+	var Question = __webpack_require__(211);
+	var Answer = __webpack_require__(213);
+	var Home = __webpack_require__(214);
+	var Login = __webpack_require__(216);
+	var Register = __webpack_require__(217);
+
+	__webpack_require__(218);
+	__webpack_require__(227);
+
 	// Run the routes
 	var routes = React.createElement(
 	    Router,
@@ -33,43 +31,64 @@ webpackJsonp([1],{
 	        Route,
 	        { name: "app", path: "/", component: App },
 	        React.createElement(IndexRoute, { component: Home }),
-	        React.createElement(Route, { name: "profile", path: "/profile", component: Profile }),
+	        React.createElement(Route, { name: "login", path: "/login", component: Login }),
+	        React.createElement(Route, { name: "register", path: "/register", component: Register }),
 	        React.createElement(Route, { name: "question", path: "/question/:index", component: Question })
 	    )
 	);
-	
+
 	ReactDOM.render(routes, document.getElementById('content'));
 
 /***/ },
 
 /***/ 158:
-/*!*******************************!*\
-  !*** ../~/react-dom/index.js ***!
-  \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	module.exports = __webpack_require__(/*! react/lib/ReactDOM */ 3);
+
+	module.exports = __webpack_require__(3);
 
 
 /***/ },
 
-/***/ 210:
-/*!***************************!*\
-  !*** ./components/app.js ***!
-  \***************************/
+/***/ 209:
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 1);
-	var ReactRouter = __webpack_require__(/*! react-router */ 159);
-	var Link = __webpack_require__(/*! react-router */ 159).Link;
-	var $ = __webpack_require__(/*! jquery */ 226);
-	
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(159);
+	var Link = __webpack_require__(159).Link;
+	var $ = __webpack_require__(208);
+
+	var auth = __webpack_require__(210);
+
 	// Top-level component for the app
 	var App = React.createClass({
 	  displayName: "App",
-	
+
+	  // initial state
+	  getInitialState: function () {
+	    return {
+	      // the user is logged in
+	      loggedIn: auth.loggedIn()
+	    };
+	  },
+
+	  // callback when user is logged in
+	  setStateOnAuth: function (loggedIn) {
+	    this.setState({ loggedIn: loggedIn });
+	  },
+
+	  // when the component loads, setup the callback
+	  componentWillMount: function () {
+	    auth.onChange = this.setStateOnAuth;
+	  },
+
+	  // logout the user and redirect to home page
+	  logout: function (event) {
+	    auth.logout();
+	    this.history.pushState(null, '/');
+	  },
+
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -107,7 +126,20 @@ webpackJsonp([1],{
 	          React.createElement(
 	            "div",
 	            { className: "collapse navbar-collapse", id: "navbar-collapse" },
-	            React.createElement(
+	            this.state.loggedIn ? React.createElement(
+	              "ul",
+	              { className: "nav navbar-nav" },
+	              React.createElement(
+	                "li",
+	                null,
+	                React.createElement(
+	                  "a",
+	                  { href: "#", onClick: this.logout },
+	                  "Logout"
+	                )
+	              )
+	            ) : React.createElement("div", null),
+	            !this.state.loggedIn ? React.createElement(
 	              "ul",
 	              { className: "nav navbar-nav" },
 	              React.createElement(
@@ -115,11 +147,11 @@ webpackJsonp([1],{
 	                null,
 	                React.createElement(
 	                  Link,
-	                  { to: "profile" },
-	                  "Profile"
+	                  { to: "login" },
+	                  "Login"
 	                )
 	              )
-	            )
+	            ) : React.createElement("div", null)
 	          )
 	        )
 	      ),
@@ -131,85 +163,114 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-	
+
 	module.exports = App;
 
 /***/ },
 
+/***/ 210:
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(208);
+
+	// authentication object
+	var auth = {
+	  register: function (name, username, password, cb) {
+	    // submit request to server, call the callback when complete
+	    var url = "/api/users/register";
+	    $.ajax({
+	      url: url,
+	      dataType: 'json',
+	      type: 'POST',
+	      data: {
+	        name: name,
+	        username: username,
+	        password: password
+	      },
+	      // on success, store a login token
+	      success: (function (res) {
+	        localStorage.token = res.token;
+	        localStorage.name = res.name;
+	        this.onChange(true);
+	        if (cb) cb(true);
+	      }).bind(this),
+	      error: (function (xhr, status, err) {
+	        // if there is an error, remove any login token
+	        delete localStorage.token;
+	        this.onChange(false);
+	        if (cb) cb(false);
+	      }).bind(this)
+	    });
+	  },
+	  // login the user
+	  login: function (username, password, cb) {
+	    // submit login request to server, call callback when complete
+	    cb = arguments[arguments.length - 1];
+	    // check if token in local storage
+	    if (localStorage.token) {
+	      this.onChange(true);
+	      if (cb) cb(true);
+	      return;
+	    }
+
+	    // submit request to server
+	    var url = "/api/users/login";
+	    $.ajax({
+	      url: url,
+	      dataType: 'json',
+	      type: 'POST',
+	      data: {
+	        username: username,
+	        password: password
+	      },
+	      success: (function (res) {
+	        // on success, store a login token
+	        localStorage.token = res.token;
+	        localStorage.name = res.name;
+	        this.onChange(true);
+	        if (cb) cb(true);
+	      }).bind(this),
+	      error: (function (xhr, status, err) {
+	        // if there is an error, remove any login token
+	        delete localStorage.token;
+	        this.onChange(false);
+	        if (cb) cb(false);
+	      }).bind(this)
+	    });
+	  },
+	  // get the token from local storage
+	  getToken: function () {
+	    return localStorage.token;
+	  },
+	  // get the name from local storage
+	  getName: function () {
+	    return localStorage.name;
+	  },
+	  // logout the user, call the callback when complete
+	  logout: function (cb) {
+	    delete localStorage.token;
+	    this.onChange(false);
+	    if (cb) cb();
+	  },
+	  // check if user is logged in
+	  loggedIn: function () {
+	    return !!localStorage.token;
+	  },
+	  // default onChange function
+	  onChange: function () {}
+	};
+
+	module.exports = auth;
+
+/***/ },
+
 /***/ 211:
-/*!****************************!*\
-  !*** ./components/home.js ***!
-  \****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 1);
-	var Question = __webpack_require__(/*! ./question.js */ 213);
-	var questionList = __webpack_require__(/*! ./questionList.js */ 228);
-	
-	var Home = React.createClass({
-	  displayName: "Home",
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(
-	        "h1",
-	        null,
-	        "Home"
-	      ),
-	      questionList
-	    );
-	  }
-	});
-	
-	module.exports = Home;
+	var React = __webpack_require__(1);
+	var Link = __webpack_require__(159).Link;
+	var answerList = __webpack_require__(212);
 
-/***/ },
-
-/***/ 212:
-/*!*******************************!*\
-  !*** ./components/profile.js ***!
-  \*******************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(/*! react */ 1);
-	
-	var Profile = React.createClass({
-	  displayName: "Profile",
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(
-	        "h1",
-	        null,
-	        "Profile"
-	      ),
-	      React.createElement(
-	        "p",
-	        null,
-	        "User Profile"
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Profile;
-
-/***/ },
-
-/***/ 213:
-/*!********************************!*\
-  !*** ./components/question.js ***!
-  \********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(/*! react */ 1);
-	var Link = __webpack_require__(/*! react-router */ 159).Link;
-	var answerList = __webpack_require__(/*! ./answerList.js */ 230);
-	
 	var options = {
 	  thumbnailData: [{
 	    index: 0,
@@ -225,10 +286,10 @@ webpackJsonp([1],{
 	    username: 'username'
 	  }]
 	};
-	
+
 	var Question = React.createClass({
 	  displayName: 'Question',
-	
+
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -251,23 +312,82 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-	
+
 	module.exports = Question;
 
 /***/ },
 
-/***/ 214:
-/*!******************************!*\
-  !*** ./components/answer.js ***!
-  \******************************/
+/***/ 212:
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 1);
-	var Link = __webpack_require__(/*! react-router */ 159).Link;
-	
+	var React = __webpack_require__(1);
+	var Link = __webpack_require__(159).Link;
+
+	var AnswerList = React.createClass({
+	  displayName: 'AnswerList',
+
+	  render: function () {
+	    var list = this.props.answerData.map(function (answerProps) {
+	      return React.createElement(Answer, answerProps);
+	    });
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      list
+	    );
+	  }
+	});
+
+	var answerData0 = {
+	  answerData: [{
+	    index: 0,
+	    user: 'Link',
+	    body: 'Throw a bomb at it',
+	    timestamp: 'time',
+	    votes: 70
+	  }, {
+	    index: 1,
+	    user: 'Peppy',
+	    body: 'Do a barrel roll!',
+	    timestamp: 'time',
+	    votes: 9
+	  }]
+	};
+
+	var answerData1 = {
+	  answerData: [{
+	    index: 0,
+	    user: 'Joe',
+	    body: 'An ever so slightly less boring answer',
+	    timestamp: 'time',
+	    votes: 15
+	  }, {
+	    index: 1,
+	    user: 'Bob',
+	    body: 'a boring answer',
+	    timestamp: 'time',
+	    votes: -3
+	  }]
+	};
+
+	var answerList = [];
+	answerList[0] = React.createElement(AnswerList, answerData0);
+	answerList[1] = React.createElement(AnswerList, answerData1);
+
+	module.exports = AnswerList;
+
+/***/ },
+
+/***/ 213:
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Link = __webpack_require__(159).Link;
+
 	var Answer = React.createClass({
 	  displayName: "Answer",
-	
+
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -321,43 +441,48 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-	
+
 	module.exports = Answer;
 
 /***/ },
 
-/***/ 215:
-/*!*************************************************!*\
-  !*** ../~/bootstrap/dist/css/bootstrap.min.css ***!
-  \*************************************************/
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 224:
-/*!*********************!*\
-  !*** ./css/app.css ***!
-  \*********************/
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 228:
-/*!************************************!*\
-  !*** ./components/questionList.js ***!
-  \************************************/
+/***/ 214:
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 1);
-	var Link = __webpack_require__(/*! react-router */ 159).Link;
-	
+	var React = __webpack_require__(1);
+	var Question = __webpack_require__(211);
+	var questionList = __webpack_require__(215);
+
+	var Home = React.createClass({
+	  displayName: "Home",
+
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h1",
+	        null,
+	        "Home"
+	      ),
+	      questionList
+	    );
+	  }
+	});
+
+	module.exports = Home;
+
+/***/ },
+
+/***/ 215:
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Link = __webpack_require__(159).Link;
+
 	var Badge = React.createClass({
 	  displayName: "Badge",
-	
+
 	  render: function () {
 	    return React.createElement(
 	      "button",
@@ -372,10 +497,10 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-	
+
 	var Thumbnail = React.createClass({
 	  displayName: "Thumbnail",
-	
+
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -425,15 +550,15 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-	
+
 	var ThumbnailList = React.createClass({
 	  displayName: "ThumbnailList",
-	
+
 	  render: function () {
 	    var list = this.props.thumbnailData.map(function (thumbnailProps) {
 	      return React.createElement(Thumbnail, thumbnailProps);
 	    });
-	
+
 	    return React.createElement(
 	      "div",
 	      null,
@@ -441,7 +566,7 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-	
+
 	var options = {
 	  thumbnailData: [{
 	    index: 0,
@@ -457,78 +582,211 @@ webpackJsonp([1],{
 	    username: 'username'
 	  }]
 	};
-	
+
 	var questionList = React.createElement(ThumbnailList, options);
-	
+
 	module.exports = questionList;
 
 /***/ },
 
-/***/ 230:
-/*!**********************************!*\
-  !*** ./components/answerList.js ***!
-  \**********************************/
+/***/ 216:
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 1);
-	var Link = __webpack_require__(/*! react-router */ 159).Link;
-	
-	var AnswerList = React.createClass({
-	  displayName: 'AnswerList',
-	
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(159);
+	var Link = __webpack_require__(159).Link;
+	var History = ReactRouter.History;
+
+	var auth = __webpack_require__(210);
+
+	var Badge = React.createClass({
+	  displayName: "Badge",
+
 	  render: function () {
-	    var list = this.props.answerData.map(function (answerProps) {
-	      return React.createElement(Answer, answerProps);
-	    });
-	
 	    return React.createElement(
-	      'div',
-	      null,
-	      list
+	      "button",
+	      { className: "btn btn-primary", type: "button" },
+	      this.props.title,
+	      " ",
+	      React.createElement(
+	        "span",
+	        { className: "badge" },
+	        this.props.number
+	      )
 	    );
 	  }
 	});
-	
-	var answerData0 = {
-	  answerData: [{
-	    index: 0,
-	    user: 'Link',
-	    body: 'Throw a bomb at it',
-	    timestamp: 'time',
-	    votes: 70
-	  }, {
-	    index: 1,
-	    user: 'Peppy',
-	    body: 'Do a barrel roll!',
-	    timestamp: 'time',
-	    votes: 9
-	  }]
-	};
-	
-	var answerData1 = {
-	  answerData: [{
-	    index: 0,
-	    user: 'Joe',
-	    body: 'An ever so slightly less boring answer',
-	    timestamp: 'time',
-	    votes: 15
-	  }, {
-	    index: 1,
-	    user: 'Bob',
-	    body: 'a boring answer',
-	    timestamp: 'time',
-	    votes: -3
-	  }]
-	};
-	
-	var answerList = [];
-	answerList[0] = React.createElement(AnswerList, answerData0);
-	answerList[1] = React.createElement(AnswerList, answerData1);
-	
-	module.exports = AnswerList;
+
+	// Login page, shows the login form and redirects to the interviewdb if login is successful
+	var Login = React.createClass({
+	  displayName: "Login",
+
+	  // mixin for navigation
+	  mixins: [History],
+
+	  // initial state
+	  getInitialState: function () {
+	    return {
+	      // there was an error on logging in
+	      error: false
+	    };
+	  },
+
+	  // handle login button submit
+	  login: function (event) {
+	    // prevent default browser submit
+	    event.preventDefault();
+	    // get data from form
+	    var username = this.refs.username.value;
+	    var password = this.refs.password.value;
+	    if (!username || !password) {
+	      return;
+	    }
+	    // login via API
+	    auth.login(username, password, (function (loggedIn) {
+	      // login callback
+	      if (!loggedIn) return this.setState({
+	        error: true
+	      });
+	      this.history.pushState(null, '/interviewdb');
+	    }).bind(this));
+	  },
+
+	  // show the login form
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        null,
+	        React.createElement(
+	          "h2",
+	          null,
+	          "Login"
+	        ),
+	        React.createElement(
+	          "form",
+	          { className: "form-vertical", onSubmit: this.login },
+	          React.createElement("input", { type: "text", placeholder: "Username", ref: "username", autoFocus: true }),
+	          React.createElement("input", { type: "password", placeholder: "Password", ref: "password" }),
+	          React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Login" }),
+	          this.state.error ? React.createElement(
+	            "div",
+	            { className: "alert" },
+	            "Invalid username or password."
+	          ) : null
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        null,
+	        React.createElement(
+	          "p",
+	          null,
+	          React.createElement(
+	            Link,
+	            { to: "/register" },
+	            React.createElement(Badge, { title: "Register" })
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Login;
+
+/***/ },
+
+/***/ 217:
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(159);
+	var History = ReactRouter.History;
+
+	var auth = __webpack_require__(210);
+
+	// Register page, shows the registration form and redirects to the interviewdb if login is successful
+	var Register = React.createClass({
+	  displayName: "Register",
+
+	  // mixin for navigation
+	  mixins: [History],
+
+	  // initial state
+	  getInitialState: function () {
+	    return {
+	      // there was an error registering
+	      error: false
+	    };
+	  },
+
+	  // handle regiser button submit
+	  register: function (event) {
+	    // prevent default browser submit
+	    event.preventDefault();
+	    // get data from form
+	    var name = this.refs.name.value;
+	    var username = this.refs.username.value;
+	    var password = this.refs.password.value;
+	    if (!name || !username || !password) {
+	      return;
+	    }
+	    // register via the API
+	    auth.register(name, username, password, (function (loggedIn) {
+	      // register callback
+	      if (!loggedIn) return this.setState({
+	        error: true
+	      });
+	      this.history.pushState(null, '/interviewdb');
+	    }).bind(this));
+	  },
+
+	  // show the registration form
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h2",
+	        null,
+	        "Register"
+	      ),
+	      React.createElement(
+	        "form",
+	        { className: "form-vertical", onSubmit: this.register },
+	        React.createElement("input", { type: "text", placeholder: "Name", ref: "name", autoFocus: true }),
+	        React.createElement("input", { type: "text", placeholder: "Username", ref: "username" }),
+	        React.createElement("input", { type: "password", placeholder: "Password", ref: "password" }),
+	        React.createElement("input", { className: "btn", type: "submit", value: "Register" }),
+	        this.state.error ? React.createElement(
+	          "div",
+	          { className: "alert" },
+	          "Invalid username or password."
+	        ) : null
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Register;
+
+/***/ },
+
+/***/ 218:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 227:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 
 });
-//# sourceMappingURL=app.js.map
-//# sourceMappingURL=app.js.map
