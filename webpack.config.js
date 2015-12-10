@@ -14,7 +14,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin("./css/styles.css"),
-    new CommonsChunkPlugin("vendor", "./js/vendor.js"),
+    new CommonsChunkPlugin("vendor", "./js/vendor.js")
   ],
   module: {
     loaders: [
@@ -37,7 +37,8 @@ module.exports = {
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file?name=assets/[name].[ext]" },
       { test: /\.(woff|woff2)$/, loader:"url?name=assets/[name].[ext]&prefix=font/&limit=5000" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?name=assets/[name].[ext]&limit=10000&mimetype=application/octet-stream" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?name=assets/[name].[ext]&limit=10000&mimetype=image/svg+xml" }
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?name=assets/[name].[ext]&limit=10000&mimetype=image/svg+xml" },
+      { test: require.resolve("jquery"), loader: "expose?$!expose?jQuery" }
     ],
   },
 }

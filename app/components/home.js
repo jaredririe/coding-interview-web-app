@@ -1,13 +1,36 @@
 var React = require("react");
 var Question = require("./question.js");
-var questionList = require("./questionList.js")
+var questionList = require("./questionList.js");
+require('bootstrap');
+
+var showTab = function(){
+  $(this).tab('show');
+};
 
 var Home = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>Home</h1>
-        {questionList}
+	<ul className="nav nav-tabs">
+	  <li className="active"><a className="tabAnchor" data-toggle="tab" href="#recent" onClick={showTab}>Most Recent</a></li>
+	  <li><a className="tabAnchor" data-toggle="tab" href="#popular" onClick={showTab}>Most Popular</a></li>
+	  <li><a className="tabAnchor" data-toggle="tab" href="#votes" onClick={showTab}>Most Votes</a></li>
+	</ul>
+
+	<div className="tab-content">
+	  <div id="recent" className="tab-pane fade in active">
+	    <h3 className="col-xs-12">Most recent questions</h3>
+            {questionList}
+	  </div>
+	  <div id="popular" className="tab-pane fade">
+	    <h3 className="col-xs-12">Most recent questions</h3>
+	    {questionList}
+	  </div>
+	  <div id="votes" className="tab-pane fade">
+	    <h3 className="col-xs-12">Most voted questions</h3>
+	    <p className="col-xs-12">Feature to be implemented</p>
+	  </div>
+	</div>
       </div>
     );
   }
