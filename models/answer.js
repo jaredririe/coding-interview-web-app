@@ -4,13 +4,13 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var findOrCreate = require('mongoose-findorcreate')
 
-  var User = require('./user.js');
-  var Question = require('./question.js');
+var User = require('./user.js');
+var Question = require('./question.js');
 
 // Item schema
 var answerSchema = new Schema({
   user: {type: ObjectId, ref: 'users'},
-  questionID: ObjectId,
+  questionID: {type: ObjectId, ref: 'questions'},
   body: String,
   timestamp: {type: Date, default: Date.now},
   votes: {type: Number, default: 0}
