@@ -3,13 +3,12 @@ var $ = require("jquery");
 // API object
 var api = {
   // get the list of answers, call the callback when complete
-  getAnswers: function(cb) {
-    var url = "/api/answers";
+  getAnswers: function(question_id, cb) {
+    var url = "/api/answers/get/" + question_id;
     $.ajax({
       url: url,
       dataType: 'json',
       type: 'GET',
-      headers: {'Authorization': localStorage.token},
       success: function(res) {
         if (cb)
           cb(true, res);
@@ -87,7 +86,7 @@ var api = {
       data: JSON.stringify({
         answer: {
           body: answer.body,
-          votes: item.votes
+          votes: answer.votes
         }
       }),
       type: 'PUT',

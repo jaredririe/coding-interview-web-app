@@ -94,17 +94,13 @@ app.post('/api/answers', function (req,res) {
   user = User.verifyToken(req.headers.authorization, function(user) {
     if (user) {
       // if the token is valid, create the item for the user
-      Answer.create(
-        { user: user.id,
-          questionID: req.body.answer.questionID,
-          body:req.body.answer.body
-        }, function(err,item) {
-            if (err) {
-              res.sendStatus(403);
-              return;
-            }
-            res.json({item:item});
-        });
+      Answer.create({body:req.body.answer.body,user:user.id, name:user.name, questionID:req.body.answer.questionID }, function(err,item) {
+      if (err) {
+        res.sendStatus(403);
+        return;
+      }
+      res.json({item:item});
+      });
     } else {
       // token is not valid
       res.sendStatus(403);
@@ -112,31 +108,17 @@ app.post('/api/answers', function (req,res) {
   });
 });
 
-// get an answer
-app.get('/api/answers/:answer_id', function (req,res) {
-  // validate the supplied token
-  user = User.verifyToken(req.headers.authorization, function(user) {
-    if (user) {
-      // if the token is valid, then find the requested item
-      Answer.findById(req.params.answer_id, function(err, item) {
-      	if (err) {
-      	  res.sendStatus(403);
-      	  return;
-      	}
-      	
-        // get the item if it belongs to the user, otherwise return an error
-        if (item.user != user) {
-          res.sendStatus(403);
-	        return;
-        }
-        
-        // return value is the item as JSON
-        res.json({item:item});
-      });
-    } else {
-      res.sendStatus(403);
-    }
-  });
+// get answers based on question_id value
+app.get('/api/answers/get/:question_id', function (req,res) {
+  // No validation necessary
+  Answer.find({questionID : req.params.question_id}, function(err, answers) {
+  	if (err) {
+  	  res.sendStatus(403);
+  	  return;
+  	}
+      // return value is the answer as JSON
+      res.json({answers:answers});
+    });
 });
 
 // update an answer
@@ -144,14 +126,12 @@ app.put('/api/answers/:answer_id', function (req,res) {
   // validate the supplied token
   user = User.verifyToken(req.headers.authorization, function(user) {
     if (user) {
-      // if the token is valid, then find the requested item
+      // if the token is valid, then find the requested answer
       Answer.findById(req.params.answer_id, function(err,answer) {
         if (err) {
           res.sendStatus(403);
           return;
         }
-      });
-      answer.body = req.body.answer.body;
       answer.votes = req.body.answer.votes;
       answer.save(function(err) {
       if (err) {
@@ -161,6 +141,7 @@ app.put('/api/answers/:answer_id', function (req,res) {
       // return value is the item as JSON
       res.json({answer: answer});
       });
+    });
     } else {
       res.sendStatus(403);
     }
@@ -173,7 +154,7 @@ app.delete('/api/answers/:answer_id', function (req,res) {
   user = User.verifyToken(req.headers.authorization, function(user) {
     if (user) {
       // if the token is valid, then find the requested item
-      Answer.findByIdAndRemove(req.params.answer_id, function(err,item) {
+      Answer.findByIdAndRemove(req.params.answer_id, function(err,answer) {
     	if (err) {
     	  res.sendStatus(403);
     	  return;

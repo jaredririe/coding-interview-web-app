@@ -27,7 +27,7 @@ var routes = (
         <Route name="login" path="/login" component={Login} />
         <Route name="create" path="/create" component={Create} />
         <Route name="register" path="/register" component={Register} />
-        <Route name="question" path="/question/:index" component={Question} />
+        <Route name="question" path="/question/:question_id" component={Question} />
     </Route>
     </Router>
 );
