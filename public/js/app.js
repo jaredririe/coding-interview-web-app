@@ -491,7 +491,7 @@ webpackJsonp([1],{
 											{ className: "active" },
 											React.createElement(
 													"a",
-													{ className: "tabAnchor", "data-toggle": "tab", href: "#recent", onClick: showTab },
+													{ "data-toggle": "tab", href: "#recent", onClick: showTab },
 													"Most Recent"
 											)
 									),
@@ -500,7 +500,7 @@ webpackJsonp([1],{
 											null,
 											React.createElement(
 													"a",
-													{ className: "tabAnchor", "data-toggle": "tab", href: "#popular", onClick: showTab },
+													{ "data-toggle": "tab", href: "#popular", onClick: showTab },
 													"Most Popular"
 											)
 									),
@@ -509,7 +509,7 @@ webpackJsonp([1],{
 											null,
 											React.createElement(
 													"a",
-													{ className: "tabAnchor", "data-toggle": "tab", href: "#votes", onClick: showTab },
+													{ "data-toggle": "tab", href: "#votes", onClick: showTab },
 													"Most Votes"
 											)
 									)
@@ -533,7 +533,7 @@ webpackJsonp([1],{
 											React.createElement(
 													"h3",
 													{ className: "col-xs-12" },
-													"Most recent questions"
+													"Most popular questions"
 											),
 											questionList
 									),
