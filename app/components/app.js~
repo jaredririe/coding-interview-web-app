@@ -1,0 +1,71 @@
+var React = require("react");
+var ReactRouter = require("react-router");
+var Link = require('react-router').Link
+var $ = require("jquery");
+
+var auth = require("./auth.js");
+
+// Top-level component for the app
+var App = React.createClass({
+  // initial state
+  getInitialState: function() {
+    return {
+      // the user is logged in
+      loggedIn: auth.loggedIn()
+    };
+  },
+
+  // callback when user is logged in
+  setStateOnAuth: function(loggedIn) {
+    this.setState({loggedIn:loggedIn});
+  },
+
+  // when the component loads, setup the callback
+  componentWillMount: function() {
+    auth.onChange = this.setStateOnAuth;
+  },
+
+  // logout the user and redirect to home page
+  logout: function(event) {
+    auth.logout();
+    this.history.pushState(null, '/');
+  },
+
+  render: function() {
+    return (
+      <div>
+        <nav className="navbar navbar-default">
+	  <div className="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div className="navbar-header">
+	      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		<span className="sr-only">Toggle navigation</span>
+		<span className="icon-bar"></span>
+		<span className="icon-bar"></span>
+		<span className="icon-bar"></span>
+	      </button>
+	      <a className="navbar-brand" href="#">Brand</a>
+	    </div>
+
+	    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul className="nav navbar-nav">            
+		{this.state.loggedIn 
+			? (<li><a href="#" onClick={this.logout}>Logout</a></li>)
+			: (<div></div>)}
+	      	{!this.state.loggedIn 
+			? (<li><Link to="login">Login</Link></li>)
+			: (<div></div>)}
+		<li><a href="#">Profile</a></li>
+		</ul>
+</div>
+	  </div>
+	</nav>
+        <div className="container">
+          {this.props.children}
+        </div>
+      </div>
+    );
+  }
+});
+
+module.exports = App;
