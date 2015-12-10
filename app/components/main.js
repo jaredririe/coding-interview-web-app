@@ -14,6 +14,7 @@ var Answer = require("./answer.js");
 var Home = require("./home.js");
 var Login = require("./login.js");
 var Register = require("./register.js");
+var Create = require("./create.js");
 
 require("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
 require("../css/app.css");
@@ -24,6 +25,7 @@ var routes = (
     <Route name="app" path="/" component={App}>
         <IndexRoute component={Home} />
         <Route name="login" path="/login" component={Login} />
+        <Route name="create" path="/create" component={Create} />
         <Route name="register" path="/register" component={Register} />
         <Route name="question" path="/question/:index" component={Question} />
     </Route>

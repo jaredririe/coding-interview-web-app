@@ -12,7 +12,6 @@ var questionSchema = new Schema({
   header: String,
   body: String,
   timestamp: {type: Date, default: Date.now},
-  votes: {type: Number, default: 0}
 });
 
 // ensure schemas use virtual IDs

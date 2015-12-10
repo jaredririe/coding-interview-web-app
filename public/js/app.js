@@ -11,17 +11,18 @@ webpackJsonp([1],{
 	var Route = ReactRouter.Route;
 	var IndexRoute = ReactRouter.IndexRoute;
 
-	var $ = __webpack_require__(206);
+	var $ = __webpack_require__(208);
 
-	var App = __webpack_require__(209);
-	var Question = __webpack_require__(211);
-	var Answer = __webpack_require__(213);
-	var Home = __webpack_require__(215);
-	var Login = __webpack_require__(230);
-	var Register = __webpack_require__(231);
+	var App = __webpack_require__(211);
+	var Question = __webpack_require__(213);
+	var Answer = __webpack_require__(215);
+	var Home = __webpack_require__(217);
+	var Login = __webpack_require__(232);
+	var Register = __webpack_require__(233);
+	var Create = __webpack_require__(234);
 
-	__webpack_require__(232);
-	__webpack_require__(241);
+	__webpack_require__(235);
+	__webpack_require__(244);
 
 	// Run the routes
 	var routes = React.createElement(
@@ -32,6 +33,7 @@ webpackJsonp([1],{
 	        { name: "app", path: "/", component: App },
 	        React.createElement(IndexRoute, { component: Home }),
 	        React.createElement(Route, { name: "login", path: "/login", component: Login }),
+	        React.createElement(Route, { name: "create", path: "/create", component: Create }),
 	        React.createElement(Route, { name: "register", path: "/register", component: Register }),
 	        React.createElement(Route, { name: "question", path: "/question/:index", component: Question })
 	    )
@@ -51,15 +53,15 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 209:
+/***/ 211:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(159);
 	var Link = __webpack_require__(159).Link;
-	var $ = __webpack_require__(206);
+	var $ = __webpack_require__(208);
 
-	var auth = __webpack_require__(210);
+	var auth = __webpack_require__(212);
 
 	// Top-level component for the app
 	var App = React.createClass({
@@ -139,6 +141,19 @@ webpackJsonp([1],{
 	                )
 	              )
 	            ) : React.createElement("div", null),
+	            this.state.loggedIn ? React.createElement(
+	              "ul",
+	              { className: "nav navbar-nav" },
+	              React.createElement(
+	                "li",
+	                null,
+	                React.createElement(
+	                  Link,
+	                  { to: "create" },
+	                  "Ask Question"
+	                )
+	              )
+	            ) : React.createElement("div", null),
 	            !this.state.loggedIn ? React.createElement(
 	              "ul",
 	              { className: "nav navbar-nav" },
@@ -168,10 +183,10 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 210:
+/***/ 212:
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(206);
+	var $ = __webpack_require__(208);
 
 	// authentication object
 	var auth = {
@@ -264,14 +279,14 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 211:
+/***/ 213:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var Link = __webpack_require__(159).Link;
-	var answerList = __webpack_require__(212);
-	var api = __webpack_require__(214);
-	var auth = __webpack_require__(210);
+	var answerList = __webpack_require__(214);
+	var api = __webpack_require__(216);
+	var auth = __webpack_require__(212);
 
 	var Badge = React.createClass({
 	  displayName: 'Badge',
@@ -407,11 +422,11 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 212:
+/***/ 214:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Answer = __webpack_require__(213);
+	var Answer = __webpack_require__(215);
 
 	var AnswerList = React.createClass({
 	  displayName: "AnswerList",
@@ -469,7 +484,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 213:
+/***/ 215:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -558,10 +573,10 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 214:
+/***/ 216:
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(206);
+	var $ = __webpack_require__(208);
 
 	// API object
 	var api = {
@@ -583,6 +598,32 @@ webpackJsonp([1],{
 	      }
 	    });
 	  },
+
+	  // add an item, call the callback when complete
+	  addQuestion: function (body, header, cb) {
+	    var url = "/api/questions";
+	    $.ajax({
+	      url: url,
+	      contentType: 'application/json',
+	      data: JSON.stringify({
+	        question: {
+	          'header': header,
+	          'body': body
+	        }
+	      }),
+	      type: 'POST',
+	      headers: { 'Authorization': localStorage.token },
+	      success: function (res) {
+	        if (cb) cb(true, res);
+	      },
+	      error: function (xhr, status, err) {
+	        // if there is an error, remove the login token
+	        delete localStorage.token;
+	        if (cb) cb(false, status);
+	      }
+	    });
+	  },
+
 	  // add an item, call the callback when complete
 	  addAnswer: function (body, questionID, cb) {
 	    var url = "/api/answers";
@@ -607,6 +648,7 @@ webpackJsonp([1],{
 	      }
 	    });
 	  },
+
 	  // update an answer, call the callback when complete
 	  updateAnswer: function (answer, cb) {
 	    var url = "/api/answers/" + answer.id;
@@ -656,13 +698,13 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 215:
+/***/ 217:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Question = __webpack_require__(211);
-	var questionList = __webpack_require__(216);
-	__webpack_require__(217);
+	var Question = __webpack_require__(213);
+	var questionList = __webpack_require__(218);
+	__webpack_require__(219);
 
 	var showTab = function () {
 			$(this).tab('show');
@@ -752,7 +794,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 216:
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -867,12 +909,10 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 217:
+/***/ 219:
 /***/ function(module, exports, __webpack_require__) {
 
 	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(218)
-	__webpack_require__(219)
 	__webpack_require__(220)
 	__webpack_require__(221)
 	__webpack_require__(222)
@@ -883,10 +923,12 @@ webpackJsonp([1],{
 	__webpack_require__(227)
 	__webpack_require__(228)
 	__webpack_require__(229)
+	__webpack_require__(230)
+	__webpack_require__(231)
 
 /***/ },
 
-/***/ 218:
+/***/ 220:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -952,7 +994,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 219:
+/***/ 221:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1053,7 +1095,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 220:
+/***/ 222:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1180,7 +1222,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 221:
+/***/ 223:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1424,7 +1466,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 222:
+/***/ 224:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1642,7 +1684,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 223:
+/***/ 225:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1814,7 +1856,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 224:
+/***/ 226:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -2158,7 +2200,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 225:
+/***/ 227:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -2679,7 +2721,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 226:
+/***/ 228:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -2794,7 +2836,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 227:
+/***/ 229:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -2973,7 +3015,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 228:
+/***/ 230:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -3135,7 +3177,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 229:
+/***/ 231:
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -3304,7 +3346,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 230:
+/***/ 232:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -3312,7 +3354,7 @@ webpackJsonp([1],{
 	var Link = __webpack_require__(159).Link;
 	var History = ReactRouter.History;
 
-	var auth = __webpack_require__(210);
+	var auth = __webpack_require__(212);
 
 	var Badge = React.createClass({
 	  displayName: "Badge",
@@ -3420,14 +3462,14 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 231:
+/***/ 233:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(159);
 	var History = ReactRouter.History;
 
-	var auth = __webpack_require__(210);
+	var auth = __webpack_require__(212);
 
 	// Register page, shows the registration form and redirects to the interviewdb if login is successful
 	var Register = React.createClass({
@@ -3496,14 +3538,65 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 232:
+/***/ 234:
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(159);
+	var Link = __webpack_require__(159).Link;
+	var History = ReactRouter.History;
+
+	var api = __webpack_require__(216);
+	var auth = __webpack_require__(212);
+
+	// Login page, shows the login form and redirects to the interviewdb if login is successful
+	var Create = React.createClass({
+	  displayName: "Create",
+
+	  getInitialState: function () {
+	    return {
+	      loggedIn: auth.loggedIn()
+	    };
+	  },
+
+	  //Add answer to database
+	  addQuestion: function (event) {
+	    event.preventDefault();
+	    var header = this.refs.header.value;
+	    var body = this.refs.body.value;
+	    api.addQuestion(body, header, this.reload);
+	  },
+
+	  reload: function () {},
+
+	  // create question form
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "form",
+	        { className: "form-vertical", onSubmit: this.addQuestion },
+	        React.createElement("input", { type: "text", placeholder: "Question Title", ref: "header", autoFocus: true }),
+	        React.createElement("input", { type: "text", placeholder: "Type your question...", ref: "body", autoFocus: true }),
+	        React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Submit" })
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Create;
+
+/***/ },
+
+/***/ 235:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 241:
+/***/ 244:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
