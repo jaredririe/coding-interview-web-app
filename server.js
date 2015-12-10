@@ -3,7 +3,8 @@ var app = require('./models/express.js');
 
 // setup mongoose
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://codinginterview:codinginterview@ds027155.mongolab.com:27155/interviewdb');
+var db = mongoose.connect('mongodb://localhost/interviewdb');
+// var db = mongoose.connect('mongodb://codinginterview:codinginterview@ds027155.mongolab.com:27155/interviewdb');
 
 // models
 var api = require('./models/api.js');

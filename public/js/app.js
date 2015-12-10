@@ -33,7 +33,7 @@ webpackJsonp([1],{
 	        React.createElement(IndexRoute, { component: Home }),
 	        React.createElement(Route, { name: "login", path: "/login", component: Login }),
 	        React.createElement(Route, { name: "register", path: "/register", component: Register }),
-	        React.createElement(Route, { name: "question", path: "/question/:index", component: Question })
+	        React.createElement(Route, { name: "question", path: "/question/:question_id", component: Question })
 	    )
 	);
 
@@ -269,7 +269,7 @@ webpackJsonp([1],{
 
 	var React = __webpack_require__(1);
 	var Link = __webpack_require__(159).Link;
-	var answerList = __webpack_require__(212);
+	var AnswerList = __webpack_require__(212);
 	var api = __webpack_require__(214);
 	var auth = __webpack_require__(210);
 
@@ -311,13 +311,13 @@ webpackJsonp([1],{
 
 	var options = {
 	  thumbnailData: [{
-	    index: 0,
+	    question_id: 0,
 	    header: "I see a crack in this wall...",
 	    description: 'What should I do?',
 	    timestamp: '1:57 PM, 11/19/15',
 	    username: 'Scrub57'
 	  }, {
-	    index: 1,
+	    question_id: 1,
 	    header: 'A boring question',
 	    description: 'Question Body',
 	    timestamp: 'time',
@@ -331,7 +331,9 @@ webpackJsonp([1],{
 	  getInitialState: function () {
 	    return {
 	      loggedIn: auth.loggedIn(),
-	      displayForm: false
+	      displayForm: false,
+	      question: null,
+	      answers: []
 	    };
 	  },
 	  //Handle answer question button
@@ -343,11 +345,35 @@ webpackJsonp([1],{
 	    event.preventDefault();
 
 	    var body = this.refs.body.value;
-	    var questionID = this.props.params.questionID;
+	    var questionID = this.props.params.question_id;
 	    api.addAnswer(body, questionID, this.reload);
+	    this.setState({ displayForm: false });
 	  },
 
-	  reload: function () {},
+	  componentDidMount: function () {
+	    // api.getQuestion(this.questionSet);
+	    api.getAnswers(this.props.params.question_id, this.answerSet);
+	  },
+
+	  reload: function () {
+	    api.getAnswers(this.props.params.question_id, this.answerSet);
+	  },
+
+	  questionSet: function (status, data) {
+	    if (status) {
+	      this.setState({ question: data.question });
+	    } else {
+	      this.context.router.transitionTo('login');
+	    }
+	  },
+
+	  answerSet: function (status, data) {
+	    if (status) {
+	      this.setState({ answers: data.answers });
+	    } else {
+	      this.context.router.transitionTo('login');
+	    }
+	  },
 
 	  render: function () {
 	    return React.createElement(
@@ -359,7 +385,7 @@ webpackJsonp([1],{
 	        React.createElement(
 	          'h2',
 	          null,
-	          options.thumbnailData[this.props.params.index].header
+	          options.thumbnailData[this.props.params.question_id].header
 	        )
 	      ),
 	      React.createElement(
@@ -368,7 +394,7 @@ webpackJsonp([1],{
 	        React.createElement(
 	          'p',
 	          null,
-	          options.thumbnailData[this.props.params.index].description
+	          options.thumbnailData[this.props.params.question_id].description
 	        )
 	      ),
 	      React.createElement(
@@ -397,7 +423,7 @@ webpackJsonp([1],{
 	      React.createElement(
 	        'div',
 	        null,
-	        answerList[this.props.params.index]
+	        React.createElement(AnswerList, { answers: this.state.answers, reload: this.reload })
 	      )
 	    );
 	  }
@@ -412,14 +438,15 @@ webpackJsonp([1],{
 
 	var React = __webpack_require__(1);
 	var Answer = __webpack_require__(213);
+	var api = __webpack_require__(214);
 
 	var AnswerList = React.createClass({
 	  displayName: "AnswerList",
 
 	  render: function () {
-	    var list = this.props.answerData.map(function (answerProps) {
-	      return React.createElement(Answer, answerProps);
-	    });
+	    var list = this.props.answers.map((function (answer) {
+	      return React.createElement(Answer, { key: answer.id, answer: answer, reload: this.props.reload });
+	    }).bind(this));
 
 	    return React.createElement(
 	      "div",
@@ -429,43 +456,43 @@ webpackJsonp([1],{
 	  }
 	});
 
-	var answerData0 = {
-	  answerData: [{
-	    index: 0,
-	    user: 'Link',
-	    body: 'Throw a bomb at it',
-	    timestamp: 'time',
-	    votes: 70
-	  }, {
-	    index: 1,
-	    user: 'Peppy',
-	    body: 'Do a barrel roll!',
-	    timestamp: 'time',
-	    votes: 9
-	  }]
-	};
+	// var answerData0 = {
+	//   answerData: [{
+	//     index: 0,
+	//     user: 'Link',
+	//     body: 'Throw a bomb at it',
+	//     timestamp: 'time',
+	//     votes : 70
+	//   },{
+	//     index: 1,
+	//     user: 'Peppy',
+	//     body: 'Do a barrel roll!',
+	//     timestamp: 'time',
+	//     votes: 9
+	//   }]
+	// };
 
-	var answerData1 = {
-	  answerData: [{
-	    index: 0,
-	    user: 'Joe',
-	    body: 'An ever so slightly less boring answer',
-	    timestamp: 'time',
-	    votes: 15
-	  }, {
-	    index: 1,
-	    user: 'Bob',
-	    body: 'a boring answer',
-	    timestamp: 'time',
-	    votes: -3
-	  }]
-	};
+	// var answerData1 = {
+	//   answerData: [{
+	//     index: 0,
+	//     user: 'Joe',
+	//     body: 'An ever so slightly less boring answer',
+	//     timestamp: 'time',
+	//     votes: 15
+	//   },{
+	//     index: 1,
+	//     user: 'Bob',
+	//     body: 'a boring answer',
+	//     timestamp: 'time',
+	//     votes : -3
+	//   }]
+	// };
 
-	var answerList = [];
-	answerList[0] = React.createElement(AnswerList, answerData0);
-	answerList[1] = React.createElement(AnswerList, answerData1);
+	// var answerList = [];]
+	// answerList[0] = React.createElement(AnswerList, answerData0);
+	// answerList[1] = React.createElement(AnswerList, answerData1);
 
-	module.exports = answerList;
+	module.exports = AnswerList;
 
 /***/ },
 
@@ -474,19 +501,38 @@ webpackJsonp([1],{
 
 	var React = __webpack_require__(1);
 	var Link = __webpack_require__(159).Link;
+	var api = __webpack_require__(214);
 
-	var Badge = React.createClass({
-	  displayName: "Badge",
+	var PlusBadge = React.createClass({
+	  displayName: 'PlusBadge',
 
 	  render: function () {
 	    return React.createElement(
-	      "button",
-	      { className: "btn btn-primary", type: "button" },
+	      'button',
+	      { className: 'btn btn-primary', type: 'button', onClick: this.props.onPlusEvent },
 	      this.props.title,
-	      " ",
+	      ' ',
 	      React.createElement(
-	        "span",
-	        { className: "badge" },
+	        'span',
+	        { className: 'badge' },
+	        this.props.number
+	      )
+	    );
+	  }
+	});
+
+	var MinusBadge = React.createClass({
+	  displayName: 'MinusBadge',
+
+	  render: function () {
+	    return React.createElement(
+	      'button',
+	      { className: 'btn btn-primary', type: 'button', onClick: this.props.onMinusEvent },
+	      this.props.title,
+	      ' ',
+	      React.createElement(
+	        'span',
+	        { className: 'badge' },
 	        this.props.number
 	      )
 	    );
@@ -494,59 +540,69 @@ webpackJsonp([1],{
 	});
 
 	var Answer = React.createClass({
-	  displayName: "Answer",
+	  displayName: 'Answer',
+
+	  handlePlus: function (event) {
+	    this.props.answer.votes = this.props.answer.votes + 1;
+	    api.updateAnswer(this.props.answer, this.props.reload);
+	  },
+
+	  handleMinus: function (event) {
+	    this.props.answer.votes = this.props.answer.votes - 1;
+	    api.updateAnswer(this.props.answer, this.props.reload);
+	  },
 
 	  render: function () {
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "div",
-	        { className: "thumbnail" },
+	        'div',
+	        { className: 'thumbnail' },
 	        React.createElement(
-	          "div",
-	          { className: "caption" },
+	          'div',
+	          { className: 'caption' },
 	          React.createElement(
-	            "div",
-	            { className: "row" },
+	            'div',
+	            { className: 'row' },
 	            React.createElement(
-	              "div",
-	              { className: "col-xs-12 col-md-1" },
-	              React.createElement(Badge, { title: "+" })
+	              'div',
+	              { className: 'col-xs-12 col-md-1' },
+	              React.createElement(PlusBadge, { title: '+', onPlusEvent: this.handlePlus })
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-xs-12 col-md-1" },
+	              'div',
+	              { className: 'col-xs-12 col-md-1' },
 	              React.createElement(
-	                "h4",
+	                'h4',
 	                null,
-	                this.props.votes
+	                this.props.answer.votes
 	              )
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-xs-12 col-md-1" },
-	              React.createElement(Badge, { title: "-" })
+	              'div',
+	              { className: 'col-xs-12 col-md-1' },
+	              React.createElement(MinusBadge, { title: '-', onMinusEvent: this.handleMinus })
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-xs-12" },
+	              'div',
+	              { className: 'col-xs-12' },
 	              React.createElement(
-	                "h4",
+	                'h4',
 	                null,
-	                this.props.user
+	                this.props.answer.name
 	              )
 	            )
 	          ),
 	          React.createElement(
-	            "p",
+	            'p',
 	            null,
-	            this.props.body
+	            this.props.answer.body
 	          ),
 	          React.createElement(
-	            "div",
+	            'div',
 	            null,
-	            this.props.timestamp
+	            this.props.answer.timestamp
 	          )
 	        )
 	      )
@@ -566,13 +622,12 @@ webpackJsonp([1],{
 	// API object
 	var api = {
 	  // get the list of answers, call the callback when complete
-	  getAnswers: function (cb) {
-	    var url = "/api/answers";
+	  getAnswers: function (question_id, cb) {
+	    var url = "/api/answers/get/" + question_id;
 	    $.ajax({
 	      url: url,
 	      dataType: 'json',
 	      type: 'GET',
-	      headers: { 'Authorization': localStorage.token },
 	      success: function (res) {
 	        if (cb) cb(true, res);
 	      },
@@ -616,7 +671,7 @@ webpackJsonp([1],{
 	      data: JSON.stringify({
 	        answer: {
 	          body: answer.body,
-	          votes: item.votes
+	          votes: answer.votes
 	        }
 	      }),
 	      type: 'PUT',
