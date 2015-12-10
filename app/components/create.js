@@ -1,5 +1,6 @@
 var React = require("react");
 var ReactRouter = require("react-router");
+var Router = ReactRouter.Router;
 var Link = require('react-router').Link
 var History = ReactRouter.History;
 
@@ -8,6 +9,9 @@ var auth = require("./auth.js");
   
 // Login page, shows the login form and redirects to the interviewdb if login is successful
 var Create = React.createClass({
+  
+  mixins : [History],
+  
   getInitialState: function() {
     return {
       loggedIn: auth.loggedIn(),
@@ -19,11 +23,13 @@ var Create = React.createClass({
     event.preventDefault();
     var header = this.refs.header.value;
     var body = this.refs.body.value;
-    api.addQuestion(body, header, this.reload);
+    api.addQuestion(body, header, this.redirect);
   },
 
-  reload: function(){
-
+  redirect: function(){
+    //Router.navigate("/");
+    //this.transitionTo('/');
+    this.history.pushState(null, "/");
   },
   
   // create question form
@@ -33,7 +39,7 @@ var Create = React.createClass({
           <form className="form-vertical" onSubmit={this.addQuestion}>
             <input type="text" placeholder="Question Title" ref="header" autoFocus={true} />
             <input type="text" placeholder="Type your question..." ref="body" autoFocus={true} />
-            <input className="btn btn-warning" type="submit" value="Submit" />
+            <input className="btn btn-warning" type="submit" value="Create Question" />
           </form>
         </div>
     );

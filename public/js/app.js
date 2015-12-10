@@ -1,29 +1,32 @@
 webpackJsonp([1],{
 
 /***/ 0:
+/*!****************************!*\
+  !*** ./components/main.js ***!
+  \****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(158);
-	var ReactRouter = __webpack_require__(159);
-
+	var React = __webpack_require__(/*! react */ 1);
+	var ReactDOM = __webpack_require__(/*! react-dom */ 158);
+	var ReactRouter = __webpack_require__(/*! react-router */ 159);
+	
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
 	var IndexRoute = ReactRouter.IndexRoute;
-
-	var $ = __webpack_require__(208);
-
-	var App = __webpack_require__(211);
-	var Question = __webpack_require__(213);
-	var Answer = __webpack_require__(215);
-	var Home = __webpack_require__(217);
-	var Login = __webpack_require__(232);
-	var Register = __webpack_require__(233);
-	var Create = __webpack_require__(234);
-
-	__webpack_require__(235);
-	__webpack_require__(244);
-
+	
+	var $ = __webpack_require__(/*! jquery */ 208);
+	
+	var App = __webpack_require__(/*! ./app.js */ 211);
+	var Question = __webpack_require__(/*! ./question.js */ 213);
+	var Answer = __webpack_require__(/*! ./answer.js */ 215);
+	var Home = __webpack_require__(/*! ./home.js */ 217);
+	var Login = __webpack_require__(/*! ./login.js */ 232);
+	var Register = __webpack_require__(/*! ./register.js */ 233);
+	var Create = __webpack_require__(/*! ./create.js */ 234);
+	
+	__webpack_require__(/*! ../../~/bootstrap/dist/css/bootstrap.min.css */ 235);
+	__webpack_require__(/*! ../css/app.css */ 244);
+	
 	// Run the routes
 	var routes = React.createElement(
 	    Router,
@@ -38,35 +41,41 @@ webpackJsonp([1],{
 	        React.createElement(Route, { name: "question", path: "/question/:index", component: Question })
 	    )
 	);
-
+	
 	ReactDOM.render(routes, document.getElementById('content'));
 
 /***/ },
 
 /***/ 158:
+/*!*******************************!*\
+  !*** ../~/react-dom/index.js ***!
+  \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	module.exports = __webpack_require__(3);
+	
+	module.exports = __webpack_require__(/*! react/lib/ReactDOM */ 3);
 
 
 /***/ },
 
 /***/ 211:
+/*!***************************!*\
+  !*** ./components/app.js ***!
+  \***************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(159);
-	var Link = __webpack_require__(159).Link;
-	var $ = __webpack_require__(208);
-
-	var auth = __webpack_require__(212);
-
+	var React = __webpack_require__(/*! react */ 1);
+	var ReactRouter = __webpack_require__(/*! react-router */ 159);
+	var Link = __webpack_require__(/*! react-router */ 159).Link;
+	var $ = __webpack_require__(/*! jquery */ 208);
+	
+	var auth = __webpack_require__(/*! ./auth.js */ 212);
+	
 	// Top-level component for the app
 	var App = React.createClass({
 	  displayName: "App",
-
+	
 	  // initial state
 	  getInitialState: function () {
 	    return {
@@ -74,23 +83,23 @@ webpackJsonp([1],{
 	      loggedIn: auth.loggedIn()
 	    };
 	  },
-
+	
 	  // callback when user is logged in
 	  setStateOnAuth: function (loggedIn) {
 	    this.setState({ loggedIn: loggedIn });
 	  },
-
+	
 	  // when the component loads, setup the callback
 	  componentWillMount: function () {
 	    auth.onChange = this.setStateOnAuth;
 	  },
-
+	
 	  // logout the user and redirect to home page
 	  logout: function (event) {
 	    auth.logout();
 	    this.history.pushState(null, '/');
 	  },
-
+	
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -178,16 +187,19 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	module.exports = App;
 
 /***/ },
 
 /***/ 212:
+/*!****************************!*\
+  !*** ./components/auth.js ***!
+  \****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(208);
-
+	var $ = __webpack_require__(/*! jquery */ 208);
+	
 	// authentication object
 	var auth = {
 	  register: function (name, username, password, cb) {
@@ -227,7 +239,7 @@ webpackJsonp([1],{
 	      if (cb) cb(true);
 	      return;
 	    }
-
+	
 	    // submit request to server
 	    var url = "/api/users/login";
 	    $.ajax({
@@ -274,23 +286,26 @@ webpackJsonp([1],{
 	  // default onChange function
 	  onChange: function () {}
 	};
-
+	
 	module.exports = auth;
 
 /***/ },
 
 /***/ 213:
+/*!********************************!*\
+  !*** ./components/question.js ***!
+  \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var Link = __webpack_require__(159).Link;
-	var answerList = __webpack_require__(214);
-	var api = __webpack_require__(216);
-	var auth = __webpack_require__(212);
-
+	var React = __webpack_require__(/*! react */ 1);
+	var Link = __webpack_require__(/*! react-router */ 159).Link;
+	var answerList = __webpack_require__(/*! ./answerList.js */ 214);
+	var api = __webpack_require__(/*! ./api.js */ 216);
+	var auth = __webpack_require__(/*! ./auth.js */ 212);
+	
 	var Badge = React.createClass({
 	  displayName: 'Badge',
-
+	
 	  render: function () {
 	    return React.createElement(
 	      'button',
@@ -305,10 +320,10 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	var AnswerQuestionBadge = React.createClass({
 	  displayName: 'AnswerQuestionBadge',
-
+	
 	  render: function () {
 	    return React.createElement(
 	      'button',
@@ -323,7 +338,7 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	var options = {
 	  thumbnailData: [{
 	    index: 0,
@@ -339,10 +354,10 @@ webpackJsonp([1],{
 	    username: 'username'
 	  }]
 	};
-
+	
 	var Question = React.createClass({
 	  displayName: 'Question',
-
+	
 	  getInitialState: function () {
 	    return {
 	      loggedIn: auth.loggedIn(),
@@ -356,14 +371,14 @@ webpackJsonp([1],{
 	  //Add answer to database
 	  addAnswer: function (event) {
 	    event.preventDefault();
-
+	
 	    var body = this.refs.body.value;
 	    var questionID = this.props.params.questionID;
 	    api.addAnswer(body, questionID, this.reload);
 	  },
-
+	
 	  reload: function () {},
-
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -417,25 +432,28 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	module.exports = Question;
 
 /***/ },
 
 /***/ 214:
+/*!**********************************!*\
+  !*** ./components/answerList.js ***!
+  \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var Answer = __webpack_require__(215);
-
+	var React = __webpack_require__(/*! react */ 1);
+	var Answer = __webpack_require__(/*! ./answer.js */ 215);
+	
 	var AnswerList = React.createClass({
 	  displayName: "AnswerList",
-
+	
 	  render: function () {
 	    var list = this.props.answerData.map(function (answerProps) {
 	      return React.createElement(Answer, answerProps);
 	    });
-
+	
 	    return React.createElement(
 	      "div",
 	      null,
@@ -443,7 +461,7 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	var answerData0 = {
 	  answerData: [{
 	    index: 0,
@@ -459,7 +477,7 @@ webpackJsonp([1],{
 	    votes: 9
 	  }]
 	};
-
+	
 	var answerData1 = {
 	  answerData: [{
 	    index: 0,
@@ -475,24 +493,27 @@ webpackJsonp([1],{
 	    votes: -3
 	  }]
 	};
-
+	
 	var answerList = [];
 	answerList[0] = React.createElement(AnswerList, answerData0);
 	answerList[1] = React.createElement(AnswerList, answerData1);
-
+	
 	module.exports = answerList;
 
 /***/ },
 
 /***/ 215:
+/*!******************************!*\
+  !*** ./components/answer.js ***!
+  \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var Link = __webpack_require__(159).Link;
-
+	var React = __webpack_require__(/*! react */ 1);
+	var Link = __webpack_require__(/*! react-router */ 159).Link;
+	
 	var Badge = React.createClass({
 	  displayName: "Badge",
-
+	
 	  render: function () {
 	    return React.createElement(
 	      "button",
@@ -507,10 +528,10 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	var Answer = React.createClass({
 	  displayName: "Answer",
-
+	
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -568,16 +589,19 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	module.exports = Answer;
 
 /***/ },
 
 /***/ 216:
+/*!***************************!*\
+  !*** ./components/api.js ***!
+  \***************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(208);
-
+	var $ = __webpack_require__(/*! jquery */ 208);
+	
 	// API object
 	var api = {
 	  // get the list of answers, call the callback when complete
@@ -598,7 +622,7 @@ webpackJsonp([1],{
 	      }
 	    });
 	  },
-
+	
 	  // add an item, call the callback when complete
 	  addQuestion: function (body, header, cb) {
 	    var url = "/api/questions";
@@ -623,7 +647,7 @@ webpackJsonp([1],{
 	      }
 	    });
 	  },
-
+	
 	  // add an item, call the callback when complete
 	  addAnswer: function (body, questionID, cb) {
 	    var url = "/api/answers";
@@ -648,7 +672,7 @@ webpackJsonp([1],{
 	      }
 	    });
 	  },
-
+	
 	  // update an answer, call the callback when complete
 	  updateAnswer: function (answer, cb) {
 	    var url = "/api/answers/" + answer.id;
@@ -673,7 +697,7 @@ webpackJsonp([1],{
 	      }
 	    });
 	  },
-
+	
 	  // delete an answer, call the callback when complete
 	  deleteAnswer: function (item, cb) {
 	    var url = "/api/answers/" + answer.id;
@@ -691,28 +715,31 @@ webpackJsonp([1],{
 	      }
 	    });
 	  }
-
+	
 	};
-
+	
 	module.exports = api;
 
 /***/ },
 
 /***/ 217:
+/*!****************************!*\
+  !*** ./components/home.js ***!
+  \****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var Question = __webpack_require__(213);
-	var questionList = __webpack_require__(218);
-	__webpack_require__(219);
-
+	var React = __webpack_require__(/*! react */ 1);
+	var Question = __webpack_require__(/*! ./question.js */ 213);
+	var questionList = __webpack_require__(/*! ./questionList.js */ 218);
+	__webpack_require__(/*! bootstrap */ 219);
+	
 	var showTab = function () {
 			$(this).tab('show');
 	};
-
+	
 	var Home = React.createClass({
 			displayName: "Home",
-
+	
 			render: function () {
 					return React.createElement(
 							"div",
@@ -789,20 +816,23 @@ webpackJsonp([1],{
 					);
 			}
 	});
-
+	
 	module.exports = Home;
 
 /***/ },
 
 /***/ 218:
+/*!************************************!*\
+  !*** ./components/questionList.js ***!
+  \************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var Link = __webpack_require__(159).Link;
-
+	var React = __webpack_require__(/*! react */ 1);
+	var Link = __webpack_require__(/*! react-router */ 159).Link;
+	
 	var Badge = React.createClass({
 	  displayName: "Badge",
-
+	
 	  render: function () {
 	    return React.createElement(
 	      "button",
@@ -817,10 +847,10 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	var Thumbnail = React.createClass({
 	  displayName: "Thumbnail",
-
+	
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -870,15 +900,15 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	var ThumbnailList = React.createClass({
 	  displayName: "ThumbnailList",
-
+	
 	  render: function () {
 	    var list = this.props.thumbnailData.map(function (thumbnailProps) {
 	      return React.createElement(Thumbnail, thumbnailProps);
 	    });
-
+	
 	    return React.createElement(
 	      "div",
 	      null,
@@ -886,7 +916,7 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	var options = {
 	  thumbnailData: [{
 	    index: 0,
@@ -902,33 +932,39 @@ webpackJsonp([1],{
 	    username: 'username'
 	  }]
 	};
-
+	
 	var questionList = React.createElement(ThumbnailList, options);
-
+	
 	module.exports = questionList;
 
 /***/ },
 
 /***/ 219:
+/*!*************************************!*\
+  !*** ../~/bootstrap/dist/js/npm.js ***!
+  \*************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(220)
-	__webpack_require__(221)
-	__webpack_require__(222)
-	__webpack_require__(223)
-	__webpack_require__(224)
-	__webpack_require__(225)
-	__webpack_require__(226)
-	__webpack_require__(227)
-	__webpack_require__(228)
-	__webpack_require__(229)
-	__webpack_require__(230)
-	__webpack_require__(231)
+	__webpack_require__(/*! ../../js/transition.js */ 220)
+	__webpack_require__(/*! ../../js/alert.js */ 221)
+	__webpack_require__(/*! ../../js/button.js */ 222)
+	__webpack_require__(/*! ../../js/carousel.js */ 223)
+	__webpack_require__(/*! ../../js/collapse.js */ 224)
+	__webpack_require__(/*! ../../js/dropdown.js */ 225)
+	__webpack_require__(/*! ../../js/modal.js */ 226)
+	__webpack_require__(/*! ../../js/tooltip.js */ 227)
+	__webpack_require__(/*! ../../js/popover.js */ 228)
+	__webpack_require__(/*! ../../js/scrollspy.js */ 229)
+	__webpack_require__(/*! ../../js/tab.js */ 230)
+	__webpack_require__(/*! ../../js/affix.js */ 231)
 
 /***/ },
 
 /***/ 220:
+/*!***************************************!*\
+  !*** ../~/bootstrap/js/transition.js ***!
+  \***************************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -938,33 +974,33 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
 	  // ============================================================
-
+	
 	  function transitionEnd() {
 	    var el = document.createElement('bootstrap')
-
+	
 	    var transEndEventNames = {
 	      WebkitTransition : 'webkitTransitionEnd',
 	      MozTransition    : 'transitionend',
 	      OTransition      : 'oTransitionEnd otransitionend',
 	      transition       : 'transitionend'
 	    }
-
+	
 	    for (var name in transEndEventNames) {
 	      if (el.style[name] !== undefined) {
 	        return { end: transEndEventNames[name] }
 	      }
 	    }
-
+	
 	    return false // explicit for ie8 (  ._.)
 	  }
-
+	
 	  // http://blog.alexmaccaw.com/css-transitions
 	  $.fn.emulateTransitionEnd = function (duration) {
 	    var called = false
@@ -974,12 +1010,12 @@ webpackJsonp([1],{
 	    setTimeout(callback, duration)
 	    return this
 	  }
-
+	
 	  $(function () {
 	    $.support.transition = transitionEnd()
-
+	
 	    if (!$.support.transition) return
-
+	
 	    $.event.special.bsTransitionEnd = {
 	      bindType: $.support.transition.end,
 	      delegateType: $.support.transition.end,
@@ -988,13 +1024,16 @@ webpackJsonp([1],{
 	      }
 	    }
 	  })
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 221:
+/*!**********************************!*\
+  !*** ../~/bootstrap/js/alert.js ***!
+  \**********************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1004,98 +1043,101 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // ALERT CLASS DEFINITION
 	  // ======================
-
+	
 	  var dismiss = '[data-dismiss="alert"]'
 	  var Alert   = function (el) {
 	    $(el).on('click', dismiss, this.close)
 	  }
-
+	
 	  Alert.VERSION = '3.3.6'
-
+	
 	  Alert.TRANSITION_DURATION = 150
-
+	
 	  Alert.prototype.close = function (e) {
 	    var $this    = $(this)
 	    var selector = $this.attr('data-target')
-
+	
 	    if (!selector) {
 	      selector = $this.attr('href')
 	      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
 	    }
-
+	
 	    var $parent = $(selector)
-
+	
 	    if (e) e.preventDefault()
-
+	
 	    if (!$parent.length) {
 	      $parent = $this.closest('.alert')
 	    }
-
+	
 	    $parent.trigger(e = $.Event('close.bs.alert'))
-
+	
 	    if (e.isDefaultPrevented()) return
-
+	
 	    $parent.removeClass('in')
-
+	
 	    function removeElement() {
 	      // detach from parent, fire event then clean up data
 	      $parent.detach().trigger('closed.bs.alert').remove()
 	    }
-
+	
 	    $.support.transition && $parent.hasClass('fade') ?
 	      $parent
 	        .one('bsTransitionEnd', removeElement)
 	        .emulateTransitionEnd(Alert.TRANSITION_DURATION) :
 	      removeElement()
 	  }
-
-
+	
+	
 	  // ALERT PLUGIN DEFINITION
 	  // =======================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this = $(this)
 	      var data  = $this.data('bs.alert')
-
+	
 	      if (!data) $this.data('bs.alert', (data = new Alert(this)))
 	      if (typeof option == 'string') data[option].call($this)
 	    })
 	  }
-
+	
 	  var old = $.fn.alert
-
+	
 	  $.fn.alert             = Plugin
 	  $.fn.alert.Constructor = Alert
-
-
+	
+	
 	  // ALERT NO CONFLICT
 	  // =================
-
+	
 	  $.fn.alert.noConflict = function () {
 	    $.fn.alert = old
 	    return this
 	  }
-
-
+	
+	
 	  // ALERT DATA-API
 	  // ==============
-
+	
 	  $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 222:
+/*!***********************************!*\
+  !*** ../~/bootstrap/js/button.js ***!
+  \***********************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1105,40 +1147,40 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // BUTTON PUBLIC CLASS DEFINITION
 	  // ==============================
-
+	
 	  var Button = function (element, options) {
 	    this.$element  = $(element)
 	    this.options   = $.extend({}, Button.DEFAULTS, options)
 	    this.isLoading = false
 	  }
-
+	
 	  Button.VERSION  = '3.3.6'
-
+	
 	  Button.DEFAULTS = {
 	    loadingText: 'loading...'
 	  }
-
+	
 	  Button.prototype.setState = function (state) {
 	    var d    = 'disabled'
 	    var $el  = this.$element
 	    var val  = $el.is('input') ? 'val' : 'html'
 	    var data = $el.data()
-
+	
 	    state += 'Text'
-
+	
 	    if (data.resetText == null) $el.data('resetText', $el[val]())
-
+	
 	    // push to event loop to allow forms to submit
 	    setTimeout($.proxy(function () {
 	      $el[val](data[state] == null ? this.options[state] : data[state])
-
+	
 	      if (state == 'loadingText') {
 	        this.isLoading = true
 	        $el.addClass(d).attr(d, d)
@@ -1148,11 +1190,11 @@ webpackJsonp([1],{
 	      }
 	    }, this), 0)
 	  }
-
+	
 	  Button.prototype.toggle = function () {
 	    var changed = true
 	    var $parent = this.$element.closest('[data-toggle="buttons"]')
-
+	
 	    if ($parent.length) {
 	      var $input = this.$element.find('input')
 	      if ($input.prop('type') == 'radio') {
@@ -1170,42 +1212,42 @@ webpackJsonp([1],{
 	      this.$element.toggleClass('active')
 	    }
 	  }
-
-
+	
+	
 	  // BUTTON PLUGIN DEFINITION
 	  // ========================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.button')
 	      var options = typeof option == 'object' && option
-
+	
 	      if (!data) $this.data('bs.button', (data = new Button(this, options)))
-
+	
 	      if (option == 'toggle') data.toggle()
 	      else if (option) data.setState(option)
 	    })
 	  }
-
+	
 	  var old = $.fn.button
-
+	
 	  $.fn.button             = Plugin
 	  $.fn.button.Constructor = Button
-
-
+	
+	
 	  // BUTTON NO CONFLICT
 	  // ==================
-
+	
 	  $.fn.button.noConflict = function () {
 	    $.fn.button = old
 	    return this
 	  }
-
-
+	
+	
 	  // BUTTON DATA-API
 	  // ===============
-
+	
 	  $(document)
 	    .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
 	      var $btn = $(e.target)
@@ -1216,13 +1258,16 @@ webpackJsonp([1],{
 	    .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
 	      $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
 	    })
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 223:
+/*!*************************************!*\
+  !*** ../~/bootstrap/js/carousel.js ***!
+  \*************************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1232,14 +1277,14 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // CAROUSEL CLASS DEFINITION
 	  // =========================
-
+	
 	  var Carousel = function (element, options) {
 	    this.$element    = $(element)
 	    this.$indicators = this.$element.find('.carousel-indicators')
@@ -1249,25 +1294,25 @@ webpackJsonp([1],{
 	    this.interval    = null
 	    this.$active     = null
 	    this.$items      = null
-
+	
 	    this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this))
-
+	
 	    this.options.pause == 'hover' && !('ontouchstart' in document.documentElement) && this.$element
 	      .on('mouseenter.bs.carousel', $.proxy(this.pause, this))
 	      .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
 	  }
-
+	
 	  Carousel.VERSION  = '3.3.6'
-
+	
 	  Carousel.TRANSITION_DURATION = 600
-
+	
 	  Carousel.DEFAULTS = {
 	    interval: 5000,
 	    pause: 'hover',
 	    wrap: true,
 	    keyboard: true
 	  }
-
+	
 	  Carousel.prototype.keydown = function (e) {
 	    if (/input|textarea/i.test(e.target.tagName)) return
 	    switch (e.which) {
@@ -1275,27 +1320,27 @@ webpackJsonp([1],{
 	      case 39: this.next(); break
 	      default: return
 	    }
-
+	
 	    e.preventDefault()
 	  }
-
+	
 	  Carousel.prototype.cycle = function (e) {
 	    e || (this.paused = false)
-
+	
 	    this.interval && clearInterval(this.interval)
-
+	
 	    this.options.interval
 	      && !this.paused
 	      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
-
+	
 	    return this
 	  }
-
+	
 	  Carousel.prototype.getItemIndex = function (item) {
 	    this.$items = item.parent().children('.item')
 	    return this.$items.index(item || this.$active)
 	  }
-
+	
 	  Carousel.prototype.getItemForDirection = function (direction, active) {
 	    var activeIndex = this.getItemIndex(active)
 	    var willWrap = (direction == 'prev' && activeIndex === 0)
@@ -1305,51 +1350,51 @@ webpackJsonp([1],{
 	    var itemIndex = (activeIndex + delta) % this.$items.length
 	    return this.$items.eq(itemIndex)
 	  }
-
+	
 	  Carousel.prototype.to = function (pos) {
 	    var that        = this
 	    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
-
+	
 	    if (pos > (this.$items.length - 1) || pos < 0) return
-
+	
 	    if (this.sliding)       return this.$element.one('slid.bs.carousel', function () { that.to(pos) }) // yes, "slid"
 	    if (activeIndex == pos) return this.pause().cycle()
-
+	
 	    return this.slide(pos > activeIndex ? 'next' : 'prev', this.$items.eq(pos))
 	  }
-
+	
 	  Carousel.prototype.pause = function (e) {
 	    e || (this.paused = true)
-
+	
 	    if (this.$element.find('.next, .prev').length && $.support.transition) {
 	      this.$element.trigger($.support.transition.end)
 	      this.cycle(true)
 	    }
-
+	
 	    this.interval = clearInterval(this.interval)
-
+	
 	    return this
 	  }
-
+	
 	  Carousel.prototype.next = function () {
 	    if (this.sliding) return
 	    return this.slide('next')
 	  }
-
+	
 	  Carousel.prototype.prev = function () {
 	    if (this.sliding) return
 	    return this.slide('prev')
 	  }
-
+	
 	  Carousel.prototype.slide = function (type, next) {
 	    var $active   = this.$element.find('.item.active')
 	    var $next     = next || this.getItemForDirection(type, $active)
 	    var isCycling = this.interval
 	    var direction = type == 'next' ? 'left' : 'right'
 	    var that      = this
-
+	
 	    if ($next.hasClass('active')) return (this.sliding = false)
-
+	
 	    var relatedTarget = $next[0]
 	    var slideEvent = $.Event('slide.bs.carousel', {
 	      relatedTarget: relatedTarget,
@@ -1357,17 +1402,17 @@ webpackJsonp([1],{
 	    })
 	    this.$element.trigger(slideEvent)
 	    if (slideEvent.isDefaultPrevented()) return
-
+	
 	    this.sliding = true
-
+	
 	    isCycling && this.pause()
-
+	
 	    if (this.$indicators.length) {
 	      this.$indicators.find('.active').removeClass('active')
 	      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
 	      $nextIndicator && $nextIndicator.addClass('active')
 	    }
-
+	
 	    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
 	    if ($.support.transition && this.$element.hasClass('slide')) {
 	      $next.addClass(type)
@@ -1390,48 +1435,48 @@ webpackJsonp([1],{
 	      this.sliding = false
 	      this.$element.trigger(slidEvent)
 	    }
-
+	
 	    isCycling && this.cycle()
-
+	
 	    return this
 	  }
-
-
+	
+	
 	  // CAROUSEL PLUGIN DEFINITION
 	  // ==========================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.carousel')
 	      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
 	      var action  = typeof option == 'string' ? option : options.slide
-
+	
 	      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
 	      if (typeof option == 'number') data.to(option)
 	      else if (action) data[action]()
 	      else if (options.interval) data.pause().cycle()
 	    })
 	  }
-
+	
 	  var old = $.fn.carousel
-
+	
 	  $.fn.carousel             = Plugin
 	  $.fn.carousel.Constructor = Carousel
-
-
+	
+	
 	  // CAROUSEL NO CONFLICT
 	  // ====================
-
+	
 	  $.fn.carousel.noConflict = function () {
 	    $.fn.carousel = old
 	    return this
 	  }
-
-
+	
+	
 	  // CAROUSEL DATA-API
 	  // =================
-
+	
 	  var clickHandler = function (e) {
 	    var href
 	    var $this   = $(this)
@@ -1440,33 +1485,36 @@ webpackJsonp([1],{
 	    var options = $.extend({}, $target.data(), $this.data())
 	    var slideIndex = $this.attr('data-slide-to')
 	    if (slideIndex) options.interval = false
-
+	
 	    Plugin.call($target, options)
-
+	
 	    if (slideIndex) {
 	      $target.data('bs.carousel').to(slideIndex)
 	    }
-
+	
 	    e.preventDefault()
 	  }
-
+	
 	  $(document)
 	    .on('click.bs.carousel.data-api', '[data-slide]', clickHandler)
 	    .on('click.bs.carousel.data-api', '[data-slide-to]', clickHandler)
-
+	
 	  $(window).on('load', function () {
 	    $('[data-ride="carousel"]').each(function () {
 	      var $carousel = $(this)
 	      Plugin.call($carousel, $carousel.data())
 	    })
 	  })
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 224:
+/*!*************************************!*\
+  !*** ../~/bootstrap/js/collapse.js ***!
+  \*************************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1476,76 +1524,76 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // COLLAPSE PUBLIC CLASS DEFINITION
 	  // ================================
-
+	
 	  var Collapse = function (element, options) {
 	    this.$element      = $(element)
 	    this.options       = $.extend({}, Collapse.DEFAULTS, options)
 	    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
 	                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
 	    this.transitioning = null
-
+	
 	    if (this.options.parent) {
 	      this.$parent = this.getParent()
 	    } else {
 	      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
 	    }
-
+	
 	    if (this.options.toggle) this.toggle()
 	  }
-
+	
 	  Collapse.VERSION  = '3.3.6'
-
+	
 	  Collapse.TRANSITION_DURATION = 350
-
+	
 	  Collapse.DEFAULTS = {
 	    toggle: true
 	  }
-
+	
 	  Collapse.prototype.dimension = function () {
 	    var hasWidth = this.$element.hasClass('width')
 	    return hasWidth ? 'width' : 'height'
 	  }
-
+	
 	  Collapse.prototype.show = function () {
 	    if (this.transitioning || this.$element.hasClass('in')) return
-
+	
 	    var activesData
 	    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
-
+	
 	    if (actives && actives.length) {
 	      activesData = actives.data('bs.collapse')
 	      if (activesData && activesData.transitioning) return
 	    }
-
+	
 	    var startEvent = $.Event('show.bs.collapse')
 	    this.$element.trigger(startEvent)
 	    if (startEvent.isDefaultPrevented()) return
-
+	
 	    if (actives && actives.length) {
 	      Plugin.call(actives, 'hide')
 	      activesData || actives.data('bs.collapse', null)
 	    }
-
+	
 	    var dimension = this.dimension()
-
+	
 	    this.$element
 	      .removeClass('collapse')
 	      .addClass('collapsing')[dimension](0)
 	      .attr('aria-expanded', true)
-
+	
 	    this.$trigger
 	      .removeClass('collapsed')
 	      .attr('aria-expanded', true)
-
+	
 	    this.transitioning = 1
-
+	
 	    var complete = function () {
 	      this.$element
 	        .removeClass('collapsing')
@@ -1554,38 +1602,38 @@ webpackJsonp([1],{
 	      this.$element
 	        .trigger('shown.bs.collapse')
 	    }
-
+	
 	    if (!$.support.transition) return complete.call(this)
-
+	
 	    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
-
+	
 	    this.$element
 	      .one('bsTransitionEnd', $.proxy(complete, this))
 	      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
 	  }
-
+	
 	  Collapse.prototype.hide = function () {
 	    if (this.transitioning || !this.$element.hasClass('in')) return
-
+	
 	    var startEvent = $.Event('hide.bs.collapse')
 	    this.$element.trigger(startEvent)
 	    if (startEvent.isDefaultPrevented()) return
-
+	
 	    var dimension = this.dimension()
-
+	
 	    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
-
+	
 	    this.$element
 	      .addClass('collapsing')
 	      .removeClass('collapse in')
 	      .attr('aria-expanded', false)
-
+	
 	    this.$trigger
 	      .addClass('collapsed')
 	      .attr('aria-expanded', false)
-
+	
 	    this.transitioning = 1
-
+	
 	    var complete = function () {
 	      this.transitioning = 0
 	      this.$element
@@ -1593,19 +1641,19 @@ webpackJsonp([1],{
 	        .addClass('collapse')
 	        .trigger('hidden.bs.collapse')
 	    }
-
+	
 	    if (!$.support.transition) return complete.call(this)
-
+	
 	    this.$element
 	      [dimension](0)
 	      .one('bsTransitionEnd', $.proxy(complete, this))
 	      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
 	  }
-
+	
 	  Collapse.prototype.toggle = function () {
 	    this[this.$element.hasClass('in') ? 'hide' : 'show']()
 	  }
-
+	
 	  Collapse.prototype.getParent = function () {
 	    return $(this.options.parent)
 	      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
@@ -1615,76 +1663,79 @@ webpackJsonp([1],{
 	      }, this))
 	      .end()
 	  }
-
+	
 	  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
 	    var isOpen = $element.hasClass('in')
-
+	
 	    $element.attr('aria-expanded', isOpen)
 	    $trigger
 	      .toggleClass('collapsed', !isOpen)
 	      .attr('aria-expanded', isOpen)
 	  }
-
+	
 	  function getTargetFromTrigger($trigger) {
 	    var href
 	    var target = $trigger.attr('data-target')
 	      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
-
+	
 	    return $(target)
 	  }
-
-
+	
+	
 	  // COLLAPSE PLUGIN DEFINITION
 	  // ==========================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.collapse')
 	      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
+	
 	      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
 	      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
 	      if (typeof option == 'string') data[option]()
 	    })
 	  }
-
+	
 	  var old = $.fn.collapse
-
+	
 	  $.fn.collapse             = Plugin
 	  $.fn.collapse.Constructor = Collapse
-
-
+	
+	
 	  // COLLAPSE NO CONFLICT
 	  // ====================
-
+	
 	  $.fn.collapse.noConflict = function () {
 	    $.fn.collapse = old
 	    return this
 	  }
-
-
+	
+	
 	  // COLLAPSE DATA-API
 	  // =================
-
+	
 	  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
 	    var $this   = $(this)
-
+	
 	    if (!$this.attr('data-target')) e.preventDefault()
-
+	
 	    var $target = getTargetFromTrigger($this)
 	    var data    = $target.data('bs.collapse')
 	    var option  = data ? 'toggle' : $this.data()
-
+	
 	    Plugin.call($target, option)
 	  })
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 225:
+/*!*************************************!*\
+  !*** ../~/bootstrap/js/dropdown.js ***!
+  \*************************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1694,35 +1745,35 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // DROPDOWN CLASS DEFINITION
 	  // =========================
-
+	
 	  var backdrop = '.dropdown-backdrop'
 	  var toggle   = '[data-toggle="dropdown"]'
 	  var Dropdown = function (element) {
 	    $(element).on('click.bs.dropdown', this.toggle)
 	  }
-
+	
 	  Dropdown.VERSION = '3.3.6'
-
+	
 	  function getParent($this) {
 	    var selector = $this.attr('data-target')
-
+	
 	    if (!selector) {
 	      selector = $this.attr('href')
 	      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
 	    }
-
+	
 	    var $parent = selector && $(selector)
-
+	
 	    return $parent && $parent.length ? $parent : $this.parent()
 	  }
-
+	
 	  function clearMenus(e) {
 	    if (e && e.which === 3) return
 	    $(backdrop).remove()
@@ -1730,30 +1781,30 @@ webpackJsonp([1],{
 	      var $this         = $(this)
 	      var $parent       = getParent($this)
 	      var relatedTarget = { relatedTarget: this }
-
+	
 	      if (!$parent.hasClass('open')) return
-
+	
 	      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
-
+	
 	      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-
+	
 	      if (e.isDefaultPrevented()) return
-
+	
 	      $this.attr('aria-expanded', 'false')
 	      $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
 	    })
 	  }
-
+	
 	  Dropdown.prototype.toggle = function (e) {
 	    var $this = $(this)
-
+	
 	    if ($this.is('.disabled, :disabled')) return
-
+	
 	    var $parent  = getParent($this)
 	    var isActive = $parent.hasClass('open')
-
+	
 	    clearMenus()
-
+	
 	    if (!isActive) {
 	      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
 	        // if mobile we use a backdrop because click events don't delegate
@@ -1762,101 +1813,104 @@ webpackJsonp([1],{
 	          .insertAfter($(this))
 	          .on('click', clearMenus)
 	      }
-
+	
 	      var relatedTarget = { relatedTarget: this }
 	      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
-
+	
 	      if (e.isDefaultPrevented()) return
-
+	
 	      $this
 	        .trigger('focus')
 	        .attr('aria-expanded', 'true')
-
+	
 	      $parent
 	        .toggleClass('open')
 	        .trigger($.Event('shown.bs.dropdown', relatedTarget))
 	    }
-
+	
 	    return false
 	  }
-
+	
 	  Dropdown.prototype.keydown = function (e) {
 	    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
-
+	
 	    var $this = $(this)
-
+	
 	    e.preventDefault()
 	    e.stopPropagation()
-
+	
 	    if ($this.is('.disabled, :disabled')) return
-
+	
 	    var $parent  = getParent($this)
 	    var isActive = $parent.hasClass('open')
-
+	
 	    if (!isActive && e.which != 27 || isActive && e.which == 27) {
 	      if (e.which == 27) $parent.find(toggle).trigger('focus')
 	      return $this.trigger('click')
 	    }
-
+	
 	    var desc = ' li:not(.disabled):visible a'
 	    var $items = $parent.find('.dropdown-menu' + desc)
-
+	
 	    if (!$items.length) return
-
+	
 	    var index = $items.index(e.target)
-
+	
 	    if (e.which == 38 && index > 0)                 index--         // up
 	    if (e.which == 40 && index < $items.length - 1) index++         // down
 	    if (!~index)                                    index = 0
-
+	
 	    $items.eq(index).trigger('focus')
 	  }
-
-
+	
+	
 	  // DROPDOWN PLUGIN DEFINITION
 	  // ==========================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this = $(this)
 	      var data  = $this.data('bs.dropdown')
-
+	
 	      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
 	      if (typeof option == 'string') data[option].call($this)
 	    })
 	  }
-
+	
 	  var old = $.fn.dropdown
-
+	
 	  $.fn.dropdown             = Plugin
 	  $.fn.dropdown.Constructor = Dropdown
-
-
+	
+	
 	  // DROPDOWN NO CONFLICT
 	  // ====================
-
+	
 	  $.fn.dropdown.noConflict = function () {
 	    $.fn.dropdown = old
 	    return this
 	  }
-
-
+	
+	
 	  // APPLY TO STANDARD DROPDOWN ELEMENTS
 	  // ===================================
-
+	
 	  $(document)
 	    .on('click.bs.dropdown.data-api', clearMenus)
 	    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
 	    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
 	    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
 	    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 226:
+/*!**********************************!*\
+  !*** ../~/bootstrap/js/modal.js ***!
+  \**********************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -1866,14 +1920,14 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // MODAL CLASS DEFINITION
 	  // ======================
-
+	
 	  var Modal = function (element, options) {
 	    this.options             = options
 	    this.$body               = $(document.body)
@@ -1884,7 +1938,7 @@ webpackJsonp([1],{
 	    this.originalBodyPad     = null
 	    this.scrollbarWidth      = 0
 	    this.ignoreBackdropClick = false
-
+	
 	    if (this.options.remote) {
 	      this.$element
 	        .find('.modal-content')
@@ -1893,70 +1947,70 @@ webpackJsonp([1],{
 	        }, this))
 	    }
 	  }
-
+	
 	  Modal.VERSION  = '3.3.6'
-
+	
 	  Modal.TRANSITION_DURATION = 300
 	  Modal.BACKDROP_TRANSITION_DURATION = 150
-
+	
 	  Modal.DEFAULTS = {
 	    backdrop: true,
 	    keyboard: true,
 	    show: true
 	  }
-
+	
 	  Modal.prototype.toggle = function (_relatedTarget) {
 	    return this.isShown ? this.hide() : this.show(_relatedTarget)
 	  }
-
+	
 	  Modal.prototype.show = function (_relatedTarget) {
 	    var that = this
 	    var e    = $.Event('show.bs.modal', { relatedTarget: _relatedTarget })
-
+	
 	    this.$element.trigger(e)
-
+	
 	    if (this.isShown || e.isDefaultPrevented()) return
-
+	
 	    this.isShown = true
-
+	
 	    this.checkScrollbar()
 	    this.setScrollbar()
 	    this.$body.addClass('modal-open')
-
+	
 	    this.escape()
 	    this.resize()
-
+	
 	    this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
-
+	
 	    this.$dialog.on('mousedown.dismiss.bs.modal', function () {
 	      that.$element.one('mouseup.dismiss.bs.modal', function (e) {
 	        if ($(e.target).is(that.$element)) that.ignoreBackdropClick = true
 	      })
 	    })
-
+	
 	    this.backdrop(function () {
 	      var transition = $.support.transition && that.$element.hasClass('fade')
-
+	
 	      if (!that.$element.parent().length) {
 	        that.$element.appendTo(that.$body) // don't move modals dom position
 	      }
-
+	
 	      that.$element
 	        .show()
 	        .scrollTop(0)
-
+	
 	      that.adjustDialog()
-
+	
 	      if (transition) {
 	        that.$element[0].offsetWidth // force reflow
 	      }
-
+	
 	      that.$element.addClass('in')
-
+	
 	      that.enforceFocus()
-
+	
 	      var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget })
-
+	
 	      transition ?
 	        that.$dialog // wait for modal to slide in
 	          .one('bsTransitionEnd', function () {
@@ -1966,37 +2020,37 @@ webpackJsonp([1],{
 	        that.$element.trigger('focus').trigger(e)
 	    })
 	  }
-
+	
 	  Modal.prototype.hide = function (e) {
 	    if (e) e.preventDefault()
-
+	
 	    e = $.Event('hide.bs.modal')
-
+	
 	    this.$element.trigger(e)
-
+	
 	    if (!this.isShown || e.isDefaultPrevented()) return
-
+	
 	    this.isShown = false
-
+	
 	    this.escape()
 	    this.resize()
-
+	
 	    $(document).off('focusin.bs.modal')
-
+	
 	    this.$element
 	      .removeClass('in')
 	      .off('click.dismiss.bs.modal')
 	      .off('mouseup.dismiss.bs.modal')
-
+	
 	    this.$dialog.off('mousedown.dismiss.bs.modal')
-
+	
 	    $.support.transition && this.$element.hasClass('fade') ?
 	      this.$element
 	        .one('bsTransitionEnd', $.proxy(this.hideModal, this))
 	        .emulateTransitionEnd(Modal.TRANSITION_DURATION) :
 	      this.hideModal()
 	  }
-
+	
 	  Modal.prototype.enforceFocus = function () {
 	    $(document)
 	      .off('focusin.bs.modal') // guard against infinite focus loop
@@ -2006,7 +2060,7 @@ webpackJsonp([1],{
 	        }
 	      }, this))
 	  }
-
+	
 	  Modal.prototype.escape = function () {
 	    if (this.isShown && this.options.keyboard) {
 	      this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
@@ -2016,7 +2070,7 @@ webpackJsonp([1],{
 	      this.$element.off('keydown.dismiss.bs.modal')
 	    }
 	  }
-
+	
 	  Modal.prototype.resize = function () {
 	    if (this.isShown) {
 	      $(window).on('resize.bs.modal', $.proxy(this.handleUpdate, this))
@@ -2024,7 +2078,7 @@ webpackJsonp([1],{
 	      $(window).off('resize.bs.modal')
 	    }
 	  }
-
+	
 	  Modal.prototype.hideModal = function () {
 	    var that = this
 	    this.$element.hide()
@@ -2035,23 +2089,23 @@ webpackJsonp([1],{
 	      that.$element.trigger('hidden.bs.modal')
 	    })
 	  }
-
+	
 	  Modal.prototype.removeBackdrop = function () {
 	    this.$backdrop && this.$backdrop.remove()
 	    this.$backdrop = null
 	  }
-
+	
 	  Modal.prototype.backdrop = function (callback) {
 	    var that = this
 	    var animate = this.$element.hasClass('fade') ? 'fade' : ''
-
+	
 	    if (this.isShown && this.options.backdrop) {
 	      var doAnimate = $.support.transition && animate
-
+	
 	      this.$backdrop = $(document.createElement('div'))
 	        .addClass('modal-backdrop ' + animate)
 	        .appendTo(this.$body)
-
+	
 	      this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
 	        if (this.ignoreBackdropClick) {
 	          this.ignoreBackdropClick = false
@@ -2062,22 +2116,22 @@ webpackJsonp([1],{
 	          ? this.$element[0].focus()
 	          : this.hide()
 	      }, this))
-
+	
 	      if (doAnimate) this.$backdrop[0].offsetWidth // force reflow
-
+	
 	      this.$backdrop.addClass('in')
-
+	
 	      if (!callback) return
-
+	
 	      doAnimate ?
 	        this.$backdrop
 	          .one('bsTransitionEnd', callback)
 	          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
 	        callback()
-
+	
 	    } else if (!this.isShown && this.$backdrop) {
 	      this.$backdrop.removeClass('in')
-
+	
 	      var callbackRemove = function () {
 	        that.removeBackdrop()
 	        callback && callback()
@@ -2087,34 +2141,34 @@ webpackJsonp([1],{
 	          .one('bsTransitionEnd', callbackRemove)
 	          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
 	        callbackRemove()
-
+	
 	    } else if (callback) {
 	      callback()
 	    }
 	  }
-
+	
 	  // these following methods are used to handle overflowing modals
-
+	
 	  Modal.prototype.handleUpdate = function () {
 	    this.adjustDialog()
 	  }
-
+	
 	  Modal.prototype.adjustDialog = function () {
 	    var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight
-
+	
 	    this.$element.css({
 	      paddingLeft:  !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
 	      paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
 	    })
 	  }
-
+	
 	  Modal.prototype.resetAdjustments = function () {
 	    this.$element.css({
 	      paddingLeft: '',
 	      paddingRight: ''
 	    })
 	  }
-
+	
 	  Modal.prototype.checkScrollbar = function () {
 	    var fullWindowWidth = window.innerWidth
 	    if (!fullWindowWidth) { // workaround for missing window.innerWidth in IE8
@@ -2124,17 +2178,17 @@ webpackJsonp([1],{
 	    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth
 	    this.scrollbarWidth = this.measureScrollbar()
 	  }
-
+	
 	  Modal.prototype.setScrollbar = function () {
 	    var bodyPad = parseInt((this.$body.css('padding-right') || 0), 10)
 	    this.originalBodyPad = document.body.style.paddingRight || ''
 	    if (this.bodyIsOverflowing) this.$body.css('padding-right', bodyPad + this.scrollbarWidth)
 	  }
-
+	
 	  Modal.prototype.resetScrollbar = function () {
 	    this.$body.css('padding-right', this.originalBodyPad)
 	  }
-
+	
 	  Modal.prototype.measureScrollbar = function () { // thx walsh
 	    var scrollDiv = document.createElement('div')
 	    scrollDiv.className = 'modal-scrollbar-measure'
@@ -2143,49 +2197,49 @@ webpackJsonp([1],{
 	    this.$body[0].removeChild(scrollDiv)
 	    return scrollbarWidth
 	  }
-
-
+	
+	
 	  // MODAL PLUGIN DEFINITION
 	  // =======================
-
+	
 	  function Plugin(option, _relatedTarget) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.modal')
 	      var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
+	
 	      if (!data) $this.data('bs.modal', (data = new Modal(this, options)))
 	      if (typeof option == 'string') data[option](_relatedTarget)
 	      else if (options.show) data.show(_relatedTarget)
 	    })
 	  }
-
+	
 	  var old = $.fn.modal
-
+	
 	  $.fn.modal             = Plugin
 	  $.fn.modal.Constructor = Modal
-
-
+	
+	
 	  // MODAL NO CONFLICT
 	  // =================
-
+	
 	  $.fn.modal.noConflict = function () {
 	    $.fn.modal = old
 	    return this
 	  }
-
-
+	
+	
 	  // MODAL DATA-API
 	  // ==============
-
+	
 	  $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
 	    var $this   = $(this)
 	    var href    = $this.attr('href')
 	    var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) // strip for ie7
 	    var option  = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data())
-
+	
 	    if ($this.is('a')) e.preventDefault()
-
+	
 	    $target.one('show.bs.modal', function (showEvent) {
 	      if (showEvent.isDefaultPrevented()) return // only register focus restorer if modal will actually get shown
 	      $target.one('hidden.bs.modal', function () {
@@ -2194,13 +2248,16 @@ webpackJsonp([1],{
 	    })
 	    Plugin.call($target, option, this)
 	  })
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 227:
+/*!************************************!*\
+  !*** ../~/bootstrap/js/tooltip.js ***!
+  \************************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -2211,14 +2268,14 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // TOOLTIP PUBLIC CLASS DEFINITION
 	  // ===============================
-
+	
 	  var Tooltip = function (element, options) {
 	    this.type       = null
 	    this.options    = null
@@ -2227,14 +2284,14 @@ webpackJsonp([1],{
 	    this.hoverState = null
 	    this.$element   = null
 	    this.inState    = null
-
+	
 	    this.init('tooltip', element, options)
 	  }
-
+	
 	  Tooltip.VERSION  = '3.3.6'
-
+	
 	  Tooltip.TRANSITION_DURATION = 150
-
+	
 	  Tooltip.DEFAULTS = {
 	    animation: true,
 	    placement: 'top',
@@ -2250,7 +2307,7 @@ webpackJsonp([1],{
 	      padding: 0
 	    }
 	  }
-
+	
 	  Tooltip.prototype.init = function (type, element, options) {
 	    this.enabled   = true
 	    this.type      = type
@@ -2258,191 +2315,191 @@ webpackJsonp([1],{
 	    this.options   = this.getOptions(options)
 	    this.$viewport = this.options.viewport && $($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : (this.options.viewport.selector || this.options.viewport))
 	    this.inState   = { click: false, hover: false, focus: false }
-
+	
 	    if (this.$element[0] instanceof document.constructor && !this.options.selector) {
 	      throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!')
 	    }
-
+	
 	    var triggers = this.options.trigger.split(' ')
-
+	
 	    for (var i = triggers.length; i--;) {
 	      var trigger = triggers[i]
-
+	
 	      if (trigger == 'click') {
 	        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
 	      } else if (trigger != 'manual') {
 	        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
 	        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
-
+	
 	        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
 	        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
 	      }
 	    }
-
+	
 	    this.options.selector ?
 	      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
 	      this.fixTitle()
 	  }
-
+	
 	  Tooltip.prototype.getDefaults = function () {
 	    return Tooltip.DEFAULTS
 	  }
-
+	
 	  Tooltip.prototype.getOptions = function (options) {
 	    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
-
+	
 	    if (options.delay && typeof options.delay == 'number') {
 	      options.delay = {
 	        show: options.delay,
 	        hide: options.delay
 	      }
 	    }
-
+	
 	    return options
 	  }
-
+	
 	  Tooltip.prototype.getDelegateOptions = function () {
 	    var options  = {}
 	    var defaults = this.getDefaults()
-
+	
 	    this._options && $.each(this._options, function (key, value) {
 	      if (defaults[key] != value) options[key] = value
 	    })
-
+	
 	    return options
 	  }
-
+	
 	  Tooltip.prototype.enter = function (obj) {
 	    var self = obj instanceof this.constructor ?
 	      obj : $(obj.currentTarget).data('bs.' + this.type)
-
+	
 	    if (!self) {
 	      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
 	      $(obj.currentTarget).data('bs.' + this.type, self)
 	    }
-
+	
 	    if (obj instanceof $.Event) {
 	      self.inState[obj.type == 'focusin' ? 'focus' : 'hover'] = true
 	    }
-
+	
 	    if (self.tip().hasClass('in') || self.hoverState == 'in') {
 	      self.hoverState = 'in'
 	      return
 	    }
-
+	
 	    clearTimeout(self.timeout)
-
+	
 	    self.hoverState = 'in'
-
+	
 	    if (!self.options.delay || !self.options.delay.show) return self.show()
-
+	
 	    self.timeout = setTimeout(function () {
 	      if (self.hoverState == 'in') self.show()
 	    }, self.options.delay.show)
 	  }
-
+	
 	  Tooltip.prototype.isInStateTrue = function () {
 	    for (var key in this.inState) {
 	      if (this.inState[key]) return true
 	    }
-
+	
 	    return false
 	  }
-
+	
 	  Tooltip.prototype.leave = function (obj) {
 	    var self = obj instanceof this.constructor ?
 	      obj : $(obj.currentTarget).data('bs.' + this.type)
-
+	
 	    if (!self) {
 	      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
 	      $(obj.currentTarget).data('bs.' + this.type, self)
 	    }
-
+	
 	    if (obj instanceof $.Event) {
 	      self.inState[obj.type == 'focusout' ? 'focus' : 'hover'] = false
 	    }
-
+	
 	    if (self.isInStateTrue()) return
-
+	
 	    clearTimeout(self.timeout)
-
+	
 	    self.hoverState = 'out'
-
+	
 	    if (!self.options.delay || !self.options.delay.hide) return self.hide()
-
+	
 	    self.timeout = setTimeout(function () {
 	      if (self.hoverState == 'out') self.hide()
 	    }, self.options.delay.hide)
 	  }
-
+	
 	  Tooltip.prototype.show = function () {
 	    var e = $.Event('show.bs.' + this.type)
-
+	
 	    if (this.hasContent() && this.enabled) {
 	      this.$element.trigger(e)
-
+	
 	      var inDom = $.contains(this.$element[0].ownerDocument.documentElement, this.$element[0])
 	      if (e.isDefaultPrevented() || !inDom) return
 	      var that = this
-
+	
 	      var $tip = this.tip()
-
+	
 	      var tipId = this.getUID(this.type)
-
+	
 	      this.setContent()
 	      $tip.attr('id', tipId)
 	      this.$element.attr('aria-describedby', tipId)
-
+	
 	      if (this.options.animation) $tip.addClass('fade')
-
+	
 	      var placement = typeof this.options.placement == 'function' ?
 	        this.options.placement.call(this, $tip[0], this.$element[0]) :
 	        this.options.placement
-
+	
 	      var autoToken = /\s?auto?\s?/i
 	      var autoPlace = autoToken.test(placement)
 	      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
-
+	
 	      $tip
 	        .detach()
 	        .css({ top: 0, left: 0, display: 'block' })
 	        .addClass(placement)
 	        .data('bs.' + this.type, this)
-
+	
 	      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
 	      this.$element.trigger('inserted.bs.' + this.type)
-
+	
 	      var pos          = this.getPosition()
 	      var actualWidth  = $tip[0].offsetWidth
 	      var actualHeight = $tip[0].offsetHeight
-
+	
 	      if (autoPlace) {
 	        var orgPlacement = placement
 	        var viewportDim = this.getPosition(this.$viewport)
-
+	
 	        placement = placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top'    :
 	                    placement == 'top'    && pos.top    - actualHeight < viewportDim.top    ? 'bottom' :
 	                    placement == 'right'  && pos.right  + actualWidth  > viewportDim.width  ? 'left'   :
 	                    placement == 'left'   && pos.left   - actualWidth  < viewportDim.left   ? 'right'  :
 	                    placement
-
+	
 	        $tip
 	          .removeClass(orgPlacement)
 	          .addClass(placement)
 	      }
-
+	
 	      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
-
+	
 	      this.applyPlacement(calculatedOffset, placement)
-
+	
 	      var complete = function () {
 	        var prevHoverState = that.hoverState
 	        that.$element.trigger('shown.bs.' + that.type)
 	        that.hoverState = null
-
+	
 	        if (prevHoverState == 'out') that.leave(that)
 	      }
-
+	
 	      $.support.transition && this.$tip.hasClass('fade') ?
 	        $tip
 	          .one('bsTransitionEnd', complete)
@@ -2450,23 +2507,23 @@ webpackJsonp([1],{
 	        complete()
 	    }
 	  }
-
+	
 	  Tooltip.prototype.applyPlacement = function (offset, placement) {
 	    var $tip   = this.tip()
 	    var width  = $tip[0].offsetWidth
 	    var height = $tip[0].offsetHeight
-
+	
 	    // manually read margins because getBoundingClientRect includes difference
 	    var marginTop = parseInt($tip.css('margin-top'), 10)
 	    var marginLeft = parseInt($tip.css('margin-left'), 10)
-
+	
 	    // we must check for NaN for ie 8/9
 	    if (isNaN(marginTop))  marginTop  = 0
 	    if (isNaN(marginLeft)) marginLeft = 0
-
+	
 	    offset.top  += marginTop
 	    offset.left += marginLeft
-
+	
 	    // $.fn.offset doesn't round pixel values
 	    // so we use setOffset directly with our own function B-0
 	    $.offset.setOffset($tip[0], $.extend({
@@ -2477,49 +2534,49 @@ webpackJsonp([1],{
 	        })
 	      }
 	    }, offset), 0)
-
+	
 	    $tip.addClass('in')
-
+	
 	    // check to see if placing tip in new offset caused the tip to resize itself
 	    var actualWidth  = $tip[0].offsetWidth
 	    var actualHeight = $tip[0].offsetHeight
-
+	
 	    if (placement == 'top' && actualHeight != height) {
 	      offset.top = offset.top + height - actualHeight
 	    }
-
+	
 	    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
-
+	
 	    if (delta.left) offset.left += delta.left
 	    else offset.top += delta.top
-
+	
 	    var isVertical          = /top|bottom/.test(placement)
 	    var arrowDelta          = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
 	    var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight'
-
+	
 	    $tip.offset(offset)
 	    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
 	  }
-
+	
 	  Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
 	    this.arrow()
 	      .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
 	      .css(isVertical ? 'top' : 'left', '')
 	  }
-
+	
 	  Tooltip.prototype.setContent = function () {
 	    var $tip  = this.tip()
 	    var title = this.getTitle()
-
+	
 	    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
 	    $tip.removeClass('fade in top bottom left right')
 	  }
-
+	
 	  Tooltip.prototype.hide = function (callback) {
 	    var that = this
 	    var $tip = $(this.$tip)
 	    var e    = $.Event('hide.bs.' + this.type)
-
+	
 	    function complete() {
 	      if (that.hoverState != 'in') $tip.detach()
 	      that.$element
@@ -2527,41 +2584,41 @@ webpackJsonp([1],{
 	        .trigger('hidden.bs.' + that.type)
 	      callback && callback()
 	    }
-
+	
 	    this.$element.trigger(e)
-
+	
 	    if (e.isDefaultPrevented()) return
-
+	
 	    $tip.removeClass('in')
-
+	
 	    $.support.transition && $tip.hasClass('fade') ?
 	      $tip
 	        .one('bsTransitionEnd', complete)
 	        .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
 	      complete()
-
+	
 	    this.hoverState = null
-
+	
 	    return this
 	  }
-
+	
 	  Tooltip.prototype.fixTitle = function () {
 	    var $e = this.$element
 	    if ($e.attr('title') || typeof $e.attr('data-original-title') != 'string') {
 	      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
 	    }
 	  }
-
+	
 	  Tooltip.prototype.hasContent = function () {
 	    return this.getTitle()
 	  }
-
+	
 	  Tooltip.prototype.getPosition = function ($element) {
 	    $element   = $element || this.$element
-
+	
 	    var el     = $element[0]
 	    var isBody = el.tagName == 'BODY'
-
+	
 	    var elRect    = el.getBoundingClientRect()
 	    if (elRect.width == null) {
 	      // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
@@ -2570,25 +2627,25 @@ webpackJsonp([1],{
 	    var elOffset  = isBody ? { top: 0, left: 0 } : $element.offset()
 	    var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
 	    var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
-
+	
 	    return $.extend({}, elRect, scroll, outerDims, elOffset)
 	  }
-
+	
 	  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
 	    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2 } :
 	           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
 	           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
 	        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width }
-
+	
 	  }
-
+	
 	  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
 	    var delta = { top: 0, left: 0 }
 	    if (!this.$viewport) return delta
-
+	
 	    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
 	    var viewportDimensions = this.getPosition(this.$viewport)
-
+	
 	    if (/right|left/.test(placement)) {
 	      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
 	      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
@@ -2606,27 +2663,27 @@ webpackJsonp([1],{
 	        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
 	      }
 	    }
-
+	
 	    return delta
 	  }
-
+	
 	  Tooltip.prototype.getTitle = function () {
 	    var title
 	    var $e = this.$element
 	    var o  = this.options
-
+	
 	    title = $e.attr('data-original-title')
 	      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
-
+	
 	    return title
 	  }
-
+	
 	  Tooltip.prototype.getUID = function (prefix) {
 	    do prefix += ~~(Math.random() * 1000000)
 	    while (document.getElementById(prefix))
 	    return prefix
 	  }
-
+	
 	  Tooltip.prototype.tip = function () {
 	    if (!this.$tip) {
 	      this.$tip = $(this.options.template)
@@ -2636,23 +2693,23 @@ webpackJsonp([1],{
 	    }
 	    return this.$tip
 	  }
-
+	
 	  Tooltip.prototype.arrow = function () {
 	    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
 	  }
-
+	
 	  Tooltip.prototype.enable = function () {
 	    this.enabled = true
 	  }
-
+	
 	  Tooltip.prototype.disable = function () {
 	    this.enabled = false
 	  }
-
+	
 	  Tooltip.prototype.toggleEnabled = function () {
 	    this.enabled = !this.enabled
 	  }
-
+	
 	  Tooltip.prototype.toggle = function (e) {
 	    var self = this
 	    if (e) {
@@ -2662,7 +2719,7 @@ webpackJsonp([1],{
 	        $(e.currentTarget).data('bs.' + this.type, self)
 	      }
 	    }
-
+	
 	    if (e) {
 	      self.inState.click = !self.inState.click
 	      if (self.isInStateTrue()) self.enter(self)
@@ -2671,7 +2728,7 @@ webpackJsonp([1],{
 	      self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
 	    }
 	  }
-
+	
 	  Tooltip.prototype.destroy = function () {
 	    var that = this
 	    clearTimeout(this.timeout)
@@ -2685,43 +2742,46 @@ webpackJsonp([1],{
 	      that.$viewport = null
 	    })
 	  }
-
-
+	
+	
 	  // TOOLTIP PLUGIN DEFINITION
 	  // =========================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.tooltip')
 	      var options = typeof option == 'object' && option
-
+	
 	      if (!data && /destroy|hide/.test(option)) return
 	      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
 	      if (typeof option == 'string') data[option]()
 	    })
 	  }
-
+	
 	  var old = $.fn.tooltip
-
+	
 	  $.fn.tooltip             = Plugin
 	  $.fn.tooltip.Constructor = Tooltip
-
-
+	
+	
 	  // TOOLTIP NO CONFLICT
 	  // ===================
-
+	
 	  $.fn.tooltip.noConflict = function () {
 	    $.fn.tooltip = old
 	    return this
 	  }
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 228:
+/*!************************************!*\
+  !*** ../~/bootstrap/js/popover.js ***!
+  \************************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -2731,112 +2791,115 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // POPOVER PUBLIC CLASS DEFINITION
 	  // ===============================
-
+	
 	  var Popover = function (element, options) {
 	    this.init('popover', element, options)
 	  }
-
+	
 	  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
-
+	
 	  Popover.VERSION  = '3.3.6'
-
+	
 	  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
 	    placement: 'right',
 	    trigger: 'click',
 	    content: '',
 	    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
 	  })
-
-
+	
+	
 	  // NOTE: POPOVER EXTENDS tooltip.js
 	  // ================================
-
+	
 	  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
-
+	
 	  Popover.prototype.constructor = Popover
-
+	
 	  Popover.prototype.getDefaults = function () {
 	    return Popover.DEFAULTS
 	  }
-
+	
 	  Popover.prototype.setContent = function () {
 	    var $tip    = this.tip()
 	    var title   = this.getTitle()
 	    var content = this.getContent()
-
+	
 	    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
 	    $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
 	      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
 	    ](content)
-
+	
 	    $tip.removeClass('fade top bottom left right in')
-
+	
 	    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
 	    // this manually by checking the contents.
 	    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
 	  }
-
+	
 	  Popover.prototype.hasContent = function () {
 	    return this.getTitle() || this.getContent()
 	  }
-
+	
 	  Popover.prototype.getContent = function () {
 	    var $e = this.$element
 	    var o  = this.options
-
+	
 	    return $e.attr('data-content')
 	      || (typeof o.content == 'function' ?
 	            o.content.call($e[0]) :
 	            o.content)
 	  }
-
+	
 	  Popover.prototype.arrow = function () {
 	    return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
 	  }
-
-
+	
+	
 	  // POPOVER PLUGIN DEFINITION
 	  // =========================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.popover')
 	      var options = typeof option == 'object' && option
-
+	
 	      if (!data && /destroy|hide/.test(option)) return
 	      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
 	      if (typeof option == 'string') data[option]()
 	    })
 	  }
-
+	
 	  var old = $.fn.popover
-
+	
 	  $.fn.popover             = Plugin
 	  $.fn.popover.Constructor = Popover
-
-
+	
+	
 	  // POPOVER NO CONFLICT
 	  // ===================
-
+	
 	  $.fn.popover.noConflict = function () {
 	    $.fn.popover = old
 	    return this
 	  }
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 229:
+/*!**************************************!*\
+  !*** ../~/bootstrap/js/scrollspy.js ***!
+  \**************************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -2846,14 +2909,14 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // SCROLLSPY CLASS DEFINITION
 	  // ==========================
-
+	
 	  function ScrollSpy(element, options) {
 	    this.$body          = $(document.body)
 	    this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
@@ -2863,43 +2926,43 @@ webpackJsonp([1],{
 	    this.targets        = []
 	    this.activeTarget   = null
 	    this.scrollHeight   = 0
-
+	
 	    this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
 	    this.refresh()
 	    this.process()
 	  }
-
+	
 	  ScrollSpy.VERSION  = '3.3.6'
-
+	
 	  ScrollSpy.DEFAULTS = {
 	    offset: 10
 	  }
-
+	
 	  ScrollSpy.prototype.getScrollHeight = function () {
 	    return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
 	  }
-
+	
 	  ScrollSpy.prototype.refresh = function () {
 	    var that          = this
 	    var offsetMethod  = 'offset'
 	    var offsetBase    = 0
-
+	
 	    this.offsets      = []
 	    this.targets      = []
 	    this.scrollHeight = this.getScrollHeight()
-
+	
 	    if (!$.isWindow(this.$scrollElement[0])) {
 	      offsetMethod = 'position'
 	      offsetBase   = this.$scrollElement.scrollTop()
 	    }
-
+	
 	    this.$body
 	      .find(this.selector)
 	      .map(function () {
 	        var $el   = $(this)
 	        var href  = $el.data('target') || $el.attr('href')
 	        var $href = /^#./.test(href) && $(href)
-
+	
 	        return ($href
 	          && $href.length
 	          && $href.is(':visible')
@@ -2911,7 +2974,7 @@ webpackJsonp([1],{
 	        that.targets.push(this[1])
 	      })
 	  }
-
+	
 	  ScrollSpy.prototype.process = function () {
 	    var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
 	    var scrollHeight = this.getScrollHeight()
@@ -2920,20 +2983,20 @@ webpackJsonp([1],{
 	    var targets      = this.targets
 	    var activeTarget = this.activeTarget
 	    var i
-
+	
 	    if (this.scrollHeight != scrollHeight) {
 	      this.refresh()
 	    }
-
+	
 	    if (scrollTop >= maxScroll) {
 	      return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
 	    }
-
+	
 	    if (activeTarget && scrollTop < offsets[0]) {
 	      this.activeTarget = null
 	      return this.clear()
 	    }
-
+	
 	    for (i = offsets.length; i--;) {
 	      activeTarget != targets[i]
 	        && scrollTop >= offsets[i]
@@ -2941,81 +3004,84 @@ webpackJsonp([1],{
 	        && this.activate(targets[i])
 	    }
 	  }
-
+	
 	  ScrollSpy.prototype.activate = function (target) {
 	    this.activeTarget = target
-
+	
 	    this.clear()
-
+	
 	    var selector = this.selector +
 	      '[data-target="' + target + '"],' +
 	      this.selector + '[href="' + target + '"]'
-
+	
 	    var active = $(selector)
 	      .parents('li')
 	      .addClass('active')
-
+	
 	    if (active.parent('.dropdown-menu').length) {
 	      active = active
 	        .closest('li.dropdown')
 	        .addClass('active')
 	    }
-
+	
 	    active.trigger('activate.bs.scrollspy')
 	  }
-
+	
 	  ScrollSpy.prototype.clear = function () {
 	    $(this.selector)
 	      .parentsUntil(this.options.target, '.active')
 	      .removeClass('active')
 	  }
-
-
+	
+	
 	  // SCROLLSPY PLUGIN DEFINITION
 	  // ===========================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.scrollspy')
 	      var options = typeof option == 'object' && option
-
+	
 	      if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
 	      if (typeof option == 'string') data[option]()
 	    })
 	  }
-
+	
 	  var old = $.fn.scrollspy
-
+	
 	  $.fn.scrollspy             = Plugin
 	  $.fn.scrollspy.Constructor = ScrollSpy
-
-
+	
+	
 	  // SCROLLSPY NO CONFLICT
 	  // =====================
-
+	
 	  $.fn.scrollspy.noConflict = function () {
 	    $.fn.scrollspy = old
 	    return this
 	  }
-
-
+	
+	
 	  // SCROLLSPY DATA-API
 	  // ==================
-
+	
 	  $(window).on('load.bs.scrollspy.data-api', function () {
 	    $('[data-spy="scroll"]').each(function () {
 	      var $spy = $(this)
 	      Plugin.call($spy, $spy.data())
 	    })
 	  })
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 230:
+/*!********************************!*\
+  !*** ../~/bootstrap/js/tab.js ***!
+  \********************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -3025,36 +3091,36 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // TAB CLASS DEFINITION
 	  // ====================
-
+	
 	  var Tab = function (element) {
 	    // jscs:disable requireDollarBeforejQueryAssignment
 	    this.element = $(element)
 	    // jscs:enable requireDollarBeforejQueryAssignment
 	  }
-
+	
 	  Tab.VERSION = '3.3.6'
-
+	
 	  Tab.TRANSITION_DURATION = 150
-
+	
 	  Tab.prototype.show = function () {
 	    var $this    = this.element
 	    var $ul      = $this.closest('ul:not(.dropdown-menu)')
 	    var selector = $this.data('target')
-
+	
 	    if (!selector) {
 	      selector = $this.attr('href')
 	      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
 	    }
-
+	
 	    if ($this.parent('li').hasClass('active')) return
-
+	
 	    var $previous = $ul.find('.active:last a')
 	    var hideEvent = $.Event('hide.bs.tab', {
 	      relatedTarget: $this[0]
@@ -3062,14 +3128,14 @@ webpackJsonp([1],{
 	    var showEvent = $.Event('show.bs.tab', {
 	      relatedTarget: $previous[0]
 	    })
-
+	
 	    $previous.trigger(hideEvent)
 	    $this.trigger(showEvent)
-
+	
 	    if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) return
-
+	
 	    var $target = $(selector)
-
+	
 	    this.activate($this.closest('li'), $ul)
 	    this.activate($target, $target.parent(), function () {
 	      $previous.trigger({
@@ -3082,13 +3148,13 @@ webpackJsonp([1],{
 	      })
 	    })
 	  }
-
+	
 	  Tab.prototype.activate = function (element, container, callback) {
 	    var $active    = container.find('> .active')
 	    var transition = callback
 	      && $.support.transition
 	      && ($active.length && $active.hasClass('fade') || !!container.find('> .fade').length)
-
+	
 	    function next() {
 	      $active
 	        .removeClass('active')
@@ -3097,19 +3163,19 @@ webpackJsonp([1],{
 	        .end()
 	        .find('[data-toggle="tab"]')
 	          .attr('aria-expanded', false)
-
+	
 	      element
 	        .addClass('active')
 	        .find('[data-toggle="tab"]')
 	          .attr('aria-expanded', true)
-
+	
 	      if (transition) {
 	        element[0].offsetWidth // reflow for transition
 	        element.addClass('in')
 	      } else {
 	        element.removeClass('fade')
 	      }
-
+	
 	      if (element.parent('.dropdown-menu').length) {
 	        element
 	          .closest('li.dropdown')
@@ -3118,66 +3184,69 @@ webpackJsonp([1],{
 	          .find('[data-toggle="tab"]')
 	            .attr('aria-expanded', true)
 	      }
-
+	
 	      callback && callback()
 	    }
-
+	
 	    $active.length && transition ?
 	      $active
 	        .one('bsTransitionEnd', next)
 	        .emulateTransitionEnd(Tab.TRANSITION_DURATION) :
 	      next()
-
+	
 	    $active.removeClass('in')
 	  }
-
-
+	
+	
 	  // TAB PLUGIN DEFINITION
 	  // =====================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this = $(this)
 	      var data  = $this.data('bs.tab')
-
+	
 	      if (!data) $this.data('bs.tab', (data = new Tab(this)))
 	      if (typeof option == 'string') data[option]()
 	    })
 	  }
-
+	
 	  var old = $.fn.tab
-
+	
 	  $.fn.tab             = Plugin
 	  $.fn.tab.Constructor = Tab
-
-
+	
+	
 	  // TAB NO CONFLICT
 	  // ===============
-
+	
 	  $.fn.tab.noConflict = function () {
 	    $.fn.tab = old
 	    return this
 	  }
-
-
+	
+	
 	  // TAB DATA-API
 	  // ============
-
+	
 	  var clickHandler = function (e) {
 	    e.preventDefault()
 	    Plugin.call($(this), 'show')
 	  }
-
+	
 	  $(document)
 	    .on('click.bs.tab.data-api', '[data-toggle="tab"]', clickHandler)
 	    .on('click.bs.tab.data-api', '[data-toggle="pill"]', clickHandler)
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 231:
+/*!**********************************!*\
+  !*** ../~/bootstrap/js/affix.js ***!
+  \**********************************/
 /***/ function(module, exports) {
 
 	/* ========================================================================
@@ -3187,60 +3256,60 @@ webpackJsonp([1],{
 	 * Copyright 2011-2015 Twitter, Inc.
 	 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
 	 * ======================================================================== */
-
-
+	
+	
 	+function ($) {
 	  'use strict';
-
+	
 	  // AFFIX CLASS DEFINITION
 	  // ======================
-
+	
 	  var Affix = function (element, options) {
 	    this.options = $.extend({}, Affix.DEFAULTS, options)
-
+	
 	    this.$target = $(this.options.target)
 	      .on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
 	      .on('click.bs.affix.data-api',  $.proxy(this.checkPositionWithEventLoop, this))
-
+	
 	    this.$element     = $(element)
 	    this.affixed      = null
 	    this.unpin        = null
 	    this.pinnedOffset = null
-
+	
 	    this.checkPosition()
 	  }
-
+	
 	  Affix.VERSION  = '3.3.6'
-
+	
 	  Affix.RESET    = 'affix affix-top affix-bottom'
-
+	
 	  Affix.DEFAULTS = {
 	    offset: 0,
 	    target: window
 	  }
-
+	
 	  Affix.prototype.getState = function (scrollHeight, height, offsetTop, offsetBottom) {
 	    var scrollTop    = this.$target.scrollTop()
 	    var position     = this.$element.offset()
 	    var targetHeight = this.$target.height()
-
+	
 	    if (offsetTop != null && this.affixed == 'top') return scrollTop < offsetTop ? 'top' : false
-
+	
 	    if (this.affixed == 'bottom') {
 	      if (offsetTop != null) return (scrollTop + this.unpin <= position.top) ? false : 'bottom'
 	      return (scrollTop + targetHeight <= scrollHeight - offsetBottom) ? false : 'bottom'
 	    }
-
+	
 	    var initializing   = this.affixed == null
 	    var colliderTop    = initializing ? scrollTop : position.top
 	    var colliderHeight = initializing ? targetHeight : height
-
+	
 	    if (offsetTop != null && scrollTop <= offsetTop) return 'top'
 	    if (offsetBottom != null && (colliderTop + colliderHeight >= scrollHeight - offsetBottom)) return 'bottom'
-
+	
 	    return false
 	  }
-
+	
 	  Affix.prototype.getPinnedOffset = function () {
 	    if (this.pinnedOffset) return this.pinnedOffset
 	    this.$element.removeClass(Affix.RESET).addClass('affix')
@@ -3248,117 +3317,120 @@ webpackJsonp([1],{
 	    var position  = this.$element.offset()
 	    return (this.pinnedOffset = position.top - scrollTop)
 	  }
-
+	
 	  Affix.prototype.checkPositionWithEventLoop = function () {
 	    setTimeout($.proxy(this.checkPosition, this), 1)
 	  }
-
+	
 	  Affix.prototype.checkPosition = function () {
 	    if (!this.$element.is(':visible')) return
-
+	
 	    var height       = this.$element.height()
 	    var offset       = this.options.offset
 	    var offsetTop    = offset.top
 	    var offsetBottom = offset.bottom
 	    var scrollHeight = Math.max($(document).height(), $(document.body).height())
-
+	
 	    if (typeof offset != 'object')         offsetBottom = offsetTop = offset
 	    if (typeof offsetTop == 'function')    offsetTop    = offset.top(this.$element)
 	    if (typeof offsetBottom == 'function') offsetBottom = offset.bottom(this.$element)
-
+	
 	    var affix = this.getState(scrollHeight, height, offsetTop, offsetBottom)
-
+	
 	    if (this.affixed != affix) {
 	      if (this.unpin != null) this.$element.css('top', '')
-
+	
 	      var affixType = 'affix' + (affix ? '-' + affix : '')
 	      var e         = $.Event(affixType + '.bs.affix')
-
+	
 	      this.$element.trigger(e)
-
+	
 	      if (e.isDefaultPrevented()) return
-
+	
 	      this.affixed = affix
 	      this.unpin = affix == 'bottom' ? this.getPinnedOffset() : null
-
+	
 	      this.$element
 	        .removeClass(Affix.RESET)
 	        .addClass(affixType)
 	        .trigger(affixType.replace('affix', 'affixed') + '.bs.affix')
 	    }
-
+	
 	    if (affix == 'bottom') {
 	      this.$element.offset({
 	        top: scrollHeight - height - offsetBottom
 	      })
 	    }
 	  }
-
-
+	
+	
 	  // AFFIX PLUGIN DEFINITION
 	  // =======================
-
+	
 	  function Plugin(option) {
 	    return this.each(function () {
 	      var $this   = $(this)
 	      var data    = $this.data('bs.affix')
 	      var options = typeof option == 'object' && option
-
+	
 	      if (!data) $this.data('bs.affix', (data = new Affix(this, options)))
 	      if (typeof option == 'string') data[option]()
 	    })
 	  }
-
+	
 	  var old = $.fn.affix
-
+	
 	  $.fn.affix             = Plugin
 	  $.fn.affix.Constructor = Affix
-
-
+	
+	
 	  // AFFIX NO CONFLICT
 	  // =================
-
+	
 	  $.fn.affix.noConflict = function () {
 	    $.fn.affix = old
 	    return this
 	  }
-
-
+	
+	
 	  // AFFIX DATA-API
 	  // ==============
-
+	
 	  $(window).on('load', function () {
 	    $('[data-spy="affix"]').each(function () {
 	      var $spy = $(this)
 	      var data = $spy.data()
-
+	
 	      data.offset = data.offset || {}
-
+	
 	      if (data.offsetBottom != null) data.offset.bottom = data.offsetBottom
 	      if (data.offsetTop    != null) data.offset.top    = data.offsetTop
-
+	
 	      Plugin.call($spy, data)
 	    })
 	  })
-
+	
 	}(jQuery);
 
 
 /***/ },
 
 /***/ 232:
+/*!*****************************!*\
+  !*** ./components/login.js ***!
+  \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(159);
-	var Link = __webpack_require__(159).Link;
+	var React = __webpack_require__(/*! react */ 1);
+	var ReactRouter = __webpack_require__(/*! react-router */ 159);
+	var Link = __webpack_require__(/*! react-router */ 159).Link;
 	var History = ReactRouter.History;
-
-	var auth = __webpack_require__(212);
-
+	
+	var auth = __webpack_require__(/*! ./auth.js */ 212);
+	
 	var Badge = React.createClass({
 	  displayName: "Badge",
-
+	
 	  render: function () {
 	    return React.createElement(
 	      "button",
@@ -3373,14 +3445,14 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	// Login page, shows the login form and redirects to the interviewdb if login is successful
 	var Login = React.createClass({
 	  displayName: "Login",
-
+	
 	  // mixin for navigation
 	  mixins: [History],
-
+	
 	  // initial state
 	  getInitialState: function () {
 	    return {
@@ -3388,7 +3460,7 @@ webpackJsonp([1],{
 	      error: false
 	    };
 	  },
-
+	
 	  // handle login button submit
 	  login: function (event) {
 	    // prevent default browser submit
@@ -3405,11 +3477,11 @@ webpackJsonp([1],{
 	      if (!loggedIn) return this.setState({
 	        error: true
 	      });
-	      this.history.pushState(null, '/interviewdb');
+	      this.history.pushState(null, "/");
 	      return this.setState({ error: false });
 	    }).bind(this));
 	  },
-
+	
 	  // show the login form
 	  render: function () {
 	    return React.createElement(
@@ -3457,27 +3529,30 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	module.exports = Login;
 
 /***/ },
 
 /***/ 233:
+/*!********************************!*\
+  !*** ./components/register.js ***!
+  \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(159);
+	var React = __webpack_require__(/*! react */ 1);
+	var ReactRouter = __webpack_require__(/*! react-router */ 159);
 	var History = ReactRouter.History;
-
-	var auth = __webpack_require__(212);
-
+	
+	var auth = __webpack_require__(/*! ./auth.js */ 212);
+	
 	// Register page, shows the registration form and redirects to the interviewdb if login is successful
 	var Register = React.createClass({
 	  displayName: "Register",
-
+	
 	  // mixin for navigation
 	  mixins: [History],
-
+	
 	  // initial state
 	  getInitialState: function () {
 	    return {
@@ -3485,7 +3560,7 @@ webpackJsonp([1],{
 	      error: false
 	    };
 	  },
-
+	
 	  // handle regiser button submit
 	  register: function (event) {
 	    // prevent default browser submit
@@ -3506,7 +3581,7 @@ webpackJsonp([1],{
 	      this.history.pushState(null, '/interviewdb');
 	    }).bind(this));
 	  },
-
+	
 	  // show the registration form
 	  render: function () {
 	    return React.createElement(
@@ -3533,42 +3608,52 @@ webpackJsonp([1],{
 	    );
 	  }
 	});
-
+	
 	module.exports = Register;
 
 /***/ },
 
 /***/ 234:
+/*!******************************!*\
+  !*** ./components/create.js ***!
+  \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(159);
-	var Link = __webpack_require__(159).Link;
+	var React = __webpack_require__(/*! react */ 1);
+	var ReactRouter = __webpack_require__(/*! react-router */ 159);
+	var Router = ReactRouter.Router;
+	var Link = __webpack_require__(/*! react-router */ 159).Link;
 	var History = ReactRouter.History;
-
-	var api = __webpack_require__(216);
-	var auth = __webpack_require__(212);
-
+	
+	var api = __webpack_require__(/*! ./api.js */ 216);
+	var auth = __webpack_require__(/*! ./auth.js */ 212);
+	
 	// Login page, shows the login form and redirects to the interviewdb if login is successful
 	var Create = React.createClass({
 	  displayName: "Create",
-
+	
+	  mixins: [History],
+	
 	  getInitialState: function () {
 	    return {
 	      loggedIn: auth.loggedIn()
 	    };
 	  },
-
+	
 	  //Add answer to database
 	  addQuestion: function (event) {
 	    event.preventDefault();
 	    var header = this.refs.header.value;
 	    var body = this.refs.body.value;
-	    api.addQuestion(body, header, this.reload);
+	    api.addQuestion(body, header, this.redirect);
 	  },
-
-	  reload: function () {},
-
+	
+	  redirect: function () {
+	    //Router.navigate("/");
+	    //this.transitionTo('/');
+	    this.history.pushState(null, "/");
+	  },
+	
 	  // create question form
 	  render: function () {
 	    return React.createElement(
@@ -3579,17 +3664,20 @@ webpackJsonp([1],{
 	        { className: "form-vertical", onSubmit: this.addQuestion },
 	        React.createElement("input", { type: "text", placeholder: "Question Title", ref: "header", autoFocus: true }),
 	        React.createElement("input", { type: "text", placeholder: "Type your question...", ref: "body", autoFocus: true }),
-	        React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Submit" })
+	        React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Create Question" })
 	      )
 	    );
 	  }
 	});
-
+	
 	module.exports = Create;
 
 /***/ },
 
 /***/ 235:
+/*!*************************************************!*\
+  !*** ../~/bootstrap/dist/css/bootstrap.min.css ***!
+  \*************************************************/
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
@@ -3597,6 +3685,9 @@ webpackJsonp([1],{
 /***/ },
 
 /***/ 244:
+/*!*********************!*\
+  !*** ./css/app.css ***!
+  \*********************/
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
@@ -3604,3 +3695,4 @@ webpackJsonp([1],{
 /***/ }
 
 });
+//# sourceMappingURL=app.js.map
