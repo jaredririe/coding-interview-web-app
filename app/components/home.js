@@ -12,9 +12,9 @@ var Home = React.createClass({
     return (
       <div>
 	<ul className="nav nav-tabs">
-	  <li className="active"><a className="tabAnchor" data-toggle="tab" href="#recent" onClick={showTab}>Most Recent</a></li>
-	  <li><a className="tabAnchor" data-toggle="tab" href="#popular" onClick={showTab}>Most Popular</a></li>
-	  <li><a className="tabAnchor" data-toggle="tab" href="#votes" onClick={showTab}>Most Votes</a></li>
+	  <li className="active"><a data-toggle="tab" href="#recent" onClick={showTab}>Most Recent</a></li>
+	  <li><a data-toggle="tab" href="#popular" onClick={showTab}>Most Popular</a></li>
+	  <li><a data-toggle="tab" href="#votes" onClick={showTab}>Most Votes</a></li>
 	</ul>
 
 	<div className="tab-content">

@@ -1,9 +1,7 @@
 var React = require("react");
-require('bootstrap');
-//require('jquery');
 var Question = require("./question.js");
 var questionList = require("./questionList.js");
-
+require('bootstrap');
 
 var showTab = function(){
   $(this).tab('show');
