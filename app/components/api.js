@@ -105,7 +105,7 @@ var api = {
   },
 
   // delete an answer, call the callback when complete
-  deleteAnswer: function(item, cb) {
+  deleteAnswer: function(answer, cb) {
     var url = "/api/answers/" + answer.id;
     $.ajax({
       url: url,
