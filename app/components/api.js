@@ -21,6 +21,34 @@ var api = {
       }
     });
   },
+  
+  // add an item, call the callback when complete
+  addQuestion: function(body, header, cb) {
+    var url = "/api/questions";
+    $.ajax({
+      url: url,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        question:{ 
+          'header': header,
+          'body': body,
+        }
+      }),
+      type: 'POST',
+      headers: {'Authorization': localStorage.token},
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove the login token
+        delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+  
   // add an item, call the callback when complete
   addAnswer: function(body, questionID, cb) {
     var url = "/api/answers";
@@ -30,7 +58,7 @@ var api = {
       data: JSON.stringify({
         answer: {
           'body': body,
-          'questionID' : questionID,
+          'questionID': questionID,
         }
       }),
       type: 'POST',
@@ -48,6 +76,7 @@ var api = {
     });
 
   },
+  
   // update an answer, call the callback when complete
   updateAnswer: function(answer, cb) {
     var url = "/api/answers/" + answer.id;
@@ -75,7 +104,7 @@ var api = {
     });
   },
 
-    // delete an answer, call the callback when complete
+  // delete an answer, call the callback when complete
   deleteAnswer: function(item, cb) {
     var url = "/api/answers/" + answer.id;
     $.ajax({

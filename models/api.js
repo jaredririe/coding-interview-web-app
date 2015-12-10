@@ -1,7 +1,7 @@
 var app = require('./express.js');
 var User = require('./user.js');
 var Question = require('./question.js');
-var Answer= require('./answer.js');
+var Answer = require('./answer.js');
 
 // setup body parser
 var bodyParser = require('body-parser');
@@ -23,12 +23,13 @@ app.post('/api/users/register', function (req, res) {
       user.name = req.body.name;
       user.set_password(req.body.password);
       user.save(function(err) {
-	if (err) {
-	  res.sendStatus("403");
-	  return;
-	}
+      	if (err) {
+      	  res.sendStatus("403");
+      	  return;
+      	}
         // create a token
-	var token = User.generateToken(user.username);
+	      var token = User.generateToken(user.username);
+	      
         // return value is JSON containing the user's name and token
         res.json({name: user.name, token: token});
       });
@@ -47,10 +48,12 @@ app.post('/api/users/login', function (req, res) {
       res.sendStatus(403);
       return;
     }
+    
     // validate the user exists and the password is correct
     if (user && user.checkPassword(req.body.password)) {
       // create a token
       var token = User.generateToken(user.username);
+      
       // return value is JSON containing user's name and token
       res.json({name: user.name, token: token});
     } else {
@@ -66,20 +69,25 @@ app.post('/api/questions', function (req,res) {
   user = User.verifyToken(req.headers.authorization, function(user) {
     if (user) {
       // if the token is valid, create the item for the user
-      Item.create({title:req.body.item.title,completed:false,user:user.id}, function(err,item) {
-	if (err) {
-	  res.sendStatus(403);
-	  return;
-	}
-	res.json({item:item});
-      });
+      Question.create(
+        { user: user.id,
+          header: req.body.question.header,
+          body: req.body.question.body,
+        }, function(err,item) {
+            if (err) {
+              res.sendStatus(403);
+              return;
+            }
+            res.json({item:item});
+        });
     } else {
+      // token is not valid
       res.sendStatus(403);
     }
   });
 });
 
-// add an answer
+// add an ansewr
 app.post('/api/answers', function (req,res) {
   // validate the supplied token
   // get indexes
@@ -87,13 +95,14 @@ app.post('/api/answers', function (req,res) {
     if (user) {
       // if the token is valid, create the item for the user
       Answer.create({body:req.body.answer.body,user:user.id, name:user.name, questionID:req.body.answer.questionID }, function(err,item) {
-  if (err) {
-    res.sendStatus(403);
-    return;
-  }
-  res.json({item:item});
+      if (err) {
+        res.sendStatus(403);
+        return;
+      }
+      res.json({item:item});
       });
     } else {
+      // token is not valid
       res.sendStatus(403);
     }
   });
@@ -130,7 +139,7 @@ app.put('/api/answers/:answer_id', function (req,res) {
         return;
       }
       // return value is the item as JSON
-      res.json({answer:answer});
+      res.json({answer: answer});
       });
     });
     } else {

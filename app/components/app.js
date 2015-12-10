@@ -50,14 +50,21 @@ var App = React.createClass({
             </div>
             <div className="collapse navbar-collapse" id="navbar-collapse">
               {this.state.loggedIn ? (
-              <ul className="nav navbar-nav">
-                <li><a href="#" onClick={this.logout}>Logout</a></li>
-              </ul>
+                <ul className="nav navbar-nav">
+                  <li><a href="#" onClick={this.logout}>Logout</a></li>
+                </ul>
               ) : (<div></div>)}
+              
+              {this.state.loggedIn ? (
+                <ul className="nav navbar-nav">
+                  <li><Link to="create">Ask Question</Link></li>
+                </ul>
+              ) : (<div></div>)}     
+              
               {!this.state.loggedIn ? (
-              <ul className="nav navbar-nav">
-                <li><Link to="login">Login</Link></li>
-              </ul>
+                <ul className="nav navbar-nav">
+                  <li><Link to="login">Login</Link></li>
+                </ul>
               ) : (<div></div>)}
             </div>
           </div>

@@ -29,5 +29,3 @@ answerSchema.plugin(findOrCreate);
 var Answer = mongoose.model('answers', answerSchema);
 
 module.exports = Answer;
-
-
