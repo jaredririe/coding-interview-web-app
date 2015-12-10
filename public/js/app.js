@@ -16,12 +16,12 @@ webpackJsonp([1],{
 	var App = __webpack_require__(209);
 	var Question = __webpack_require__(211);
 	var Answer = __webpack_require__(213);
-	var Home = __webpack_require__(214);
-	var Login = __webpack_require__(216);
-	var Register = __webpack_require__(217);
+	var Home = __webpack_require__(215);
+	var Login = __webpack_require__(217);
+	var Register = __webpack_require__(218);
 
-	__webpack_require__(218);
-	__webpack_require__(227);
+	__webpack_require__(219);
+	__webpack_require__(228);
 
 	// Run the routes
 	var routes = React.createElement(
@@ -270,6 +270,44 @@ webpackJsonp([1],{
 	var React = __webpack_require__(1);
 	var Link = __webpack_require__(159).Link;
 	var answerList = __webpack_require__(212);
+	var api = __webpack_require__(214);
+	var auth = __webpack_require__(210);
+
+	var Badge = React.createClass({
+	  displayName: 'Badge',
+
+	  render: function () {
+	    return React.createElement(
+	      'button',
+	      { className: 'btn btn-primary', type: 'button' },
+	      this.props.title,
+	      ' ',
+	      React.createElement(
+	        'span',
+	        { className: 'badge' },
+	        this.props.number
+	      )
+	    );
+	  }
+	});
+
+	var AnswerQuestionBadge = React.createClass({
+	  displayName: 'AnswerQuestionBadge',
+
+	  render: function () {
+	    return React.createElement(
+	      'button',
+	      { className: 'btn btn-primary', type: 'button', onClick: this.props.onClickEvent },
+	      this.props.title,
+	      ' ',
+	      React.createElement(
+	        'span',
+	        { className: 'badge' },
+	        this.props.number
+	      )
+	    );
+	  }
+	});
 
 	var options = {
 	  thumbnailData: [{
@@ -290,25 +328,77 @@ webpackJsonp([1],{
 	var Question = React.createClass({
 	  displayName: 'Question',
 
+	  getInitialState: function () {
+	    return {
+	      loggedIn: auth.loggedIn(),
+	      displayForm: false
+	    };
+	  },
+	  //Handle answer question button
+	  handleClick: function (event) {
+	    this.setState({ displayForm: true });
+	  },
+	  //Add answer to database
+	  addAnswer: function (event) {
+	    event.preventDefault();
+
+	    var body = this.refs.body.value;
+	    var questionID = this.props.params.questionID;
+	    api.addAnswer(body, questionID, this.reload);
+	  },
+
+	  reload: function () {},
+
 	  render: function () {
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
 	        'div',
-	        null,
+	        { className: 'col-xs-12' },
 	        React.createElement(
 	          'h2',
 	          null,
 	          options.thumbnailData[this.props.params.index].header
-	        ),
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'col-xs-12' },
 	        React.createElement(
 	          'p',
 	          null,
 	          options.thumbnailData[this.props.params.index].description
 	        )
 	      ),
-	      answerList[this.props.params.index]
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.loggedIn ? React.createElement(AnswerQuestionBadge, { title: 'Answer Question', onClickEvent: this.handleClick }) : React.createElement(
+	          Link,
+	          { to: 'login' },
+	          React.createElement(Badge, { title: 'Login to Answer!' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        this.state.displayForm ? React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'form',
+	            { className: 'form-vertical', onSubmit: this.addAnswer },
+	            React.createElement('input', { type: 'text', placeholder: 'Type your answer...', ref: 'body', autoFocus: true }),
+	            React.createElement('input', { className: 'btn btn-warning', type: 'submit', value: 'Submit' })
+	          )
+	        ) : null
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        answerList[this.props.params.index]
+	      )
 	    );
 	  }
 	});
@@ -421,27 +511,31 @@ webpackJsonp([1],{
 	            { className: "row" },
 	            React.createElement(
 	              "div",
-	              { className: "col-xs-6" },
+	              { className: "col-xs-12 col-md-1" },
+	              React.createElement(Badge, { title: "+" })
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-xs-12 col-md-1" },
+	              React.createElement(
+	                "h4",
+	                null,
+	                this.props.votes
+	              )
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-xs-12 col-md-1" },
+	              React.createElement(Badge, { title: "-" })
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-xs-12" },
 	              React.createElement(
 	                "h4",
 	                null,
 	                this.props.user
 	              )
-	            ),
-	            React.createElement(
-	              "div",
-	              { className: "col-xs-2" },
-	              React.createElement(Badge, { title: "-" })
-	            ),
-	            React.createElement(
-	              "div",
-	              { className: "col-xs-2" },
-	              this.props.votes
-	            ),
-	            React.createElement(
-	              "div",
-	              { className: "col-xs-2" },
-	              React.createElement(Badge, { title: "+" })
 	            )
 	          ),
 	          React.createElement(
@@ -467,9 +561,107 @@ webpackJsonp([1],{
 /***/ 214:
 /***/ function(module, exports, __webpack_require__) {
 
+	var $ = __webpack_require__(208);
+
+	// API object
+	var api = {
+	  // get the list of answers, call the callback when complete
+	  getAnswers: function (cb) {
+	    var url = "/api/answers";
+	    $.ajax({
+	      url: url,
+	      dataType: 'json',
+	      type: 'GET',
+	      headers: { 'Authorization': localStorage.token },
+	      success: function (res) {
+	        if (cb) cb(true, res);
+	      },
+	      error: function (xhr, status, err) {
+	        // if there is an error, remove the login token
+	        delete localStorage.token;
+	        if (cb) cb(false, status);
+	      }
+	    });
+	  },
+	  // add an item, call the callback when complete
+	  addAnswer: function (body, questionID, cb) {
+	    var url = "/api/answers";
+	    $.ajax({
+	      url: url,
+	      contentType: 'application/json',
+	      data: JSON.stringify({
+	        answer: {
+	          'body': body,
+	          'questionID': questionID
+	        }
+	      }),
+	      type: 'POST',
+	      headers: { 'Authorization': localStorage.token },
+	      success: function (res) {
+	        if (cb) cb(true, res);
+	      },
+	      error: function (xhr, status, err) {
+	        // if there is an error, remove the login token
+	        delete localStorage.token;
+	        if (cb) cb(false, status);
+	      }
+	    });
+	  },
+	  // update an answer, call the callback when complete
+	  updateAnswer: function (answer, cb) {
+	    var url = "/api/answers/" + answer.id;
+	    $.ajax({
+	      url: url,
+	      contentType: 'application/json',
+	      data: JSON.stringify({
+	        answer: {
+	          body: answer.body,
+	          votes: item.votes
+	        }
+	      }),
+	      type: 'PUT',
+	      headers: { 'Authorization': localStorage.token },
+	      success: function (res) {
+	        if (cb) cb(true, res);
+	      },
+	      error: function (xhr, status, err) {
+	        // if there is any error, remove any login token
+	        delete localStorage.token;
+	        if (cb) cb(false, status);
+	      }
+	    });
+	  },
+
+	  // delete an answer, call the callback when complete
+	  deleteAnswer: function (item, cb) {
+	    var url = "/api/answers/" + answer.id;
+	    $.ajax({
+	      url: url,
+	      type: 'DELETE',
+	      headers: { 'Authorization': localStorage.token },
+	      success: function (res) {
+	        if (cb) cb(true, res);
+	      },
+	      error: function (xhr, status, err) {
+	        // if there is an error, remove any login token
+	        delete localStorage.token;
+	        if (cb) cb(false, status);
+	      }
+	    });
+	  }
+
+	};
+
+	module.exports = api;
+
+/***/ },
+
+/***/ 215:
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
 	var Question = __webpack_require__(211);
-	var questionList = __webpack_require__(215);
+	var questionList = __webpack_require__(216);
 
 	var Home = React.createClass({
 	  displayName: "Home",
@@ -492,7 +684,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 215:
+/***/ 216:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -607,7 +799,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 216:
+/***/ 217:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -667,6 +859,7 @@ webpackJsonp([1],{
 	        error: true
 	      });
 	      this.history.pushState(null, '/interviewdb');
+	      return this.setState({ error: false });
 	    }).bind(this));
 	  },
 
@@ -693,6 +886,11 @@ webpackJsonp([1],{
 	            "div",
 	            { className: "alert" },
 	            "Invalid username or password."
+	          ) : null,
+	          auth.loggedIn() ? React.createElement(
+	            "div",
+	            { className: "alert" },
+	            "Success!"
 	          ) : null
 	        )
 	      ),
@@ -717,7 +915,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 217:
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -793,14 +991,14 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 218:
+/***/ 219:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 227:
+/***/ 228:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

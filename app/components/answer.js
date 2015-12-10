@@ -18,17 +18,17 @@ var Answer = React.createClass({
         <div className="thumbnail">
           <div className="caption">
             <div className = "row">
-              <div className = "col-xs-6">
-                <h4>{this.props.user}</h4>
+              <div className = "col-xs-12 col-md-1">
+                <Badge title="+"/>
               </div>
-              <div className = "col-xs-2">
+              <div className="col-xs-12 col-md-1">
+                <h4>{this.props.votes}</h4>
+              </div>
+              <div className = "col-xs-12 col-md-1">
                 <Badge title="-"/>
               </div>
-              <div className="col-xs-2">
-                {this.props.votes}
-              </div>
-              <div className = "col-xs-2">
-                <Badge title="+"/>
+              <div className = "col-xs-12">
+                <h4>{this.props.user}</h4>
               </div>
             </div>
             <p>{this.props.body}</p>

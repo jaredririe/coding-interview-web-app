@@ -9,6 +9,7 @@ var db = mongoose.connect('mongodb://localhost/interviewdb');
 var api = require('./models/api.js');
 var User = require('./models/user.js');
 var Question = require('./models/question.js');
+var Answer = require('./models/answer.js');
 
 // start the server
 var server = app.listen(3000, function() {

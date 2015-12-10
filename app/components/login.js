@@ -47,6 +47,7 @@ var Login = React.createClass({
           error: true
         });
       this.history.pushState(null, '/interviewdb');
+      return this.setState({error: false});
     }.bind(this));
   },
 
@@ -62,7 +63,12 @@ var Login = React.createClass({
             <input className="btn btn-warning" type="submit" value="Login" />
             {this.state.error ? (
                <div className="alert">Invalid username or password.</div>
-             ) : null}
+             ) : null
+            }
+            {auth.loggedIn() ? (
+              <div className="alert">Success!</div>
+              ) : null
+            }
           </form>
         </div>
         <div>
