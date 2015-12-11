@@ -2,6 +2,7 @@ var React = require("react");
 var Link = require('react-router').Link
 var api = require('./api.js');
 var auth = require('./auth.js');
+
 var PlusBadge = React.createClass({
   render: function() {
     return (
@@ -33,7 +34,6 @@ var DeleteBadge = React.createClass({
 });
 
 var Answer = React.createClass({
-
   handlePlus: function(event){
     this.props.answer.votes = this.props.answer.votes + 1;
     api.updateAnswer(this.props.answer, this.props.reload);
@@ -49,7 +49,16 @@ var Answer = React.createClass({
   },
 
   render: function() {
-        return (
+    var timestamp = new Date(this.props.answer.timestamp);
+    var minutes = (timestamp.getMinutes() < 10) ? ("0" + timestamp.getMinutes()) : timestamp.getMinutes();
+    var timeString = timestamp.getMonth() 
+                    + "/" + timestamp.getDate() 
+                    + "/" + timestamp.getFullYear() 
+                    + " - "
+                    + timestamp.getHours()
+                    + ":" 
+                    + minutes;
+    return (
       <div>
         <div className="thumbnail">
           <div className="caption">
@@ -75,7 +84,7 @@ var Answer = React.createClass({
             </p>
             <p>{this.props.answer.body}</p>
             <div>
-              {this.props.answer.timestamp}
+              {timeString}
             </div>
           </div>
         </div>

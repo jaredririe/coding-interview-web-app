@@ -43,16 +43,12 @@ var api = {
   // get a question, call the callback when complete
   getQuestion: function(question_id, cb) {
     var url = "/api/question/get/" + question_id;
-    console.log(url);
     $.ajax({
       url: url,
       dataType: 'json',
       type: 'GET',
       success: function(res) {
-        console.log("success in getQuestion");
-        console.log(res);
         if (cb)
-          console.log("calling cb");
           cb(true, res);
       },
       error: function(xhr, status, err) {

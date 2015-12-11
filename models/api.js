@@ -73,6 +73,7 @@ app.post('/api/questions', function (req,res) {
         { user: user.id,
           header: req.body.question.header,
           body: req.body.question.body,
+          name: user.name,
         }, function(err,item) {
             if (err) {
               res.sendStatus(403);

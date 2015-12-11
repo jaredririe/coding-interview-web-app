@@ -31,6 +31,7 @@ var auth = {
       }.bind(this)
     });
   },
+  
   // login the user
   login: function(username, password, cb) {
     // submit login request to server, call callback when complete
@@ -53,6 +54,7 @@ var auth = {
         username: username,
         password: password
       },
+      
       success: function(res) {
         // on success, store a login token
         localStorage.token = res.token;
@@ -61,6 +63,7 @@ var auth = {
         if (cb)
           cb(true);
       }.bind(this),
+      
       error: function(xhr, status, err) {
         // if there is an error, remove any login token
         delete localStorage.token;
@@ -70,24 +73,29 @@ var auth = {
       }.bind(this)
     });
   },
+  
   // get the token from local storage
   getToken: function() {
     return localStorage.token;
   },
+  
   // get the name from local storage
   getName: function() {
     return localStorage.name;
   },
+  
   // logout the user, call the callback when complete
   logout: function(cb) {
     delete localStorage.token;
     this.onChange(false);
     if (cb) cb();
   },
+  
   // check if user is logged in
   loggedIn: function() {
     return !!localStorage.token;
   },
+  
   // default onChange function
   onChange: function() {},
 };

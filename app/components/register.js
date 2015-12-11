@@ -1,7 +1,6 @@
 var React = require("react");
 var ReactRouter = require("react-router");
 var History = ReactRouter.History;
-
 var auth = require("./auth.js");
 
 // Register page, shows the registration form and redirects to the interviewdb if login is successful

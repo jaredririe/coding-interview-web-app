@@ -2,7 +2,6 @@ var React = require("react");
 var ReactRouter = require("react-router");
 var Link = require('react-router').Link
 var $ = require("jquery");
-
 var auth = require("./auth.js");
 
 // Top-level component for the app

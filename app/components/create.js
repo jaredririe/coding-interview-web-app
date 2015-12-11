@@ -27,8 +27,6 @@ var Create = React.createClass({
   },
 
   redirect: function(){
-    //Router.navigate("/");
-    //this.transitionTo('/');
     this.history.pushState(null, "/");
   },
   

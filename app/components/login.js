@@ -17,6 +17,7 @@ var Badge = React.createClass({
 
 // Login page, shows the login form and redirects to the interviewdb if login is successful
 var Login = React.createClass({
+  
   // mixin for navigation
   mixins: [ History ],
 
@@ -26,19 +27,20 @@ var Login = React.createClass({
       // there was an error on logging in
       error: false
     };
-
   },
 
   // handle login button submit
   login: function(event) {
     // prevent default browser submit
     event.preventDefault();
+    
     // get data from form
     var username = this.refs.username.value;
     var password = this.refs.password.value;
     if (!username || !password) {
       return;
     }
+    
     // login via API
     auth.login(username, password, function(loggedIn) {
       // login callback
