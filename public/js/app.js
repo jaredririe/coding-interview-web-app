@@ -980,7 +980,18 @@ webpackJsonp([1],{
 	  displayName: "QuestionList",
 
 	  render: function () {
-	    var list = this.props.questions.map((function (question) {
+	    var sortedList = this.props.questions.sort(function (question1, question2) {
+	      var date1 = new Date(question1.timestamp);
+	      var date2 = new Date(question2.timestamp);
+	      if (date1 < date2) {
+	        return 1;
+	      }
+	      if (date1 > date2) {
+	        return -1;
+	      }
+	      return 0;
+	    });
+	    var list = sortedList.map((function (question) {
 	      return React.createElement(QuestionNode, { key: question.id, question: question, showButton: true, reload: this.props.reload });
 	    }).bind(this));
 
@@ -3591,7 +3602,7 @@ webpackJsonp([1],{
 	      if (!loggedIn) return this.setState({
 	        error: true
 	      });
-	      this.history.pushState(null, '/interviewdb');
+	      this.history.pushState(null, "/");
 	    }).bind(this));
 	  },
 

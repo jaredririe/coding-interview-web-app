@@ -34,7 +34,7 @@ var Register = React.createClass({
         return this.setState({
           error: true
         });
-      this.history.pushState(null, '/interviewdb');
+      this.history.pushState(null, "/");
     }.bind(this));
   },
 
