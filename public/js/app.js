@@ -3512,47 +3512,62 @@ webpackJsonp([1],{
 
 	  // show the login form
 	  render: function () {
+	    var divStyle = {
+	      color: 'black',
+	      margin: '0 10px 0 0'
+	    };
+
 	    return React.createElement(
 	      "div",
 	      null,
 	      React.createElement(
-	        "div",
-	        null,
+	        "form",
+	        { className: "form-vertical col-md-8 col-sm-12", onSubmit: this.login },
 	        React.createElement(
-	          "h2",
+	          "h3",
 	          null,
-	          "Login"
+	          "Login or register!"
 	        ),
 	        React.createElement(
-	          "form",
-	          { className: "form-vertical", onSubmit: this.login },
-	          React.createElement("input", { type: "text", placeholder: "Username", ref: "username", autoFocus: true }),
-	          React.createElement("input", { type: "password", placeholder: "Password", ref: "password" }),
-	          React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Login" }),
-	          this.state.error ? React.createElement(
-	            "div",
-	            { className: "alert" },
-	            "Invalid username or password."
-	          ) : null,
-	          auth.loggedIn() ? React.createElement(
-	            "div",
-	            { className: "alert" },
-	            "Success!"
-	          ) : null
-	        )
-	      ),
-	      React.createElement(
-	        "div",
-	        null,
+	          "div",
+	          { className: "form-group" },
+	          React.createElement(
+	            "label",
+	            null,
+	            "User name:"
+	          ),
+	          React.createElement("input", { className: "form-control", type: "text", placeholder: "Username", ref: "username", autoFocus: true })
+	        ),
 	        React.createElement(
-	          "p",
-	          null,
+	          "div",
+	          { className: "form-group" },
+	          React.createElement(
+	            "label",
+	            null,
+	            "Password:"
+	          ),
+	          React.createElement("input", { className: "form-control", type: "password", placeholder: "Password", ref: "password" })
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "form-group" },
+	          React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Login", style: divStyle }),
 	          React.createElement(
 	            Link,
 	            { to: "/register" },
 	            React.createElement(Badge, { title: "Register" })
 	          )
-	        )
+	        ),
+	        this.state.error ? React.createElement(
+	          "div",
+	          { className: "alert" },
+	          "Invalid username or password."
+	        ) : null,
+	        auth.loggedIn() ? React.createElement(
+	          "div",
+	          { className: "alert" },
+	          "Success!"
+	        ) : null
 	      )
 	    );
 	  }
