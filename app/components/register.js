@@ -43,11 +43,21 @@ var Register = React.createClass({
     return (
       <div>
         <h2>Register</h2>
-        <form className="form-vertical" onSubmit={this.register}>
-          <input type="text" placeholder="Name" ref="name" autoFocus={true} />
-          <input type="text" placeholder="Username" ref="username"/>
-          <input type="password" placeholder="Password" ref="password"/>
-          <input className="btn" type="submit" value="Register" />
+        <form className="form-vertical col-md-8 col-sm-12" onSubmit={this.register}>
+          <div className="form-group">
+            <label>Name:</label>              
+            <input className="form-control" type="text" placeholder="Name" ref="name" autoFocus={true} />
+          </div>
+          <div className="form-group">
+            <label>User name:</label>              
+            <input className="form-control" type="text" placeholder="Username" ref="username" />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input className="form-control" type="password" placeholder="Password" ref="password"/>
+          </div>
+
+          <input className="btn btn-warning" type="submit" value="Register" />
           {this.state.error ? (
              <div className="alert">Invalid username or password.</div>
            ) : null }
