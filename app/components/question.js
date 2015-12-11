@@ -7,7 +7,7 @@ var auth = require("./auth.js");
 var Badge = React.createClass({
   render: function() {
     return (
-      <button className="btn btn-primary" type="button">
+      <button className="btn btn-primary" type="button" bsSize="small">
         {this.props.title} <span className="badge">{this.props.number}</span>
       </button>
     );
@@ -17,7 +17,7 @@ var Badge = React.createClass({
 var AnswerQuestionBadge = React.createClass({
   render: function() {
     return (
-      <button className="btn btn-primary" type="button" onClick={this.props.onClickEvent}>
+      <button className="btn btn-primary" type="button" bsSize="small" onClick={this.props.onClickEvent}>
         {this.props.title} <span className="badge">{this.props.number}</span>
       </button>
     );
@@ -105,7 +105,7 @@ var Question = React.createClass({
              <AnswerQuestionBadge title="Answer Question" onClickEvent={this.handleClick}/>
            ) : (
             <Link to="login">
-             <Badge title="Login to Answer!"/>
+             <Badge title="Login to answer or vote!"/>
             </Link>
            )
           }         

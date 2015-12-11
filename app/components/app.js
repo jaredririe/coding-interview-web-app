@@ -46,7 +46,7 @@ var App = React.createClass({
                  <span className="icon-bar"></span>
                  <span className="icon-bar"></span>
               </button>
-              <Link className="navbar-brand" to="/">Home</Link>
+              <a className="navbar-brand" href="/">the coding interview</a>
             </div>
             <div className="collapse navbar-collapse" id="navbar-collapse">
               {this.state.loggedIn ? (
