@@ -524,14 +524,8 @@ webpackJsonp([1],{
 	  render: function () {
 	    return React.createElement(
 	      'button',
-	      { className: 'btn btn-primary', type: 'button', onClick: this.props.onPlusEvent },
-	      this.props.title,
-	      ' ',
-	      React.createElement(
-	        'span',
-	        { className: 'badge' },
-	        this.props.number
-	      )
+	      { className: 'btn btn-primary btn-sm', type: 'button', onClick: this.props.onPlusEvent },
+	      React.createElement('i', { className: 'fa fa-plus' })
 	    );
 	  }
 	});
@@ -542,14 +536,8 @@ webpackJsonp([1],{
 	  render: function () {
 	    return React.createElement(
 	      'button',
-	      { className: 'btn btn-primary', type: 'button', onClick: this.props.onMinusEvent },
-	      this.props.title,
-	      ' ',
-	      React.createElement(
-	        'span',
-	        { className: 'badge' },
-	        this.props.number
-	      )
+	      { className: 'btn btn-primary btn-sm', type: 'button', onClick: this.props.onMinusEvent },
+	      React.createElement('i', { className: 'fa fa-minus' })
 	    );
 	  }
 	});
@@ -560,14 +548,10 @@ webpackJsonp([1],{
 	  render: function () {
 	    return React.createElement(
 	      'button',
-	      { className: 'btn btn-primary', type: 'button', onClick: this.props.onDeleteEvent },
-	      this.props.title,
-	      ' ',
-	      React.createElement(
-	        'span',
-	        { className: 'badge' },
-	        this.props.number
-	      )
+	      { className: 'btn btn-primary btn-xs', type: 'button', onClick: this.props.onDeleteEvent },
+	      React.createElement('i', { className: 'fa fa-remove' }),
+	      '  ',
+	      this.props.title
 	    );
 	  }
 	});
@@ -602,49 +586,34 @@ webpackJsonp([1],{
 	        { className: 'thumbnail' },
 	        React.createElement(
 	          'div',
-	          { className: 'caption' },
+	          { className: 'caption', style: { display: "table", width: "100%" } },
 	          React.createElement(
 	            'div',
-	            { className: 'row' },
+	            { className: 'col-xs-12', style: { display: "table-row" } },
 	            React.createElement(
 	              'div',
-	              { className: 'col-xs-12 col-md-1' },
-	              React.createElement(PlusBadge, { title: '+', onPlusEvent: this.handlePlus })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-xs-12 col-md-1' },
+	              { className: 'col-xs-2 col-md-1', style: { display: "table-cell", textAlign: "center" } },
+	              React.createElement(PlusBadge, { title: '+', onPlusEvent: this.handlePlus }),
 	              React.createElement(
 	                'h4',
 	                null,
 	                this.props.answer.votes
-	              )
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-xs-12 col-md-1' },
+	              ),
 	              React.createElement(MinusBadge, { title: '-', onMinusEvent: this.handleMinus })
 	            ),
+	            React.createElement('p', { className: 'col-xs-10 col-md-11', style: { display: "table-cell" }, dangerouslySetInnerHTML: { __html: this.props.answer.body } }),
 	            React.createElement(
 	              'div',
-	              { className: 'col-xs-12' },
-	              React.createElement(
-	                'h4',
-	                null,
-	                this.props.answer.name
-	              )
+	              { className: 'col-xs-10 col-md-11' },
+	              this.props.answer.name,
+	              ' - ',
+	              timeString,
+	              this.props.answer.name == auth.getName() ? React.createElement(
+	                'div',
+	                { style: { float: "right" } },
+	                React.createElement(DeleteBadge, { title: 'Delete Answer', onDeleteEvent: this.handleDelete })
+	              ) : null
 	            )
-	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            this.props.answer.name == auth.getName() ? React.createElement(DeleteBadge, { title: 'Delete Answer', onDeleteEvent: this.handleDelete }) : null
-	          ),
-	          React.createElement('p', { dangerouslySetInnerHTML: { __html: this.props.answer.body } }),
-	          React.createElement(
-	            'div',
-	            null,
-	            timeString
 	          )
 	        )
 	      )
@@ -3672,11 +3641,38 @@ webpackJsonp([1],{
 	      ),
 	      React.createElement(
 	        "form",
-	        { className: "form-vertical", onSubmit: this.register },
-	        React.createElement("input", { type: "text", placeholder: "Name", ref: "name", autoFocus: true }),
-	        React.createElement("input", { type: "text", placeholder: "Username", ref: "username" }),
-	        React.createElement("input", { type: "password", placeholder: "Password", ref: "password" }),
-	        React.createElement("input", { className: "btn", type: "submit", value: "Register" }),
+	        { className: "form-vertical col-md-8 col-sm-12", onSubmit: this.register },
+	        React.createElement(
+	          "div",
+	          { className: "form-group" },
+	          React.createElement(
+	            "label",
+	            null,
+	            "Name:"
+	          ),
+	          React.createElement("input", { className: "form-control", type: "text", placeholder: "Name", ref: "name", autoFocus: true })
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "form-group" },
+	          React.createElement(
+	            "label",
+	            null,
+	            "User name:"
+	          ),
+	          React.createElement("input", { className: "form-control", type: "text", placeholder: "Username", ref: "username" })
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "form-group" },
+	          React.createElement(
+	            "label",
+	            null,
+	            "Password:"
+	          ),
+	          React.createElement("input", { className: "form-control", type: "password", placeholder: "Password", ref: "password" })
+	        ),
+	        React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Register" }),
 	        this.state.error ? React.createElement(
 	          "div",
 	          { className: "alert" },

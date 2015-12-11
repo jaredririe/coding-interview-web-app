@@ -6,8 +6,8 @@ var auth = require('./auth.js');
 var PlusBadge = React.createClass({
   render: function() {
     return (
-      <button className="btn btn-primary" type="button" onClick={this.props.onPlusEvent}>
-        {this.props.title} <span className="badge">{this.props.number}</span>
+      <button className="btn btn-primary btn-sm" type="button" onClick={this.props.onPlusEvent}>
+        <i className="fa fa-plus"></i>
       </button>
     );
   }
@@ -16,8 +16,8 @@ var PlusBadge = React.createClass({
 var MinusBadge = React.createClass({
   render: function() {
     return (
-      <button className="btn btn-primary" type="button" onClick={this.props.onMinusEvent}>
-        {this.props.title} <span className="badge">{this.props.number}</span>
+      <button className="btn btn-primary btn-sm" type="button" onClick={this.props.onMinusEvent}>
+        <i className="fa fa-minus"></i>
       </button>
     );
   }
@@ -26,8 +26,8 @@ var MinusBadge = React.createClass({
 var DeleteBadge = React.createClass({
   render: function() {
     return (
-      <button className="btn btn-primary" type="button" onClick={this.props.onDeleteEvent}>
-        {this.props.title} <span className="badge">{this.props.number}</span>
+      <button className="btn btn-primary btn-xs" type="button" onClick={this.props.onDeleteEvent}>
+        <i className="fa fa-remove"></i>&nbsp;&nbsp;{this.props.title}
       </button>
     );
   }
@@ -62,31 +62,24 @@ var Answer = React.createClass({
     return (
       <div>
         <div className="thumbnail">
-          <div className="caption">
-            <div className = "row">
-              <div className = "col-xs-12 col-md-1">
-                <PlusBadge title="+" onPlusEvent = {this.handlePlus}/>
-              </div>
-              <div className="col-xs-12 col-md-1">
-                <h4>{this.props.answer.votes}</h4>
-              </div>
-              <div className = "col-xs-12 col-md-1">
+          <div className="caption" style={{display: "table", width: "100%"}}>
+            <div className="col-xs-12" style={{display: "table-row"}}>
+              <div className="col-xs-2 col-md-1" style={{display: "table-cell", textAlign: "center"}}>
+                <PlusBadge title="+" onPlusEvent = {this.handlePlus}/>              
+                <h4>{this.props.answer.votes}</h4>             
                 <MinusBadge title="-" onMinusEvent = {this.handleMinus}/>
               </div>
-              <div className = "col-xs-12">
-                <h4>{this.props.answer.name}</h4>
+              <p className="col-xs-10 col-md-11" style={{display: "table-cell"}} dangerouslySetInnerHTML={{__html: this.props.answer.body}}></p>
+              <div className="col-xs-10 col-md-11">
+                {this.props.answer.name} - {timeString}
+                {(this.props.answer.name == auth.getName()) ? (
+                  <div style={{float: "right"}}>
+                    <DeleteBadge title="Delete Answer" onDeleteEvent={this.handleDelete}/>
+                  </div>
+                  ):null
+                }
               </div>
-            </div>
-            <p>
-              {(this.props.answer.name == auth.getName()) ? (
-                <DeleteBadge title="Delete Answer" onDeleteEvent={this.handleDelete}/>
-                ):null
-              }
-            </p>
-            <p dangerouslySetInnerHTML={{__html: this.props.answer.body}}></p>
-            <div>
-              {timeString}
-            </div>
+            </div>            
           </div>
         </div>
       </div>
