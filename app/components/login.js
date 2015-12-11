@@ -53,31 +53,36 @@ var Login = React.createClass({
 
   // show the login form
   render: function() {
+    var divStyle = {
+      color: 'black',
+      margin: '0 10px 0 0'
+    };
+
     return (
       <div>
-        <div>
-          <h2>Login</h2>
-          <form className="form-vertical" onSubmit={this.login}>
-            <input type="text" placeholder="Username" ref="username" autoFocus={true} />
-            <input type="password" placeholder="Password" ref="password"/>
-            <input className="btn btn-warning" type="submit" value="Login" />
-            {this.state.error ? (
-               <div className="alert">Invalid username or password.</div>
-             ) : null
-            }
-            {auth.loggedIn() ? (
-              <div className="alert">Success!</div>
-              ) : null
-            }
-          </form>
-        </div>
-        <div>
-          <p>
-            <Link to="/register">
-              <Badge title="Register"/>
-            </Link>
-          </p>
-        </div>
+        <form className="form-vertical col-md-8 col-sm-12" onSubmit={this.login}>
+          <h3>Login or register!</h3>
+          <div className="form-group">
+            <label>User name:</label>              
+            <input className="form-control" type="text" placeholder="Username" ref="username" autoFocus={true} />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input className="form-control" type="password" placeholder="Password" ref="password"/>
+          </div>
+          <div className="form-group">
+            <input className="btn btn-warning" type="submit" value="Login" style={divStyle} />
+            <Link to="/register"><Badge title="Register"/></Link>
+          </div>
+          {this.state.error ? (
+             <div className="alert">Invalid username or password.</div>
+           ) : null
+          }
+          {auth.loggedIn() ? (
+            <div className="alert">Success!</div>
+            ) : null
+          }
+        </form>
       </div>
     );
   }
