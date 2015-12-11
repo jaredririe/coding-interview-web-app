@@ -34,10 +34,19 @@ var Create = React.createClass({
   render: function() {
     return (
         <div>
-          <form className="form-vertical" onSubmit={this.addQuestion}>
-            <input type="text" placeholder="Question Title" ref="header" autoFocus={true} />
-            <input type="text" placeholder="Type your question..." ref="body" autoFocus={true} />
-            <input className="btn btn-warning" type="submit" value="Create Question" />
+          <form className="form-vertical col-md-8 col-sm-12" role="form" onSubmit={this.addQuestion}>
+            <h3>Ask a question!</h3>
+            <div className="form-group">
+              <label>Title:</label>
+              <input className="form-control" type="text" ref="header" autoFocus={true} />
+            </div>
+            <div className="form-group">
+              <label>Body:</label>
+              <textarea rows="8" className="form-control" type="text" placeholder="Type your question..." ref="body" autoFocus={true}></textarea>
+            </div>
+            <div className="form-group">
+              <input className="btn btn-warning" type="submit" value="Create Question" />
+            </div>
           </form>
         </div>
     );
