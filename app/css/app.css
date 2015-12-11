@@ -9,7 +9,6 @@ body {
     border-radius: 0px !important;
 }
 
-
 .navbar-default {
   background-color: #6d84b4 !important;
   background-image: none;
@@ -19,23 +18,33 @@ body {
   box-shadow: 0px 2px 5px 2px #aaa;
 }
 
-.navbar-default .navbar-nav>li>a {
+.navbar-default .navbar-nav > li > a {
 	font-family: Oxygen;
-    color: #333 !important;
+    color: white;
     font-size: 1.5em;
 }
 
+.navbar-default .navbar-nav > li > a:hover {
+	color: white;
+    background-color: #286090;
+    border-color: #204d74;
+}
+
 .navbar-default .navbar-brand {
-    color: #333 !important;
+    color: white;
     font-family: Inconsolata;
     font-size: 2.5em;
     margin-right: 50px;
 }
 
+.navbar-default .navbar-brand:hover {
+	color: white;
+}
+
 .btn-primary {
 	background-color: #6d84b4;
 	font-family: Oxygen;
-	color: #333;
+	color: white;
 }
 
 .thumbnail{
@@ -49,4 +58,8 @@ body {
 	color: #333;
 	border-color: #6d84b4;
 	font-family: Oxygen;
+}
+
+.toolbar-button {
+	margin-right: 5px;
 }
