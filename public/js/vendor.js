@@ -20061,6 +20061,10 @@
 
 	var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
 
+	var _parsePath = __webpack_require__(175);
+
+	var _parsePath2 = _interopRequireDefault(_parsePath);
+
 	function isAbsolutePath(path) {
 	  return typeof path === 'string' && path.charAt(0) === '/';
 	}
@@ -20119,7 +20123,9 @@
 	      key = state = null;
 	    }
 
-	    return history.createLocation(path, state, undefined, key);
+	    var location = _parsePath2['default'](path);
+
+	    return history.createLocation(_extends({}, location, { state: state }), undefined, key);
 	  }
 
 	  function startHashChangeListener(_ref) {
@@ -20590,6 +20596,7 @@
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
+	//import warning from 'warning'
 	'use strict';
 
 	exports.__esModule = true;
@@ -20610,13 +20617,13 @@
 
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 
-	var _parsePath = __webpack_require__(175);
-
-	var _parsePath2 = _interopRequireDefault(_parsePath);
-
 	var _runTransitionHook = __webpack_require__(177);
 
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
+
+	var _parsePath = __webpack_require__(175);
+
+	var _parsePath2 = _interopRequireDefault(_parsePath);
 
 	var _deprecate = __webpack_require__(178);
 
@@ -20755,11 +20762,11 @@
 	  }
 
 	  function push(location) {
-	    transitionTo(createLocation(location, null, _Actions.PUSH, createKey()));
+	    transitionTo(createLocation(location, _Actions.PUSH, createKey()));
 	  }
 
 	  function replace(location) {
-	    transitionTo(createLocation(location, null, _Actions.REPLACE, createKey()));
+	    transitionTo(createLocation(location, _Actions.REPLACE, createKey()));
 	  }
 
 	  function goBack() {
@@ -20794,10 +20801,25 @@
 	    return createPath(location);
 	  }
 
-	  function createLocation(path, state, action) {
-	    var key = arguments.length <= 3 || arguments[3] === undefined ? createKey() : arguments[3];
+	  function createLocation(location, action) {
+	    var key = arguments.length <= 2 || arguments[2] === undefined ? createKey() : arguments[2];
 
-	    return _createLocation3['default'](path, state, action, key);
+	    if (typeof action === 'object') {
+	      //warning(
+	      //  false,
+	      //  'The state (2nd) argument to history.createLocation is deprecated; use a ' +
+	      //  'location descriptor instead'
+	      //)
+
+	      if (typeof location === 'string') location = _parsePath2['default'](location);
+
+	      location = _extends({}, location, { state: action });
+
+	      action = key;
+	      key = arguments[3] || createKey();
+	    }
+
+	    return _createLocation3['default'](location, action, key);
 	  }
 
 	  // deprecated
@@ -21042,9 +21064,12 @@
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
+	//import warning from 'warning'
 	'use strict';
 
 	exports.__esModule = true;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -21056,18 +21081,30 @@
 
 	function createLocation() {
 	  var location = arguments.length <= 0 || arguments[0] === undefined ? '/' : arguments[0];
-	  var state = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	  var action = arguments.length <= 2 || arguments[2] === undefined ? _Actions.POP : arguments[2];
-	  var key = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? _Actions.POP : arguments[1];
+	  var key = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
+	  var _fourthArg = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
 
 	  if (typeof location === 'string') location = _parsePath2['default'](location);
+
+	  if (typeof action === 'object') {
+	    //warning(
+	    //  false,
+	    //  'The state (2nd) argument to createLocation is deprecated; use a ' +
+	    //  'location descriptor instead'
+	    //)
+
+	    location = _extends({}, location, { state: action });
+
+	    action = key || _Actions.POP;
+	    key = _fourthArg;
+	  }
 
 	  var pathname = location.pathname || '/';
 	  var search = location.search || '';
 	  var hash = location.hash || '';
-
-	  // TODO: Deprecate passing state directly into createLocation.
-	  state = location.state || state;
+	  var state = location.state || null;
 
 	  return {
 	    pathname: pathname,
@@ -21182,28 +21219,23 @@
 
 /***/ },
 /* 178 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	//import warning from 'warning'
+
+	"use strict";
 
 	exports.__esModule = true;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _warning = __webpack_require__(161);
-
-	var _warning2 = _interopRequireDefault(_warning);
-
-	function deprecate(fn, message) {
-	  return function () {
-	    process.env.NODE_ENV !== 'production' ? _warning2['default'](false, '[history] ' + message) : undefined;
-	    return fn.apply(this, arguments);
-	  };
+	function deprecate(fn) {
+	  return fn;
+	  //return function () {
+	  //  warning(false, '[history] ' + message)
+	  //  return fn.apply(this, arguments)
+	  //}
 	}
 
-	exports['default'] = deprecate;
-	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	exports["default"] = deprecate;
+	module.exports = exports["default"];
 
 /***/ },
 /* 179 */
@@ -23693,6 +23725,10 @@
 
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 
+	var _parsePath = __webpack_require__(175);
+
+	var _parsePath2 = _interopRequireDefault(_parsePath);
+
 	function createStateStorage(entries) {
 	  return entries.filter(function (entry) {
 	    return entry.state;
@@ -23772,7 +23808,9 @@
 	      entry.key = key;
 	    }
 
-	    return history.createLocation(path, state, undefined, key);
+	    var location = _parsePath2['default'](path);
+
+	    return history.createLocation(_extends({}, location, { state: state }), undefined, key);
 	  }
 
 	  function canGo(n) {

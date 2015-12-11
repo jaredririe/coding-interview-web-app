@@ -345,8 +345,18 @@ webpackJsonp([1],{
 	  },
 
 	  // Handle answer question button
-	  handleClick: function (event) {
-	    this.setState({ displayForm: true });
+	  showDiv: function (event) {
+	    var editor = new wysihtml5.Editor('editor', {
+	      toolbar: 'toolbar',
+	      parserRules: wysihtml5ParserRules
+	    });
+
+	    var editorDiv = $('#editorDiv');
+	    editorDiv.slideDown();
+
+	    $('.btn-warning', editorDiv).siblings('button').click(function (event) {
+	      editorDiv.slideUp();
+	    });
 	  },
 
 	  // Add answer to database
@@ -381,6 +391,14 @@ webpackJsonp([1],{
 	  },
 
 	  render: function () {
+	    var divStyle = {
+	      display: 'none',
+	      border: '2px solid darkgray',
+	      padding: '10px',
+	      marginBottom: '20px'
+	    };
+	    var editorStyle = {};
+
 	    return React.createElement(
 	      'div',
 	      null,
@@ -395,7 +413,7 @@ webpackJsonp([1],{
 	      React.createElement(
 	        'p',
 	        null,
-	        this.state.loggedIn ? React.createElement(AnswerQuestionBadge, { title: 'Answer Question', onClickEvent: this.handleClick }) : React.createElement(
+	        this.state.loggedIn ? React.createElement(AnswerQuestionBadge, { title: 'Answer Question', onClickEvent: this.showDiv }) : React.createElement(
 	          Link,
 	          { to: 'login' },
 	          React.createElement(Badge, { title: 'Login to answer or vote!' })
@@ -403,17 +421,41 @@ webpackJsonp([1],{
 	      ),
 	      React.createElement(
 	        'div',
-	        null,
-	        this.state.displayForm ? React.createElement(
-	          'div',
-	          null,
+	        { id: 'editorDiv', style: divStyle },
+	        React.createElement(
+	          'form',
+	          { className: 'form-vertical', onSubmit: this.addAnswer },
 	          React.createElement(
-	            'form',
-	            { className: 'form-vertical', onSubmit: this.addAnswer },
-	            React.createElement('input', { type: 'text', placeholder: 'Type your answer...', ref: 'body', autoFocus: true }),
-	            React.createElement('input', { className: 'btn btn-warning', type: 'submit', value: 'Submit' })
+	            'div',
+	            { id: 'toolbar', style: { marginBottom: "10px" } },
+	            React.createElement(
+	              'a',
+	              { title: 'Bold', className: 'btn btn-sm btn-primary toolbar-button', 'data-wysihtml5-command': 'bold' },
+	              React.createElement('i', { className: 'fa fa-bold' })
+	            ),
+	            React.createElement(
+	              'a',
+	              { title: 'Italic', className: 'btn btn-sm btn-primary toolbar-button', 'data-wysihtml5-command': 'italic' },
+	              React.createElement('i', { className: 'fa fa-italic' })
+	            ),
+	            React.createElement(
+	              'a',
+	              { title: 'Header', className: 'btn btn-sm btn-primary toolbar-button', 'data-wysihtml5-command': 'formatBlock', 'data-wysihtml5-command-value': 'h3' },
+	              React.createElement('i', { className: 'fa fa-header' })
+	            )
+	          ),
+	          React.createElement('textarea', { className: 'form-control', ref: 'body', id: 'editor' }),
+	          React.createElement(
+	            'div',
+	            { style: { marginTop: "10px" } },
+	            React.createElement('input', { className: 'btn btn-warning', type: 'submit', value: 'Submit' }),
+	            React.createElement(
+	              'button',
+	              { className: 'btn btn-default', type: 'reset' },
+	              'Cancel'
+	            )
 	          )
-	        ) : null
+	        )
 	      ),
 	      React.createElement(
 	        'div',
@@ -425,6 +467,7 @@ webpackJsonp([1],{
 	});
 
 	module.exports = Question;
+	//<input className="form-control" type="text" ref="body" autoFocus={true} />
 
 /***/ },
 
@@ -803,7 +846,7 @@ webpackJsonp([1],{
 	    var timeString = this.props.question.name + " - " + timestamp.getMonth() + "/" + timestamp.getDate() + "/" + timestamp.getFullYear() + " - " + timestamp.getHours() + ":" + minutes;
 	    return React.createElement(
 	      'div',
-	      { className: 'col-xs-12' },
+	      { style: { display: "inline-block" } },
 	      React.createElement(
 	        'div',
 	        { className: 'thumbnail' },
@@ -812,7 +855,7 @@ webpackJsonp([1],{
 	          { className: 'caption' },
 	          React.createElement(
 	            'h3',
-	            null,
+	            { style: { marginTop: "0" } },
 	            this.props.question.header
 	          ),
 	          React.createElement(
@@ -825,22 +868,22 @@ webpackJsonp([1],{
 	            { className: 'row' },
 	            React.createElement(
 	              'div',
-	              { className: 'col-md-4' },
-	              this.props.showButton ? React.createElement(
-	                'p',
+	              { className: 'col-md-12 col-xs-6' },
+	              timeString
+	            ),
+	            this.props.showButton ? React.createElement(
+	              'div',
+	              { style: { marginTop: "10px" }, className: 'col-md-12 col-xs-6' },
+	              React.createElement(
+	                'span',
 	                null,
 	                React.createElement(
 	                  Link,
 	                  { to: `/question/${ this.props.question.id }` },
 	                  React.createElement(Badge, { title: 'View Question' })
 	                )
-	              ) : null
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'col-md-8' },
-	              timeString
-	            )
+	              )
+	            ) : null
 	          )
 	        )
 	      )
