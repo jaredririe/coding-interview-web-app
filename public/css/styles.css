@@ -16,7 +16,7 @@
 
 
 .navbar-default {
-  background-color: #00ACDD !important;
+  background-color: #6d84b4 !important;
   background-image: none;
   background-repeat: no-repeat;
   filter: none;
@@ -38,7 +38,7 @@
 }
 
 .btn-primary {
-	background-color: #00ACDD;
+	background-color: #6d84b4;
 	font-family: Oxygen;
 	color: #333;
 }
@@ -46,13 +46,12 @@
 .thumbnail{
 	/*background-color: #CEF5FF;*/
 	border-top-width: 20px;
-	border-color: #00ACDD;
+	border-color: #6d84b4;
 	font-family: Oxygen;
 }
 
 .nav-tabs{
 	color: #333;
-	border-color: #00ACDD;
+	border-color: #6d84b4;
 	font-family: Oxygen;
 }
-/*# sourceMappingURL=styles.css.map*/
