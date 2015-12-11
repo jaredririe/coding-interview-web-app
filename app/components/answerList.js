@@ -6,7 +6,16 @@ var api = require("./api.js");
 var AnswerList = React.createClass({
 
   render: function() {
-    var list = this.props.answers.map(function(answer){
+    var sortedList = this.props.answers.sort(function(answer1, answer2){
+      if(answer1.votes < answer2.votes){
+        return 1;
+      }
+      if(answer1.votes > answer2.votes){
+        return -1;
+      }
+      return 0;
+    });
+    var list = sortedList.map(function(answer){
       return (
         <Answer key={answer.id} answer={answer} reload={this.props.reload} />
         );

@@ -1,7 +1,7 @@
 var React = require("react");
 var Link = require('react-router').Link
 var api = require('./api.js');
-
+var auth = require('./auth.js');
 var PlusBadge = React.createClass({
   render: function() {
     return (
@@ -22,6 +22,16 @@ var MinusBadge = React.createClass({
   }
 });
 
+var DeleteBadge = React.createClass({
+  render: function() {
+    return (
+      <button className="btn btn-primary" type="button" onClick={this.props.onDeleteEvent}>
+        {this.props.title} <span className="badge">{this.props.number}</span>
+      </button>
+    );
+  }
+});
+
 var Answer = React.createClass({
 
   handlePlus: function(event){
@@ -32,6 +42,10 @@ var Answer = React.createClass({
   handleMinus: function(event){
     this.props.answer.votes = this.props.answer.votes - 1;
     api.updateAnswer(this.props.answer, this.props.reload);
+  },
+
+  handleDelete: function(event){
+    api.deleteAnswer(this.props.answer, this.props.reload);
   },
 
   render: function() {
@@ -53,6 +67,12 @@ var Answer = React.createClass({
                 <h4>{this.props.answer.name}</h4>
               </div>
             </div>
+            <p>
+              {(this.props.answer.name == auth.getName()) ? (
+                <DeleteBadge title="Delete Answer" onDeleteEvent={this.handleDelete}/>
+                ):null
+              }
+            </p>
             <p>{this.props.answer.body}</p>
             <div>
               {this.props.answer.timestamp}
