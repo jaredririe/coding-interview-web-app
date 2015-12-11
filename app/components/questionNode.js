@@ -22,11 +22,14 @@ var QuestionNode = React.createClass({
             <p>{this.props.question.body}</p>
             <div className = "row">
               <div className = "col-md-4">
-                <p>
-                  <Link to={`/question/${this.props.question.id}`}>
-                    <Badge title="Answer Question"/>
-                  </Link>
-                </p>
+                {this.props.showButton ? (
+                  <p>
+                    <Link to={`/question/${this.props.question.id}`}>
+                      <Badge title="View Question"/>
+                    </Link>
+                  </p>
+                  ) : null
+                }
               </div>
               <div className = "col-md-8">
               {this.props.user} - {this.props.timestamp}
