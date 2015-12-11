@@ -106,9 +106,13 @@ var Question = React.createClass({
     return (
       <div>
         <div>
-          <QuestionNode key={this.props.params.question_id}
-                        question={this.state.question}
-                        reload={this.reload} />
+          {(this.state.question != null) ?(
+            <QuestionNode key={this.props.params.question_id}
+                          question={this.state.question}
+                          showButton = {false}
+                          reload={this.reload} />
+            ) : null
+          }
         </div>
         <p>
           {this.state.loggedIn ? (

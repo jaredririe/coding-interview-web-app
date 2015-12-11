@@ -7,7 +7,7 @@ var QuestionList = React.createClass({
   render: function() {
     var list = this.props.questions.map(function(question) {
       return (
-        <QuestionNode key={question.id} question={question} reload={this.props.reload} />
+        <QuestionNode key={question.id} question={question} showButton = {true} reload={this.props.reload} />
       );
     }.bind(this));
 
