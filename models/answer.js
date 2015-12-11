@@ -11,7 +11,7 @@ var Question = require('./question.js');
 var answerSchema = new Schema({
   user: {type: ObjectId, ref: 'users'},
   name: String,
-  questionID: Number,//{type: ObjectId, ref: 'questions'},
+  questionID: {type: ObjectId, ref: 'questions'},
   body: String,
   timestamp: {type: Date, default: Date.now},
   votes: {type: Number, default: 0}
