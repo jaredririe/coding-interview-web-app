@@ -29,6 +29,13 @@ var Create = React.createClass({
   redirect: function(){
     this.history.pushState(null, "/");
   },
+
+  componentDidMount: function(){
+    var editor = new wysihtml5.Editor('editor', {
+      toolbar: 'toolbar',
+      parserRules:  wysihtml5ParserRules
+    });
+  },
   
   // create question form
   render: function() {
@@ -42,7 +49,12 @@ var Create = React.createClass({
             </div>
             <div className="form-group">
               <label>Body:</label>
-              <textarea rows="8" className="form-control" type="text" placeholder="Type your question..." ref="body" autoFocus={true}></textarea>
+              <div id="toolbar" style={{marginBottom: "10px"}}>
+                <a title="Bold" className="btn btn-sm btn-primary toolbar-button" data-wysihtml5-command="bold"><i className="fa fa-bold"></i></a>
+                <a title="Italic" className="btn btn-sm btn-primary toolbar-button" data-wysihtml5-command="italic"><i className="fa fa-italic"></i></a>
+                <a title="Header" className="btn btn-sm btn-primary toolbar-button" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3"><i className="fa fa-header"></i></a>
+              </div>
+              <textarea className="form-control" ref="body" id="editor"></textarea>
             </div>
             <div className="form-group">
               <input className="btn btn-warning" type="submit" value="Create Question" />

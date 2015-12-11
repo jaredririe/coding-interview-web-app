@@ -846,7 +846,7 @@ webpackJsonp([1],{
 	    var timeString = this.props.question.name + " - " + timestamp.getMonth() + "/" + timestamp.getDate() + "/" + timestamp.getFullYear() + " - " + timestamp.getHours() + ":" + minutes;
 	    return React.createElement(
 	      'div',
-	      { style: { display: "inline-block" } },
+	      { style: { display: "inline-block", width: "100%" } },
 	      React.createElement(
 	        'div',
 	        { className: 'thumbnail' },
@@ -858,11 +858,7 @@ webpackJsonp([1],{
 	            { style: { marginTop: "0" } },
 	            this.props.question.header
 	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            this.props.question.body
-	          ),
+	          React.createElement('p', { dangerouslySetInnerHTML: { __html: this.props.question.body } }),
 	          React.createElement(
 	            'div',
 	            { className: 'row' },
@@ -3731,6 +3727,13 @@ webpackJsonp([1],{
 	    this.history.pushState(null, "/");
 	  },
 
+	  componentDidMount: function () {
+	    var editor = new wysihtml5.Editor('editor', {
+	      toolbar: 'toolbar',
+	      parserRules: wysihtml5ParserRules
+	    });
+	  },
+
 	  // create question form
 	  render: function () {
 	    return React.createElement(
@@ -3762,7 +3765,26 @@ webpackJsonp([1],{
 	            null,
 	            "Body:"
 	          ),
-	          React.createElement("textarea", { rows: "8", className: "form-control", type: "text", placeholder: "Type your question...", ref: "body", autoFocus: true })
+	          React.createElement(
+	            "div",
+	            { id: "toolbar", style: { marginBottom: "10px" } },
+	            React.createElement(
+	              "a",
+	              { title: "Bold", className: "btn btn-sm btn-primary toolbar-button", "data-wysihtml5-command": "bold" },
+	              React.createElement("i", { className: "fa fa-bold" })
+	            ),
+	            React.createElement(
+	              "a",
+	              { title: "Italic", className: "btn btn-sm btn-primary toolbar-button", "data-wysihtml5-command": "italic" },
+	              React.createElement("i", { className: "fa fa-italic" })
+	            ),
+	            React.createElement(
+	              "a",
+	              { title: "Header", className: "btn btn-sm btn-primary toolbar-button", "data-wysihtml5-command": "formatBlock", "data-wysihtml5-command-value": "h3" },
+	              React.createElement("i", { className: "fa fa-header" })
+	            )
+	          ),
+	          React.createElement("textarea", { className: "form-control", ref: "body", id: "editor" })
 	        ),
 	        React.createElement(
 	          "div",

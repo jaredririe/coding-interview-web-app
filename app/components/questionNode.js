@@ -25,11 +25,11 @@ var QuestionNode = React.createClass({
                     + ":" 
                     + minutes;
     return (
-      <div style={{display: "inline-block"}}>
+      <div style={{display: "inline-block", width: "100%"}}>
         <div className="thumbnail">
           <div className="caption">
             <h3 style={{marginTop: "0"}}>{this.props.question.header}</h3>
-            <p>{this.props.question.body}</p>
+            <p dangerouslySetInnerHTML={{__html: this.props.question.body}}></p>
             <div className = "row">
               <div className = "col-md-12 col-xs-6">
                 {timeString}
