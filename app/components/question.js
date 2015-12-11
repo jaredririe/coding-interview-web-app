@@ -37,8 +37,13 @@ var Question = React.createClass({
   },
   
   // Handle answer question button
-  handleClick: function(event){
-    this.setState({displayForm: true});
+  showDiv: function(event){
+    var editorDiv = $('#editorDiv');
+    editorDiv.slideDown();
+
+    $('.btn-warning', editorDiv).siblings('button').click(function(event){
+      editorDiv.slideUp();
+    });
   },
   
   // Add answer to database
@@ -73,6 +78,13 @@ var Question = React.createClass({
   },
 
   render: function() {
+    var divStyle = {
+      display: 'none',
+      border: '2px solid darkgray',
+      padding: '10px',
+      marginBottom: '20px'
+    };
+
     return (
       <div>
         <div>
@@ -86,7 +98,7 @@ var Question = React.createClass({
         </div>
         <p>
           {this.state.loggedIn ? (
-             <AnswerQuestionBadge title="Answer Question" onClickEvent={this.handleClick}/>
+             <AnswerQuestionBadge title="Answer Question" onClickEvent={this.showDiv}/>
            ) : (
             <Link to="login">
              <Badge title="Login to answer or vote!"/>
@@ -94,16 +106,12 @@ var Question = React.createClass({
            )
           }         
         </p>
-        <div>
-          {this.state.displayForm ? (
-            <div>
-              <form className="form-vertical" onSubmit={this.addAnswer}>
-                <input type="text" placeholder="Type your answer..." ref = "body" autoFocus={true} />
-                <input className="btn btn-warning" type="submit" value="Submit" />
-              </form>
-            </div>
-            ) : null
-          }
+        <div id="editorDiv" style={divStyle}>
+          <form className="form-vertical" onSubmit={this.addAnswer}>            
+            <input className="form-control" type="text" ref="body" autoFocus={true} />            
+            <input className="btn btn-warning" type="submit" value="Submit" />
+            <button className="btn btn-default" type="reset">Cancel</button>
+          </form>
         </div>
         <div>
           <AnswerList answers={this.state.answers} reload={this.reload}/>
