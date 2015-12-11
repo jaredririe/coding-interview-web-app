@@ -25,25 +25,25 @@ var QuestionNode = React.createClass({
                     + ":" 
                     + minutes;
     return (
-      <div className="col-xs-12">
+      <div style={{display: "inline-block"}}>
         <div className="thumbnail">
           <div className="caption">
-            <h3>{this.props.question.header}</h3>
+            <h3 style={{marginTop: "0"}}>{this.props.question.header}</h3>
             <p>{this.props.question.body}</p>
             <div className = "row">
-              <div className = "col-md-4">
-                {this.props.showButton ? (
-                  <p>
-                    <Link to={`/question/${this.props.question.id}`}>
-                      <Badge title="View Question"/>
-                    </Link>
-                  </p>
-                  ) : null
-                }
+              <div className = "col-md-12 col-xs-6">
+                {timeString}
               </div>
-              <div className = "col-md-8">
-              {timeString}
-              </div>
+              {this.props.showButton 
+                ? (<div style={{marginTop: "10px"}} className="col-md-12 col-xs-6">              
+                    <span>
+                      <Link to={`/question/${this.props.question.id}`}>
+                        <Badge title="View Question"/>
+                      </Link>
+                    </span>
+                  </div>)
+                : null
+              }
             </div>
           </div>
         </div>

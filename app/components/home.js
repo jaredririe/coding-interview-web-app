@@ -45,7 +45,7 @@ var Home = React.createClass({
 				  </div>
 				  <div id="popular" className="tab-pane fade">
 				    <h3 className="col-xs-12">Most popular questions</h3>
-				    	<QuestionList questions={this.state.questions} reload={this.reload}/>
+			    	<QuestionList questions={this.state.questions} reload={this.reload}/>
 				  </div>
 				  <div id="votes" className="tab-pane fade">
 				    <h3 className="col-xs-12">Most voted questions</h3>
