@@ -50,6 +50,7 @@ var api = {
       type: 'GET',
       success: function(res) {
         console.log("success in getQuestion");
+        console.log(res);
         if (cb)
           console.log("calling cb");
           cb(true, res);
