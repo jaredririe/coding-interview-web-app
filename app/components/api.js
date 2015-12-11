@@ -22,6 +22,45 @@ var api = {
     });
   },
   
+  // get all questions, call the callback when complete
+  getQuestions: function(cb) {
+    var url = "/api/question/get";
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'GET',
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+  
+  // get a question, call the callback when complete
+  getQuestion: function(question_id, cb) {
+    var url = "/api/question/get/" + question_id;
+    console.log(url);
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'GET',
+      success: function(res) {
+        console.log("success in getQuestion");
+        if (cb)
+          console.log("calling cb");
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+  
   // add an item, call the callback when complete
   addQuestion: function(body, header, cb) {
     var url = "/api/questions";

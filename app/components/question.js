@@ -3,6 +3,7 @@ var Link = require('react-router').Link;
 var AnswerList = require('./answerList.js');
 var api = require("./api.js");
 var auth = require("./auth.js");
+var QuestionNode = require('./questionNode.js');
 
 var Badge = React.createClass({
   render: function() {
@@ -24,37 +25,41 @@ var AnswerQuestionBadge = React.createClass({
   }
 });
 
-var options = {
-  thumbnailData:  [{
-    question_id: 0,
-    header: "I see a crack in this wall...",
-    description: 'What should I do?',
-    timestamp: '1:57 PM, 11/19/15',
-    username: 'Scrub57',
-  },{
-    question_id: 1,
-    header: 'A boring question',
-    description: 'Question Body',
-    timestamp: 'time',
-    username: 'username',
-  }]
-};
+// var options = {
+//   thumbnailData:  [{
+//     question_id: 0,
+//     header: "I see a crack in this wall...",
+//     description: 'What should I do?',
+//     timestamp: '1:57 PM, 11/19/15',
+//     username: 'Scrub57',
+//   },{
+//     question_id: 1,
+//     header: 'A boring question',
+//     description: 'Question Body',
+//     timestamp: 'time',
+//     username: 'username',
+//   }]
+// };
 
 var Question = React.createClass({
 
   getInitialState: function() {
+    console.log("HERE 1");
+    
     return {
       loggedIn: auth.loggedIn(),
       displayForm: false,
-      question : null,
+      question : null, // return value?
       answers : []
     };
   },
-  //Handle answer question button
+  
+  // Handle answer question button
   handleClick: function(event){
     this.setState({displayForm: true});
   },
-  //Add answer to database
+  
+  // Add answer to database
   addAnswer: function(event){
     event.preventDefault();
 
@@ -64,8 +69,14 @@ var Question = React.createClass({
     this.setState({displayForm: false});
   },
 
-  componentDidMount: function(){
-    // api.getQuestion(this.questionSet);
+  componentWillMount: function() {
+    console.log("HERE 2");
+    api.getQuestion(this.props.params.question_id, function(status, data){
+      console.log("HERE 3");
+      if(status) {
+        this.setState({question : data.question});
+      }    
+    }.bind(this));
     api.getAnswers(this.props.params.question_id, this.answerSet);
   },
 
@@ -73,32 +84,31 @@ var Question = React.createClass({
     api.getAnswers(this.props.params.question_id, this.answerSet);
   },
 
-  questionSet: function(status, data){
-    if(status){
-      this.setState({question : data.question});
-    }
-    else{
-      this.context.router.transitionTo('login');
-    }
-  },
+  // questionSet: function(status, data) {
+  //   console.log("HERE 3");
+  //   if(status) {
+  //     this.setState({question : data.question});
+  //   } else {
+  //     this.context.router.transitionTo('login');
+  //   }
+  // },
 
   answerSet: function(status, data){
     if(status){
       this.setState({answers: data.answers});
-    }
-    else{
+    } else{
       this.context.router.transitionTo('login');
     }
   },
 
   render: function() {
+    console.log("HERE 4");
     return (
       <div>
-        <div className = "col-xs-12">
-          <h2>{options.thumbnailData[this.props.params.question_id].header}</h2>
-        </div>
-        <div className = "col-xs-12">
-          <p>{options.thumbnailData[this.props.params.question_id].description}</p>
+        <div>
+          <QuestionNode key={this.props.params.question_id}
+                        question={this.state.question}
+                        reload={this.reload} />
         </div>
         <p>
           {this.state.loggedIn ? (
