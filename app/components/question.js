@@ -38,6 +38,11 @@ var Question = React.createClass({
   
   // Handle answer question button
   showDiv: function(event){
+    var editor = new wysihtml5.Editor('editor', {
+        toolbar: 'toolbar',
+        parserRules:  wysihtml5ParserRules
+      });
+
     var editorDiv = $('#editorDiv');
     editorDiv.slideDown();
 
@@ -84,6 +89,9 @@ var Question = React.createClass({
       padding: '10px',
       marginBottom: '20px'
     };
+    var editorStyle = {
+
+    };
 
     return (
       <div>
@@ -107,10 +115,19 @@ var Question = React.createClass({
           }         
         </p>
         <div id="editorDiv" style={divStyle}>
-          <form className="form-vertical" onSubmit={this.addAnswer}>            
-            <input className="form-control" type="text" ref="body" autoFocus={true} />            
-            <input className="btn btn-warning" type="submit" value="Submit" />
-            <button className="btn btn-default" type="reset">Cancel</button>
+          <form className="form-vertical" onSubmit={this.addAnswer}>
+
+            <div id="toolbar" style={{marginBottom: "10px"}}>
+              <a title="Bold" className="btn btn-sm btn-primary toolbar-button" data-wysihtml5-command="bold"><i className="fa fa-bold"></i></a>
+              <a title="Italic" className="btn btn-sm btn-primary toolbar-button" data-wysihtml5-command="italic"><i className="fa fa-italic"></i></a>
+              <a title="Header" className="btn btn-sm btn-primary toolbar-button" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3"><i className="fa fa-header"></i></a>
+            </div>
+            <textarea className="form-control" ref="body" id="editor"></textarea>
+           
+            <div style={{marginTop: "10px"}}>
+              <input className="btn btn-warning" type="submit" value="Submit" />
+              <button className="btn btn-default" type="reset">Cancel</button>
+            </div>
           </form>
         </div>
         <div>
@@ -122,3 +139,4 @@ var Question = React.createClass({
 });
 
 module.exports = Question;
+//<input className="form-control" type="text" ref="body" autoFocus={true} /> 
