@@ -3750,10 +3750,37 @@ webpackJsonp([1],{
 	      null,
 	      React.createElement(
 	        "form",
-	        { className: "form-vertical", onSubmit: this.addQuestion },
-	        React.createElement("input", { type: "text", placeholder: "Question Title", ref: "header", autoFocus: true }),
-	        React.createElement("input", { type: "text", placeholder: "Type your question...", ref: "body", autoFocus: true }),
-	        React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Create Question" })
+	        { className: "form-vertical col-md-8 col-sm-12", role: "form", onSubmit: this.addQuestion },
+	        React.createElement(
+	          "h3",
+	          null,
+	          "Ask a question!"
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "form-group" },
+	          React.createElement(
+	            "label",
+	            null,
+	            "Title:"
+	          ),
+	          React.createElement("input", { className: "form-control", type: "text", ref: "header", autoFocus: true })
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "form-group" },
+	          React.createElement(
+	            "label",
+	            null,
+	            "Body:"
+	          ),
+	          React.createElement("textarea", { rows: "8", className: "form-control", type: "text", placeholder: "Type your question...", ref: "body", autoFocus: true })
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "form-group" },
+	          React.createElement("input", { className: "btn btn-warning", type: "submit", value: "Create Question" })
+	        )
 	      )
 	    );
 	  }
