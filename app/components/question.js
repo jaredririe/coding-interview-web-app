@@ -25,31 +25,13 @@ var AnswerQuestionBadge = React.createClass({
   }
 });
 
-// var options = {
-//   thumbnailData:  [{
-//     question_id: 0,
-//     header: "I see a crack in this wall...",
-//     description: 'What should I do?',
-//     timestamp: '1:57 PM, 11/19/15',
-//     username: 'Scrub57',
-//   },{
-//     question_id: 1,
-//     header: 'A boring question',
-//     description: 'Question Body',
-//     timestamp: 'time',
-//     username: 'username',
-//   }]
-// };
-
 var Question = React.createClass({
 
   getInitialState: function() {
-    console.log("HERE 1");
-    
     return {
       loggedIn: auth.loggedIn(),
       displayForm: false,
-      question : null, // return value?
+      question : null, 
       answers : []
     };
   },
@@ -70,9 +52,7 @@ var Question = React.createClass({
   },
 
   componentWillMount: function() {
-    console.log("HERE 2");
     api.getQuestion(this.props.params.question_id, function(status, data){
-      console.log("HERE 3");
       if(status) {
         this.setState({question : data.question});
       }    
@@ -84,15 +64,6 @@ var Question = React.createClass({
     api.getAnswers(this.props.params.question_id, this.answerSet);
   },
 
-  // questionSet: function(status, data) {
-  //   console.log("HERE 3");
-  //   if(status) {
-  //     this.setState({question : data.question});
-  //   } else {
-  //     this.context.router.transitionTo('login');
-  //   }
-  // },
-
   answerSet: function(status, data){
     if(status){
       this.setState({answers: data.answers});
@@ -102,7 +73,6 @@ var Question = React.createClass({
   },
 
   render: function() {
-    console.log("HERE 4");
     return (
       <div>
         <div>

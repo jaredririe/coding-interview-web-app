@@ -14,6 +14,16 @@ var Badge = React.createClass({
 
 var QuestionNode = React.createClass({
   render: function() {
+    var timestamp = new Date(this.props.question.timestamp);
+    var minutes = (timestamp.getMinutes() < 10) ? ("0" + timestamp.getMinutes()) : timestamp.getMinutes();
+    var timeString = this.props.question.name 
+                    + " - " + timestamp.getMonth() 
+                    + "/" + timestamp.getDate() 
+                    + "/" + timestamp.getFullYear() 
+                    + " - "
+                    + timestamp.getHours()
+                    + ":" 
+                    + minutes;
     return (
       <div className="col-xs-12">
         <div className="thumbnail">
@@ -32,7 +42,7 @@ var QuestionNode = React.createClass({
                 }
               </div>
               <div className = "col-md-8">
-              {this.props.user} - {this.props.timestamp}
+              {timeString}
               </div>
             </div>
           </div>
@@ -41,37 +51,5 @@ var QuestionNode = React.createClass({
     );
   }
 });
-
-// var QuestionNodeList = React.createClass({
-//   render: function() {
-//     var list = this.props.thumbnailData.map(function(thumbnailProps){
-//       return (<Thumbnail {...thumbnailProps} />);
-//     });
-
-//     return (
-//       <div>
-//         {list}
-//       </div>
-//     );
-//   }
-// });
-
-// var options = {
-//   thumbnailData:  [{
-//     index: 0,
-//     header: "I see a crack in this wall...",
-//     description: 'What should I do?',
-//     timestamp: '1:57 PM, 11/19/15',
-//     username: 'Scrub57',
-//   },{
-//     index: 1,
-//     header: 'A boring question',
-//     description: 'Question Body',
-//     timestamp: 'time',
-//     username: 'username',
-//   }]
-// };
-
-//var questionList = React.createElement(ThumbnailList, options);
 
 module.exports = QuestionNode;
