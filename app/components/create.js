@@ -19,7 +19,7 @@ var Create = React.createClass({
   },
 
   //Add answer to database
-  addQuestion: function(event){
+  addQuestion: function(event) {
     event.preventDefault();
     var header = this.refs.header.value;
     var body = this.refs.body.value;

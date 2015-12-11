@@ -9,6 +9,7 @@ var User = require('./user.js');
 // Item schema
 var questionSchema = new Schema({
   user: {type: ObjectId, ref: 'users'},
+  name: {type: String, default: "username here"},
   header: String,
   body: String,
   timestamp: {type: Date, default: Date.now},

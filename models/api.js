@@ -121,6 +121,33 @@ app.get('/api/answers/get/:question_id', function (req,res) {
     });
 });
 
+// get all questions 
+app.get("/api/question/get", function (req,res) {
+  // No validation necessary
+  Question.find(function(err, questions) {
+  	if (err) {
+  	  res.sendStatus(403);
+  	  return;
+  	}
+      // return value is the answer as JSON
+      res.json({questions:questions});
+    });
+});
+
+// get question with given questionID 
+app.get("/api/question/get/:question_id", function (req,res) {
+  // No validation necessary
+  Question.findById(req.params.question_id, function(err, question) {
+  	if (err) {
+  	  res.sendStatus(403); // TODO should this return 403?
+  	  return;
+  	}
+    // return value is the question as JSON
+    res.json({question: question});
+    
+    });
+});
+
 // update an answer
 app.put('/api/answers/:answer_id', function (req,res) {
   // validate the supplied token
