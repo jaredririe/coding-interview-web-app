@@ -43,11 +43,15 @@ var Question = React.createClass({
         parserRules:  wysihtml5ParserRules
       });
 
-    var editorDiv = $('#editorDiv');
+    var editorDiv = $('#editorDiv'),
+        answerButton = editorDiv.siblings('p').find('.btn-primary');
+
+    answerButton.slideUp();
     editorDiv.slideDown();
 
     $('.btn-warning', editorDiv).siblings('button').click(function(event){
       editorDiv.slideUp();
+      answerButton.slideDown();
     });
   },
   
@@ -89,9 +93,6 @@ var Question = React.createClass({
       padding: '10px',
       marginBottom: '20px'
     };
-    var editorStyle = {
-
-    };
 
     return (
       <div>
@@ -106,7 +107,7 @@ var Question = React.createClass({
         </div>
         <p>
           {this.state.loggedIn ? (
-             <AnswerQuestionBadge title="Answer Question" onClickEvent={this.showDiv}/>
+             <AnswerQuestionBadge  title="Answer Question" onClickEvent={this.showDiv}/>
            ) : (
             <Link to="login">
              <Badge title="Login to answer or vote!"/>
@@ -125,7 +126,7 @@ var Question = React.createClass({
             <textarea className="form-control" ref="body" id="editor"></textarea>
            
             <div style={{marginTop: "10px"}}>
-              <input className="btn btn-warning" type="submit" value="Submit" />
+              <input style={{marginRight: "10px"}} className="btn btn-warning" type="submit" value="Submit" />
               <button className="btn btn-default" type="reset">Cancel</button>
             </div>
           </form>

@@ -351,11 +351,15 @@ webpackJsonp([1],{
 	      parserRules: wysihtml5ParserRules
 	    });
 
-	    var editorDiv = $('#editorDiv');
+	    var editorDiv = $('#editorDiv'),
+	        answerButton = editorDiv.siblings('p').find('.btn-primary');
+
+	    answerButton.slideUp();
 	    editorDiv.slideDown();
 
 	    $('.btn-warning', editorDiv).siblings('button').click(function (event) {
 	      editorDiv.slideUp();
+	      answerButton.slideDown();
 	    });
 	  },
 
@@ -397,7 +401,6 @@ webpackJsonp([1],{
 	      padding: '10px',
 	      marginBottom: '20px'
 	    };
-	    var editorStyle = {};
 
 	    return React.createElement(
 	      'div',
@@ -448,7 +451,7 @@ webpackJsonp([1],{
 	          React.createElement(
 	            'div',
 	            { style: { marginTop: "10px" } },
-	            React.createElement('input', { className: 'btn btn-warning', type: 'submit', value: 'Submit' }),
+	            React.createElement('input', { style: { marginRight: "10px" }, className: 'btn btn-warning', type: 'submit', value: 'Submit' }),
 	            React.createElement(
 	              'button',
 	              { className: 'btn btn-default', type: 'reset' },
@@ -590,6 +593,7 @@ webpackJsonp([1],{
 	    var timestamp = new Date(this.props.answer.timestamp);
 	    var minutes = timestamp.getMinutes() < 10 ? "0" + timestamp.getMinutes() : timestamp.getMinutes();
 	    var timeString = timestamp.getMonth() + "/" + timestamp.getDate() + "/" + timestamp.getFullYear() + " - " + timestamp.getHours() + ":" + minutes;
+
 	    return React.createElement(
 	      'div',
 	      null,
@@ -636,11 +640,7 @@ webpackJsonp([1],{
 	            null,
 	            this.props.answer.name == auth.getName() ? React.createElement(DeleteBadge, { title: 'Delete Answer', onDeleteEvent: this.handleDelete }) : null
 	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            this.props.answer.body
-	          ),
+	          React.createElement('p', { dangerouslySetInnerHTML: { __html: this.props.answer.body } }),
 	          React.createElement(
 	            'div',
 	            null,

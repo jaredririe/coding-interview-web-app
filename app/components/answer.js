@@ -58,6 +58,7 @@ var Answer = React.createClass({
                     + timestamp.getHours()
                     + ":" 
                     + minutes;
+
     return (
       <div>
         <div className="thumbnail">
@@ -82,7 +83,7 @@ var Answer = React.createClass({
                 ):null
               }
             </p>
-            <p>{this.props.answer.body}</p>
+            <p dangerouslySetInnerHTML={{__html: this.props.answer.body}}></p>
             <div>
               {timeString}
             </div>
